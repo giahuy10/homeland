@@ -1,0 +1,38 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto:400,700&subset=vietnamese');
+$pink : #e7005a;
+* {
+  margin: 0;
+  font-family: 'Roboto', sans-serif;
+}
+.container {
+  width: 1170px;
+  margin: 0 auto;
+  max-width: 100%;
+}
+img {
+  max-width: 100%;
+  height: auto;
+}
+a {
+  text-decoration: none;
+}
+.clear {
+  display: block;
+  clear: both;
+}
+.float-left {
+  float: left;
+}
+.btn {
+  background: $pink;
+  color: #fff;
+  border-color: $pink;
+  padding: 10px 20px;
+}
+.mod-title {
+  background: url(/images/trangchu-iconmenu1.png) center left no-repeat $pink;
+  display: inline-block;
+  padding: 10px 20px 10px 30px;
+  color: #fff;
+  margin-left: 10px;
+}
