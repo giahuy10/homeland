@@ -33,7 +33,7 @@ module.exports = {
   ** Global CSS
   */
   css: [
-    '~/assets/style/bootstrap-grid.css',
+    // '~/assets/style/bootstrap-grid.css',
     '~/assets/style/main.scss',
   ],
 
@@ -41,7 +41,8 @@ module.exports = {
   ** Plugins to load before mounting the App
   */
   plugins: [
-     { src: '~/plugins/vue-facebook-chat.js', ssr: false }
+     { src: '~/plugins/vue-facebook-chat.js', ssr: false },
+     { src: '~/plugins/vue-flipbook.js', ssr: false}
   ],
 
   /*

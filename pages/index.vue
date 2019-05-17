@@ -1,8 +1,9 @@
 <template>
   <div class="homepage">
     <Slider/>
-    <FeaturedProperties/>
     <OtherProperties/>
+    <FeaturedProperties/>
+
     <TopComments/>
   </div>
 </template>

@@ -1,10 +1,26 @@
 <template>
   <div class="featured-properties">
     <div class="container">
-      <h2 class="mod-title">Dự án đang mở bán</h2>
+      <div class="row">
+        <div class="col-xs-12 col-md-3">
+          <h2 class="mod-title">Dự án đang mở bán</h2>
+        </div>
+        <div class="col-xs-6 col-md-2">
+          <b-form-select v-model="filter.city" :options="optionsCity"></b-form-select>
+        </div>
+        <div class="col-xs-6 col-md-2">
+          <b-form-select v-model="filter.type" :options="optionsType"></b-form-select>
+        </div>
+        <div class="col-xs-6 col-md-2">
+          <b-form-select v-model="filter.district" :options="optionsDistrict"></b-form-select>
+        </div>
+        <div class="col-xs-6 col-md-3">
+          <b-form-select v-model="filter.price" :options="optionsPrice"></b-form-select>
+        </div>
+      </div>
       <div class="mod-content">
-        <div class="content-inner">
-          <div v-for="(item, index) in items" :key="index" class="property">
+        <div class="row">
+          <div v-for="(item, index) in items" :key="index" class="property col-6 col-sm-4 col-md-3">
             <div class="pro-inner">
               <div class="pro-img">
                 <nuxt-link to="/property/detail">
@@ -37,6 +53,33 @@
 export default {
   data () {
     return {
+      filter: {
+        city: null,
+        district: null,
+        type: null,
+        price: null
+      },
+      optionsCity: [
+        { value: null, text: '-- Chọn thành phố --'},
+        { value: 1, text: 'Hà Nội'},
+        { value: 2, text: 'Hồ Chí Minh'},
+        { value: 2, text: 'Đà nẵng'},
+      ],
+      optionsDistrict: [
+
+      ],
+      optionsType: [
+        { value: null, text: '-- Chọn loại --'},
+        { value: 1, text: 'Biệt thự liền kề'},
+        { value: 2, text: 'Biệt thự đơn lập'},
+        { value: 2, text: 'Chung cư'},
+      ],
+      optionsPrice: [
+        { value: null, text: '-- Chọn khoảng giá --'},
+        { value: 1, text: 'Dưới 1 tỷ'},
+        { value: 2, text: '1 tỷ - 2 tỷ'},
+        { value: 2, text: 'Trên 2 tỷ'},
+      ],
       items: [
         {
           title: 'Dự án Palace City',
@@ -119,13 +162,13 @@ export default {
 <style lang="scss" scoped>
 $pink : #e7005a;
 .featured-properties {
-  .mod-title {
+  .mod-content {
+    padding-top: 20px;
   }
   .property {
-    float: left;
-    width: 25%;
-    padding: 10px;
-    box-sizing: border-box;
+
+    // padding: 10px;
+    margin-bottom: 30px;
     .pro-inner {
       border: 1px solid #ccc;
       box-shadow: 0 0 1px 0px #e3e3e3;

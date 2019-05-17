@@ -21,6 +21,7 @@
     "sass-loader": "^7.1.0",
     "vue-facebook-chat": "^1.0.6",
     "vue-fb-customer-chat": "^0.1.4",
+    "vue-flipbook": "^1.0.0",
     "vuetify": "^1.5.5",
     "vuetify-loader": "^1.2.1"
   },

@@ -52,10 +52,7 @@ export default {
           name: 'Linh Trang',
           avatar: '/images/Richard-McGregor-fivebooks-interview2-100x100.jpg'
         },
-        {
-          name: 'Quốc Thiện',
-          avatar: '/images/bf0258ac8c31fac4213c10748532bf08.png'
-        }
+
       ]
     }
   }
@@ -76,7 +73,7 @@ export default {
     text-align: center;
     .user {
       display: inline-block;
-      width: 9%;
+      width: 12%;
       padding: 10px;
       img {
         border-radius: 100%;

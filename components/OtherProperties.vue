@@ -1,10 +1,15 @@
 <template>
   <div class="other-properties">
     <div class="container">
-      <h2 class="mod-title">Dự án nổi bật</h2>
+      <div class="row">
+        <div class="col-12 col-md-3">
+          <h2 class="mod-title">Dự án nổi bật</h2>
+        </div>
+      </div>
+
       <div class="mod-content">
-        <div class="content-inner">
-          <div v-for="(item, index) in items" :key="index" class="property">
+        <div class="row">
+          <div v-for="(item, index) in items" :key="index" class="property col-6 col-md-3">
             <div class="pro-img">
               <nuxt-link to="/property/detail">
                 <img :src="item.thumbnail" alt="">
@@ -49,14 +54,7 @@ export default {
           thumbnail: '/images/5.jpg',
           desc: 'Dự Án Lakeview City – Khu Đô Thị Đáng Sống Nhất ...',
           price: '2 tỷ'
-        },
-        {
-          title: 'Dự án Palace City',
-          thumbnail: '/images/6.jpg',
-          desc: 'Dự Án Lakeview City – Khu Đô Thị Đáng Sống Nhất ...',
-          price: '2 tỷ'
         }
-
       ]
     }
   }
@@ -67,11 +65,11 @@ export default {
 $pink : #e7005a;
 .other-properties {
   margin: 40px 0;
+  .mod-title {
+    margin-bottom: 30px;
+  }
   .property {
-    float: left;
-    width: 20%;
-    padding: 10px;
-    box-sizing: border-box;
+
     .pro-title {
       text-align: center;
       a {
