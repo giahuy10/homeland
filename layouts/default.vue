@@ -7,7 +7,7 @@
         </div>
         <div class="navigation">
           <b-navbar toggleable="lg" type="light" variant="light">
-            <b-navbar-brand href="#">Homeland</b-navbar-brand>
+            <b-navbar-brand to="/">Homeland</b-navbar-brand>
 
             <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
@@ -15,7 +15,7 @@
               <b-navbar-nav>
                 <b-nav-item href="#">Thông tin dự án</b-nav-item>
                 <b-nav-item href="#">Bình luận</b-nav-item>
-                <b-nav-item href="#">Tin tức</b-nav-item>
+                <b-nav-item to="/news">Tin tức</b-nav-item>
                 <b-nav-item href="#">Gửi thông tin dự án</b-nav-item>
                 <b-nav-item href="#">Thành viên</b-nav-item>
               </b-navbar-nav>
@@ -40,23 +40,53 @@
       <div class="container">
         <div class="row">
           <div class="col-xs-12 col-md-4">
-            <h3>Sàn giao dịch dự án HomeLand</h3>
-            <p>
-              Địa chỉ: 54 Lieu Giai - Ba Dinh - Ha Noi <br>
-              Điện thoại: 024 3333 6602 - Phone: 0906147557 <br>
-              Email: info@homeland.com <br>
-              Copyright © 2019 HomeLand
-            </p>
+            <h3>Hoạt động</h3>
+            <ul>
+              <li>
+                <a>Viết bình luận</a>
+              </li>
+              <li>
+                <a>Thêm dự án</a>
+              </li>
+              <li>
+                <a>Trợ giúp và câu hỏi thường gặp</a>
+              </li>
+              <li>
+                <a>Quy định</a>
+              </li>
+            </ul>
           </div>
           <div class="col-xs-12 col-md-4">
-
+            <h3>Công ty</h3>
+            <ul>
+              <li>
+                <a>Giới thiệu</a>
+              </li>
+              <li>
+                <a>Quy chế hoạt động</a>
+              </li>
+              <li>
+                <a>Bảo mật thông tin</a>
+              </li>
+              <li>
+                <a>Góp ý</a>
+              </li>
+            </ul>
           </div>
           <div class="col-xs-12 col-md-4">
-            <div class="subscribe">
-              <h3>Đăng ký nhận thông tin dự án</h3>
-              <input type="text" placeholder="Nhập email của bạn">
-              <button>Đăng ký</button>
-            </div>
+           
+            <h3>Liên hệ</h3>
+            <ul>
+              <li>
+                <a>Facebook</a>
+              </li>
+              <li>
+                <a>Youtube</a>
+              </li>
+              <li>
+                <a>Email: sale@homenland.vn</a>
+              </li>
+            </ul>
           </div>
         </div>
       </div>

@@ -4,6 +4,12 @@ $pink : #e7005a;
   margin: 0;
   font-family: 'Roboto', sans-serif;
 }
+a {
+  color: $pink;
+}
+.text-pink {
+  color: $pink;
+}
 img {
   max-width: 100%;
   height: auto;

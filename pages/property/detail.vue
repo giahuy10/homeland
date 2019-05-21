@@ -6,24 +6,19 @@
           <img src="/images/ha-noi-home-land/main.jpg" alt="">
         </div>
         <div class="short-desc col-12 col-md-6">
-          <h2>Thông tin dự án Hà Nội HomeLand</h2>
-          <p><img src="/images/location.png" alt="" width="16" height="16">Phường Thượng Thanh, Long Biên, Hà Nội (đoạn cầu Chui – cầu Đông trù)</p>
-          <p><b>Chủ đầu tư</b>: Công ty cổ phần đầu tư Hải Phát Thủ Đô</p>
-          <p><b>Tiến độ</b>: Đang xây dựng</p>
-          <p><b>Giá</b>: 1 tỷ 2 đến 2 tỷ 2</p>
+          <h2>Hà Nội HomeLand</h2>
+          
+          <p> Công ty cổ phần đầu tư Hải Phát Thủ Đô <br>
+          Căn hộ chung cư và dịch vụ
+          </p>
+          
           <table>
             <tr>
-              <td>
-                <span class="total">8.3</span>
-              </td>
               <td>
                 <span class="score">9</span>
                 <span class="name">Vị trí</span>
               </td>
-              <td>
-                <span class="score">8</span>
-                <span class="name">Chất lượng</span>
-              </td>
+              
               <td>
                 <span class="score">8</span>
                 <span class="name">Giá cả</span>
@@ -34,10 +29,20 @@
               </td>
               <td>
                 <span class="score">8</span>
+                <span class="name">Chất lượng</span>
+              </td>
+              <td>
+                <span class="score">8</span>
                 <span class="name">Thiết kế</span>
               </td>
             </tr>
           </table>
+          <ul>
+            <li>Phường Thượng Thanh, Long Biên, Hà Nội (đoạn cầu Chui – cầu Đông trù)</li>
+            <li>Đang xây dựng</li>
+            <li><b class="text-pink">1 tỷ 2 - 2 tỷ 2</b></li>
+          </ul>
+          
         </div>
       </div>
       <div class="clear"></div>
@@ -58,13 +63,7 @@
             </b-tab>
             <b-tab title="Ảnh dự án">
               <b-card-text>
-                <div class="list-images">
-                  <img src="/images/ha-noi-home-land/9aabe0c3a1f944a71de8.jpg" alt="">
-                  <img src="/images/ha-noi-home-land/42ee9860da5a3f04664b.jpg" alt="">
-                  <img src="/images/ha-noi-home-land/64a78319c123247d7d32.jpg" alt="">
-                  <img src="/images/ha-noi-home-land/996f32ae709495cacc85.jpg" alt="">
-                  <img src="/images/ha-noi-home-land/8b9cf202b03855660c29.jpg" alt="">
-                </div>
+                <Gallery/>
                 <h4>Sản phẩm</h4>
                 <ul>
                   <li>4 tòa tháp cao 18 tầng, 1224 căn hộ, 18 căn/sàn/tòa (tính trung bình) </li>
@@ -85,7 +84,57 @@
                 </ul>
               </b-card-text>
             </b-tab>
-            <b-tab title="Bình luận"><b-card-text>Tab Contents 3</b-card-text></b-tab>
+            <b-tab title="Bình luận">
+              <b-card-text>
+                <h4>Gửi bình luận</h4>
+                <b-form-textarea
+                  id="textarea"
+                  placeholder="Viết bình luận của bạn..."
+                  rows="3"
+                  max-rows="6"
+                ></b-form-textarea>
+                <div class="list-chat">
+                  <div class="chat">
+                    <div class="message">
+                      <div class="row">
+                        <div class="col-1 text-right ">
+                          <img src="/images/main-thumb-282821662-100-krruoowyyretxlddfvilxlmqdpnczfqg.jpeg" alt=""> 
+                        </div>
+                        <div class="col-11">
+                          <b class="username">Eddy Nguyen</b> <br> Bất động sản này rất tốt
+                        </div>
+                      </div>
+                      
+                        
+                    </div>
+                    <div class="sub-chat">
+                      <div class="message">
+                        
+                        <div class="row">
+                          <div class="col-1 text-right">
+                            <img src="/images/photo.jpg" alt=""> 
+                          </div>
+                          <div class="col-11">
+                            <b class="username">Henry</b> <br> Bất động sản này rất tốt
+                          </div>
+                        </div>
+                      </div>
+                      <div class="message">
+                        
+                        <div class="row">
+                          <div class="col-1 text-right">
+                            <img src="/images/unnamed.jpg" alt=""> 
+                          </div>
+                          <div class="col-11">
+                            <b class="username">Lou Hoang</b> <br> Bất động sản này rất tốt
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </b-card-text>
+            </b-tab>
           </b-tabs>
         </b-card>
       </div>
@@ -94,7 +143,10 @@
   </div>
 </template>
 <script>
+
+import Gallery from '~/components/Gallery.vue';
 export default {
+  components: {Gallery},
   data () {
     return {
       images: [
@@ -130,10 +182,14 @@ $pink : #e7005a;
                 padding: 15px;
               }
               &.score {
-                color: $pink;
+                background: $pink;
+                color: #fff;
                 font-size: 30px;
                 font-weight: bold;
                 margin-bottom: 10px;
+                border: 1px solid;
+                border-radius: 100%;
+                width: 60px;
               }
             }
           }
@@ -166,6 +222,28 @@ $pink : #e7005a;
     }
     .content {
       width: 80%;
+    }
+  }
+}
+.list-chat {
+  margin-top: 20px;
+  .chat {
+    .message {
+      .row {
+        > div {
+          padding: 5px 5px;
+        }
+      }
+      .username {
+        // display: block;
+      }
+      img {
+        width: 40px;
+        border-radius: 100%;
+      }
+    }
+    .sub-chat{
+      padding-left: 40px;
     }
   }
 }

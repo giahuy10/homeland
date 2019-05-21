@@ -5,16 +5,19 @@
         <div class="col-xs-12 col-md-3">
           <h2 class="mod-title">Dự án đang mở bán</h2>
         </div>
-        <div class="col-xs-6 col-md-2">
+        <div class="col-xs-6 col-md-2 filter-item">
           <b-form-select v-model="filter.city" :options="optionsCity"></b-form-select>
         </div>
-        <div class="col-xs-6 col-md-2">
+        <div class="col-xs-6 col-md-2 filter-item">
           <b-form-select v-model="filter.type" :options="optionsType"></b-form-select>
         </div>
-        <div class="col-xs-6 col-md-2">
+        <div class="col-xs-6 col-md-2 filter-item">
+          <b-form-input placeholder="Từ khóa"></b-form-input>
+        </div>
+        <div class="col-xs-6 col-md-2 filter-item">
           <b-form-select v-model="filter.district" :options="optionsDistrict"></b-form-select>
         </div>
-        <div class="col-xs-6 col-md-3">
+        <div class="col-xs-6 col-md-1 filter-item">
           <b-form-select v-model="filter.price" :options="optionsPrice"></b-form-select>
         </div>
       </div>
@@ -31,13 +34,16 @@
                 <div class="pro-title">
                   <nuxt-link to="/property/detail" v-text="item.title"></nuxt-link>
                 </div>
-                <div class="pro-desc" v-html="item.desc">
+                <div class="pro-desc">
+                  <i class="fa fa-location-arrow" aria-hidden="true"></i> {{item.desc}}
+                </div>
+                <div class="pro-note">
+                  Đoạn giới thiệu dự án ở đây
                 </div>
                 <div class="property_listing_details">
-                  <span class="inforoom">2</span>
-                  <span class="infobath">3</span>
-                  <span class="infosize">120 m<sup>2</sup></span>
-                  <span class="price" v-text="item.price"></span>
+                  <i class="fa fa-commenting-o" aria-hidden="true"></i> 12 
+                  <i class="fa fa-camera-retro" aria-hidden="true"></i> 12
+                  <i class="fa fa-share-alt" aria-hidden="true"></i>
                 </div>
               </div>
             </div>
@@ -60,97 +66,105 @@ export default {
         price: null
       },
       optionsCity: [
-        { value: null, text: '-- Chọn thành phố --'},
+        { value: null, text: '-- Thành phố --'},
         { value: 1, text: 'Hà Nội'},
         { value: 2, text: 'Hồ Chí Minh'},
         { value: 2, text: 'Đà nẵng'},
       ],
       optionsDistrict: [
-
+        { value: null, text: '-- Quận/Huyện --'},
+        { value: 1, text: 'Gia Lâm'},
+        { value: 2, text: 'Ba Đình'},
+        { value: 2, text: 'Thanh Xuân'},
       ],
       optionsType: [
-        { value: null, text: '-- Chọn loại --'},
-        { value: 1, text: 'Biệt thự liền kề'},
-        { value: 2, text: 'Biệt thự đơn lập'},
-        { value: 2, text: 'Chung cư'},
+        { value: null, text: '-- Loại --'},
+        { value: 1, text: 'Căn hộ chung cư'},
+        { value: 2, text: 'Biệt thự, liền kề'},
+        { value: 2, text: 'Shophouse'},
       ],
       optionsPrice: [
-        { value: null, text: '-- Chọn khoảng giá --'},
-        { value: 1, text: 'Dưới 1 tỷ'},
-        { value: 2, text: '1 tỷ - 2 tỷ'},
-        { value: 2, text: 'Trên 2 tỷ'},
+        { value: null, text: '-- Giá --'},
+        { value: 1, text: '600tr - 1 tỷ'},
+        { value: 2, text: '1 tỷ - 3 tỷ'},
+        { value: 2, text: '3 tỷ - 5 tỷ'},
+        { value: 2, text: '5 tỷ - 7 tỷ'},
+        { value: 2, text: '7 tỷ - 10 tỷ'},
+        { value: 2, text: '10 tỷ - 20 tỷ'},
+        { value: 2, text: '20 tỷ - 30 tỷ'},
+        { value: 2, text: 'Trên 30 tỷ'},
       ],
       items: [
         {
           title: 'Dự án Palace City',
           thumbnail: '/images/house-525x328.jpg',
-          desc: 'Dự Án Lakeview City – Khu Đô Thị Đáng Sống Nhất ...',
+          desc: '54 Liễu Giai - Ba Đình',
           price: '2 tỷ'
         },
         {
           title: 'Dự án Khai Sơn',
           thumbnail: '/images/1.jpg',
-          desc: 'Dự Án Lakeview City – Khu Đô Thị Đáng Sống Nhất ...',
+          desc: '54 Liễu Giai - Ba Đình',
           price: '2 tỷ'
         },
         {
           title: 'Dự án North Diamond',
           thumbnail: '/images/2.jpg',
-          desc: 'Dự Án Lakeview City – Khu Đô Thị Đáng Sống Nhất ...',
+          desc: '54 Liễu Giai - Ba Đình',
           price: '2 tỷ'
         },
         {
           title: 'Dự án Vin City',
           thumbnail: '/images/3.jpg',
-          desc: 'Dự Án Lakeview City – Khu Đô Thị Đáng Sống Nhất ...',
+          desc: '54 Liễu Giai - Ba Đình',
           price: '2 tỷ'
         },
         {
           title: 'Dự án The Garden',
           thumbnail: '/images/4.png',
-          desc: 'Dự Án Lakeview City – Khu Đô Thị Đáng Sống Nhất ...',
+          desc: '54 Liễu Giai - Ba Đình',
           price: '2 tỷ'
         },
         {
           title: 'Dự án Central Park',
           thumbnail: '/images/5.jpg',
-          desc: 'Dự Án Lakeview City – Khu Đô Thị Đáng Sống Nhất ...',
+          desc: '54 Liễu Giai - Ba Đình',
           price: '2 tỷ'
         },
         {
           title: 'Dự án Thảo Nguyên',
           thumbnail: '/images/6.jpg',
-          desc: 'Dự Án Lakeview City – Khu Đô Thị Đáng Sống Nhất ...',
+          desc: '54 Liễu Giai - Ba Đình',
           price: '2 tỷ'
         },
         {
           title: 'Dự án Nam Cường',
           thumbnail: '/images/7.jpg',
-          desc: 'Dự Án Lakeview City – Khu Đô Thị Đáng Sống Nhất ...',
+          desc: '54 Liễu Giai - Ba Đình',
           price: '2 tỷ'
         },
         {
           title: 'Dự án Bà Nà Hill',
           thumbnail: '/images/8.jpg',
-          desc: 'Dự Án Lakeview City – Khu Đô Thị Đáng Sống Nhất ...',
+          desc: '54 Liễu Giai - Ba Đình',
           price: '2 tỷ'
         },
         {
           title: 'Dự án Lotte Park',
           thumbnail: '/images/9.jpg',
-          desc: 'Dự Án Lakeview City – Khu Đô Thị Đáng Sống Nhất ...',
+          desc: '54 Liễu Giai - Ba Đình',
           price: '2 tỷ'
         },
         {
           title: 'Dự án Sông Hồng',
           thumbnail: '/images/10.jpg',
-          desc: 'Dự Án Lakeview City – Khu Đô Thị Đáng Sống Nhất ...',
+          desc: '54 Liễu Giai - Ba Đình',
           price: '2 tỷ'
         },
         {
           title: 'Dự án Palace City',
           thumbnail: '/images/11.jpg',
-          desc: 'Dự Án Lakeview City – Khu Đô Thị Đáng Sống Nhất ...',
+          desc: '54 Liễu Giai - Ba Đình',
           price: '2 tỷ'
         }
       ]
@@ -159,9 +173,12 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss" >
 $pink : #e7005a;
 .featured-properties {
+  .filter-item {
+    padding: 0 5px;
+  }
   .mod-content {
     padding-top: 20px;
   }
@@ -169,6 +186,9 @@ $pink : #e7005a;
 
     // padding: 10px;
     margin-bottom: 30px;
+    @media screen and (max-width: 767px) {
+      padding: 0 5px;
+    }
     .pro-inner {
       border: 1px solid #ccc;
       box-shadow: 0 0 1px 0px #e3e3e3;
@@ -187,6 +207,7 @@ $pink : #e7005a;
     font-size: 13px;
   }
   .property_listing_details {
+    color: #3a4659;
     .inforoom, .infobath, .infosize {
       background-image: url(/images/unit.png);
       font-size: 14px;

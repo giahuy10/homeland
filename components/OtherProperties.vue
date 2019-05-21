@@ -1,22 +1,36 @@
 <template>
-  <div class="other-properties">
+  <div class="featured-properties">
     <div class="container">
       <div class="row">
-        <div class="col-12 col-md-3">
+        <div class="col-xs-12 col-md-3">
           <h2 class="mod-title">Dự án nổi bật</h2>
         </div>
       </div>
-
       <div class="mod-content">
         <div class="row">
-          <div v-for="(item, index) in items" :key="index" class="property col-6 col-md-3">
-            <div class="pro-img">
-              <nuxt-link to="/property/detail">
-                <img :src="item.thumbnail" alt="">
-              </nuxt-link>
-            </div>
-            <div class="pro-title">
-              <nuxt-link to="/property/detail" v-text="item.title"></nuxt-link>
+          <div v-for="(item, index) in items" :key="index" class="property col-6 col-sm-4 col-md-3">
+            <div class="pro-inner">
+              <div class="pro-img">
+                <nuxt-link to="/property/detail">
+                  <img :src="item.thumbnail" alt="">
+                </nuxt-link>
+              </div>
+              <div class="pro-info">
+                <div class="pro-title">
+                  <nuxt-link to="/property/detail" v-text="item.title"></nuxt-link>
+                </div>
+                <div class="pro-desc">
+                  <i class="fa fa-location-arrow" aria-hidden="true"></i> {{item.desc}}
+                </div>
+                <div class="pro-note">
+                  Đoạn giới thiệu dự án ở đây
+                </div>
+                <div class="property_listing_details">
+                  <i class="fa fa-commenting-o" aria-hidden="true"></i> 12 
+                  <i class="fa fa-camera-retro" aria-hidden="true"></i> 12
+                  <i class="fa fa-share-alt" aria-hidden="true"></i>
+                </div>
+              </div>
             </div>
           </div>
           <div class="clear"></div>
@@ -30,29 +44,30 @@
 export default {
   data () {
     return {
+     
       items: [
         {
           title: 'Dự án Palace City',
+          thumbnail: '/images/house-525x328.jpg',
+          desc: '54 Liễu Giai - Ba Đình',
+          price: '2 tỷ'
+        },
+        {
+          title: 'Dự án Khai Sơn',
           thumbnail: '/images/1.jpg',
-          desc: 'Dự Án Lakeview City – Khu Đô Thị Đáng Sống Nhất ...',
+          desc: '54 Liễu Giai - Ba Đình',
           price: '2 tỷ'
         },
         {
-          title: 'Dự án Palace City',
+          title: 'Dự án North Diamond',
           thumbnail: '/images/2.jpg',
-          desc: 'Dự Án Lakeview City – Khu Đô Thị Đáng Sống Nhất ...',
+          desc: '54 Liễu Giai - Ba Đình',
           price: '2 tỷ'
         },
         {
-          title: 'Dự án Palace City',
+          title: 'Dự án Vin City',
           thumbnail: '/images/3.jpg',
-          desc: 'Dự Án Lakeview City – Khu Đô Thị Đáng Sống Nhất ...',
-          price: '2 tỷ'
-        },
-        {
-          title: 'Dự án Palace City',
-          thumbnail: '/images/5.jpg',
-          desc: 'Dự Án Lakeview City – Khu Đô Thị Đáng Sống Nhất ...',
+          desc: '54 Liễu Giai - Ba Đình',
           price: '2 tỷ'
         }
       ]
@@ -62,22 +77,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-$pink : #e7005a;
-.other-properties {
-  margin: 40px 0;
-  .mod-title {
-    margin-bottom: 30px;
-  }
-  .property {
 
-    .pro-title {
-      text-align: center;
-      a {
-        color: $pink;
-      }
-    }
-  }
-
-}
 </style>
 
