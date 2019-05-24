@@ -13,10 +13,10 @@
 
             <b-collapse id="nav-collapse" is-nav>
               <b-navbar-nav>
-                <b-nav-item href="#">Thông tin dự án</b-nav-item>
-                <b-nav-item href="#">Bình luận</b-nav-item>
+                <b-nav-item to="/property">Thông tin dự án</b-nav-item>
+                <b-nav-item to="/comment">Bình luận</b-nav-item>
                 <b-nav-item to="/news">Tin tức</b-nav-item>
-                <b-nav-item href="#">Gửi thông tin dự án</b-nav-item>
+                <b-nav-item to="/submit">Gửi thông tin dự án</b-nav-item>
                 <b-nav-item href="#">Thành viên</b-nav-item>
               </b-navbar-nav>
 
@@ -74,7 +74,7 @@
             </ul>
           </div>
           <div class="col-xs-12 col-md-4">
-           
+
             <h3>Liên hệ</h3>
             <ul>
               <li>
@@ -84,7 +84,7 @@
                 <a>Youtube</a>
               </li>
               <li>
-                <a>Email: sale@homenland.vn</a>
+                <a>Email: info@homenland.vn</a>
               </li>
             </ul>
           </div>

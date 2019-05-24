@@ -11,7 +11,7 @@
                         <div class="col-12 ">
                             <p>Khởi công song hành với tuyến đường cao tốc tphcm</p>
                             <p class="date">21/05/2019 | by Admin</p>
-                            <a href="">Xem thêm</a>
+
                         </div>
                     </div>
                 </div>
@@ -50,7 +50,7 @@ export default {
             }
         }
         a {
-    
+
         }
     }
 }

@@ -8,11 +8,11 @@
         <div class="col-xs-6 col-md-2 filter-item">
           <b-form-select v-model="filter.city" :options="optionsCity"></b-form-select>
         </div>
-        <div class="col-xs-6 col-md-2 filter-item">
+        <div class="col-xs-6 col-md-1 filter-item">
           <b-form-select v-model="filter.type" :options="optionsType"></b-form-select>
         </div>
-        <div class="col-xs-6 col-md-2 filter-item">
-          <b-form-input placeholder="Từ khóa"></b-form-input>
+        <div class="col-xs-6 col-md-3 filter-item">
+          <b-form-input placeholder="Tên dự án, loại nhà, địa điểm..."></b-form-input>
         </div>
         <div class="col-xs-6 col-md-2 filter-item">
           <b-form-select v-model="filter.district" :options="optionsDistrict"></b-form-select>
@@ -38,10 +38,10 @@
                   <i class="fa fa-location-arrow" aria-hidden="true"></i> {{item.desc}}
                 </div>
                 <div class="pro-note">
-                  Đoạn giới thiệu dự án ở đây
+                  Comment mới nhất/CHưa có comment thì ko hiển thị
                 </div>
                 <div class="property_listing_details">
-                  <i class="fa fa-commenting-o" aria-hidden="true"></i> 12 
+                  <i class="fa fa-commenting-o" aria-hidden="true"></i> 12
                   <i class="fa fa-camera-retro" aria-hidden="true"></i> 12
                   <i class="fa fa-share-alt" aria-hidden="true"></i>
                 </div>
@@ -207,7 +207,8 @@ $pink : #e7005a;
     font-size: 13px;
   }
   .property_listing_details {
-    color: #3a4659;
+    color: #85878a;
+    font-size: 16px;
     .inforoom, .infobath, .infosize {
       background-image: url(/images/unit.png);
       font-size: 14px;

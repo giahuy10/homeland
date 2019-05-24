@@ -7,18 +7,18 @@
         </div>
         <div class="short-desc col-12 col-md-6">
           <h2>Hà Nội HomeLand</h2>
-          
+
           <p> Công ty cổ phần đầu tư Hải Phát Thủ Đô <br>
           Căn hộ chung cư và dịch vụ
           </p>
-          
+
           <table>
             <tr>
               <td>
                 <span class="score">9</span>
                 <span class="name">Vị trí</span>
               </td>
-              
+
               <td>
                 <span class="score">8</span>
                 <span class="name">Giá cả</span>
@@ -42,14 +42,15 @@
             <li>Đang xây dựng</li>
             <li><b class="text-pink">1 tỷ 2 - 2 tỷ 2</b></li>
           </ul>
-          
+
         </div>
       </div>
       <div class="clear"></div>
       <div class="detail-content">
         <b-card no-body>
           <b-tabs pills card vertical>
-            <b-tab title="Tổng quan" active>
+            <b-tab title="Trang chủ" active>
+
               <b-card-text>
                 <ul>
                   <li>Tổng Diện tích khu đất: 17,101 m2 (diện tích xây dựng: 16,832 m2)</li>
@@ -98,21 +99,21 @@
                     <div class="message">
                       <div class="row">
                         <div class="col-1 text-right ">
-                          <img src="/images/main-thumb-282821662-100-krruoowyyretxlddfvilxlmqdpnczfqg.jpeg" alt=""> 
+                          <img src="/images/main-thumb-282821662-100-krruoowyyretxlddfvilxlmqdpnczfqg.jpeg" alt="">
                         </div>
                         <div class="col-11">
                           <b class="username">Eddy Nguyen</b> <br> Bất động sản này rất tốt
                         </div>
                       </div>
-                      
-                        
+
+
                     </div>
                     <div class="sub-chat">
                       <div class="message">
-                        
+
                         <div class="row">
                           <div class="col-1 text-right">
-                            <img src="/images/photo.jpg" alt=""> 
+                            <img src="/images/photo.jpg" alt="">
                           </div>
                           <div class="col-11">
                             <b class="username">Henry</b> <br> Bất động sản này rất tốt
@@ -120,10 +121,10 @@
                         </div>
                       </div>
                       <div class="message">
-                        
+
                         <div class="row">
                           <div class="col-1 text-right">
-                            <img src="/images/unnamed.jpg" alt=""> 
+                            <img src="/images/unnamed.jpg" alt="">
                           </div>
                           <div class="col-11">
                             <b class="username">Lou Hoang</b> <br> Bất động sản này rất tốt
@@ -133,6 +134,14 @@
                     </div>
                   </div>
                 </div>
+              </b-card-text>
+            </b-tab>
+            <b-tab title="Bản đồ">
+              <b-card-text>
+                <ul>
+                  <li>Khởi công: 2017</li>
+                  <li>Dự kiến hoàn thành: Quý 3/2019</li>
+                </ul>
               </b-card-text>
             </b-tab>
           </b-tabs>
@@ -189,7 +198,7 @@ $pink : #e7005a;
                 margin-bottom: 10px;
                 border: 1px solid;
                 border-radius: 100%;
-                width: 60px;
+                width: 50px;
               }
             }
           }
