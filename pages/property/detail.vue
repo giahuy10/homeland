@@ -1,6 +1,8 @@
 <template>
   <div class="detail">
+    <Slider></Slider>
     <div class="container">
+      
       <div class="top row">
         <div class="col-12 col-md-6">
           <img src="/images/ha-noi-home-land/main.jpg" alt="">
@@ -47,11 +49,30 @@
       </div>
       <div class="clear"></div>
       <div class="detail-content">
-        <b-card no-body>
-          <b-tabs pills card vertical>
-            <b-tab title="Trang chủ" active>
-
-              <b-card-text>
+        <div class="row">
+          <div class="col-12 col-md-2">
+            <ul class="nav-scroll" :class="navClass">
+              <li>
+                <a href="#overview">Tổng quan</a>
+              </li>
+              <li>
+                <a href="#galleries">Ảnh dự án</a>
+              </li>
+              <li>
+                <a href="#p-progress">Tiến độ</a>
+              </li>
+              <li>
+                <a href="#comments">Đánh giá & Bình luận</a>
+              </li>
+              <li>
+                <a href="#map">Bản đồ</a>
+              </li>
+            </ul>
+          </div>
+          <div class="col-12 col-md-10">
+            <div class="overview">
+              <h4 id="overview">Tổng quan</h4>
+              <div class="inner-overview" :class="open ? 'open' : ''">
                 <ul>
                   <li>Tổng Diện tích khu đất: 17,101 m2 (diện tích xây dựng: 16,832 m2)</li>
                   <li>Diện tích thương mại: 3,830 m2</li>
@@ -60,102 +81,164 @@
                   <li>Mật độ xây dựng: 39,95 %</li>
                   <li>Thiết kế: CT CP tập đoàn BRG/ Tư vấn giám sát: CT Beacons</li>
                 </ul>
-              </b-card-text>
-            </b-tab>
-            <b-tab title="Ảnh dự án">
-              <b-card-text>
-                <Gallery/>
-                <h4>Sản phẩm</h4>
+              </div>
+              <a href="#" @click.prevent="open=true" v-if="!open">Xem thêm</a>
+              <a href="#" @click.prevent="open=false" v-else>Thu gọn</a>
+            </div>
+            <div class="galleries">
+              <h4 id="galleries">Ảnh dự án</h4>
+              <Gallery/>
+                <h5>Sản phẩm</h5>
                 <ul>
                   <li>4 tòa tháp cao 18 tầng, 1224 căn hộ, 18 căn/sàn/tòa (tính trung bình) </li>
                   <li>Tầng 1 – thương mại dịch vu, tầng 2-18 nhà ở</li>
                   <li>1-3 phòng ngủ, diện tích từ 58 m2 – 95 m2</li>
                 </ul>
-                <h4>Tiện tích</h4>
+                <h5>Tiện tích</h5>
                 <ul>
                   <li>2 tầng hầm gửi xe, bể bơi ngoài trời, phòng khám 27/4, khu vực bán lẻ tầng 1</li>
                 </ul>
-              </b-card-text>
-            </b-tab>
-            <b-tab title="Tiến độ">
-              <b-card-text>
-                <ul>
-                  <li>Khởi công: 2017</li>
-                  <li>Dự kiến hoàn thành: Quý 3/2019</li>
-                </ul>
-              </b-card-text>
-            </b-tab>
-            <b-tab title="Bình luận">
-              <b-card-text>
-                <h4>Gửi bình luận</h4>
+            </div>
+            <div class="p-progress">
+              <h4 id="p-progress">Tiến độ</h4>
+              <ul>
+                <li>Khởi công: 2017</li>
+                <li>Dự kiến hoàn thành: Quý 3/2019</li>
+              </ul>
+            </div>
+            <div class="comments">
+              <h4 id="comments">Đánh giá & Bình luận</h4>
+              <div class="review">
+
+              
+                <b-row>
+                  <b-col sm="2">
+                 
+                    <button type="button" class="btn btn-primary">
+                      Vị trí <span class="badge badge-light">{{review.location}}</span>
+                     
+                    </button>
+                  </b-col>
+                  <b-col sm="10">
+                     <b-form-input v-model="review.location" min="1" max="10" type="range"></b-form-input>
+                  </b-col>
+                </b-row>
+                <b-row>
+                  <b-col sm="2">
+                    <button type="button" class="btn btn-primary">
+                     Giá cả <span class="badge badge-light">{{review.price}}</span>
+                    </button>
+                  </b-col>
+                  <b-col sm="10">
+                     <b-form-input v-model="review.price" min="1" max="10" type="range"></b-form-input>
+                  </b-col>
+                </b-row>
+                <b-row>
+                  <b-col sm="2">
+                    <button type="button" class="btn btn-primary">
+                     Tiến độ <span class="badge badge-light">{{review.progress}}</span>
+                    </button>
+                  </b-col>
+                  <b-col sm="10">
+                     <b-form-input v-model="review.progress" min="1" max="10" type="range"></b-form-input>
+                  </b-col>
+                </b-row>
+                <b-row>
+                  <b-col sm="2">
+                    <button type="button" class="btn btn-primary">
+                     Chất lượng <span class="badge badge-light">{{review.quality}}</span>
+                    </button>
+                  </b-col>
+                  <b-col sm="10">
+                     <b-form-input v-model="review.quality" min="1" max="10" type="range"></b-form-input>
+                  </b-col>
+                </b-row>
+                <b-row>
+                  <b-col sm="2">
+                    <button type="button" class="btn btn-primary">
+                     Thiết kế <span class="badge badge-light">{{review.design}}</span>
+                    </button>
+                  </b-col>
+                  <b-col sm="10">
+                     <b-form-input v-model="review.design" min="1" max="10" type="range"></b-form-input>
+                  </b-col>
+                </b-row>
+                <button type="button" class="btn btn-success">Gửi đánh giá</button>
+              </div>
+                <br> <br>
                 <b-form-textarea
                   id="textarea"
                   placeholder="Viết bình luận của bạn..."
                   rows="3"
                   max-rows="6"
+                  style="margin-bottom: 10px;"
                 ></b-form-textarea>
+                
+                <button type="button" class="btn btn-success">Gửi bình luận</button>
                 <div class="list-chat">
                   <div class="chat">
-                    <div class="message">
-                      <div class="row">
-                        <div class="col-1 text-right ">
-                          <img src="/images/main-thumb-282821662-100-krruoowyyretxlddfvilxlmqdpnczfqg.jpeg" alt="">
-                        </div>
-                        <div class="col-11">
-                          <b class="username">Eddy Nguyen</b> <br> Bất động sản này rất tốt
-                        </div>
-                      </div>
+                    <ul class="list-unstyled">
+                      <li class="media">
+                        <img src="/images/bf0258ac8c31fac4213c10748532bf08.png" class="mr-3" alt="...">
+                        <div class="media-body">
+                          <h5 class="mt-0 mb-1">List-based media object</h5>
+                          Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus. <br>
 
-
-                    </div>
-                    <div class="sub-chat">
-                      <div class="message">
-
-                        <div class="row">
-                          <div class="col-1 text-right">
-                            <img src="/images/photo.jpg" alt="">
-                          </div>
-                          <div class="col-11">
-                            <b class="username">Henry</b> <br> Bất động sản này rất tốt
+                          <a href="#" @click.prevent="openReply = true">Trả lời</a>
+                          <div v-if="openReply">
+                            <div class="input-group mb-3">
+                              <input type="text" class="form-control" placeholder="Gửi phản hồi của bạn" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                              <div class="input-group-append">
+                                <span class="input-group-text" id="basic-addon2">Gửi</span>
+                              </div>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                      <div class="message">
-
-                        <div class="row">
-                          <div class="col-1 text-right">
-                            <img src="/images/unnamed.jpg" alt="">
-                          </div>
-                          <div class="col-11">
-                            <b class="username">Lou Hoang</b> <br> Bất động sản này rất tốt
+                        
+                      </li>
+                      <li class="media my-4">
+                        <img src="/images/main-thumb-282821662-100-krruoowyyretxlddfvilxlmqdpnczfqg.jpeg" class="mr-3" alt="...">
+                        <div class="media-body">
+                          <h5 class="mt-0 mb-1">List-based media object</h5>
+                          Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
+                          <div class="media mt-3">
+                            <a class="mr-3" href="#">
+                              <img src="/images/0.jfif" class="mr-3" alt="...">
+                            </a>
+                            <div class="media-body">
+                              <h5 class="mt-0">Media heading</h5>
+                              Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    </div>
+                      </li>
+                      <li class="media">
+                        <img src="/images/62979450.jfif" class="mr-3" alt="...">
+                        <div class="media-body">
+                          <h5 class="mt-0 mb-1">List-based media object</h5>
+                          Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
+                        </div>
+                      </li>
+                    </ul>
                   </div>
                 </div>
-              </b-card-text>
-            </b-tab>
-            <b-tab title="Bản đồ">
-              <b-card-text>
-                <ul>
-                  <li>Khởi công: 2017</li>
-                  <li>Dự kiến hoàn thành: Quý 3/2019</li>
-                </ul>
-              </b-card-text>
-            </b-tab>
-          </b-tabs>
-        </b-card>
+            </div>
+            <div class="map">
+              <h4 id="map">Bản đồ</h4>
+              <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d59593.520278147014!2d105.93197290008044!3d21.00886500208229!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0xb760f3c179e923f!2zVsSDbiBwaMOybmcgYsOhbiBow6BuZyBk4buxIMOhbiBIYW5vaSBIb21lbGFuZCBOZ3V54buFbiBWxINuIEPhu6s!5e0!3m2!1svi!2s!4v1559171088529!5m2!1svi!2s" width="600" height="450" frameborder="0" style="border:0" allowfullscreen></iframe>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
   </div>
 </template>
 <script>
-
+import Slider from '~/components/Slider.vue'
 import Gallery from '~/components/Gallery.vue';
 export default {
-  components: {Gallery},
+  components: {Gallery, Slider},
   data () {
     return {
       images: [
@@ -164,7 +247,32 @@ export default {
         '/images/3.jpg',
         '/images/4.png',
         '/images/5.jpg',
-      ]
+      ],
+      open: false,
+      openReply: false,
+      review: {
+        location: 5,
+        price:5,
+        progress: 5,
+        quality: 5,
+        design:5
+      },
+      navClass: ''
+    }
+  },
+  methods: {
+    handleScroll (event) {
+      // Any code to be executed when the window is scrolled
+      if (window.scrollY > 500) {
+        this.navClass = 'sticky'
+      } else {
+        this.navClass = ''
+      }
+    },
+  },
+  mounted () {
+    if (process.browser) {
+      window.addEventListener('scroll', this.handleScroll)
     }
   }
 }
@@ -173,7 +281,6 @@ export default {
 <style lang="scss" scoped>
 $pink : #e7005a;
 .detail {
-  padding-top: 40px;
   .top {
     .short-desc {
       table {
@@ -231,6 +338,7 @@ $pink : #e7005a;
     }
     .content {
       width: 80%;
+
     }
   }
 }
@@ -254,6 +362,47 @@ $pink : #e7005a;
     .sub-chat{
       padding-left: 40px;
     }
+  }
+}
+.detail-content {
+  .overview {
+    .inner-overview {
+      height: 50px;
+      overflow: hidden;
+      &.open {
+        height: auto;
+      }
+    }
+  }
+  h4 {
+    margin: 20px 0;
+  }
+}
+.nav-scroll {
+  list-style: none;
+  padding-left: 0;
+  &.sticky {
+    position: fixed;
+    top: 0;
+  }
+  li {
+    a {
+      display: block;
+      background: #eaeaea;
+      color: #e7005a;
+      padding: 10px;
+      border-bottom: 1px solid #ffffff;
+      &:hover {
+        text-decoration: none;
+        background: #e7005a;
+        color: #eaeaea;
+      }
+    }
+  }
+}
+.review {
+  .row {
+    margin-bottom: 10px;
   }
 }
 </style>
