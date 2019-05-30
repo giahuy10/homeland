@@ -7,7 +7,7 @@
         </div>
         <div class="navigation">
           <b-navbar toggleable="lg" type="light" variant="light">
-            <b-navbar-brand to="/">Homeland</b-navbar-brand>
+            <b-navbar-brand to="/"><img style="height: 50px;" src="/images/homenland-logo.png"></b-navbar-brand>
 
             <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
@@ -22,10 +22,8 @@
 
               <!-- Right aligned nav items -->
               <b-navbar-nav class="ml-auto">
-                <b-nav-form>
-                  <b-form-input size="sm" class="mr-sm-2" placeholder="Search"></b-form-input>
-                  <b-button size="sm" class="my-2 my-sm-0" type="submit">Search</b-button>
-                </b-nav-form>
+                <b-button variant="success">Gửi dự án</b-button>
+                <b-button variant="info">Đăng nhập</b-button>
               </b-navbar-nav>
             </b-collapse>
           </b-navbar>
