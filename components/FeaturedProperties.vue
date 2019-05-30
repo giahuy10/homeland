@@ -3,7 +3,7 @@
     <div class="container">
       <div class="row">
         <div class="col-xs-12 col-md-3">
-          <h2 class="mod-title">Dự án đang mở bán</h2>
+          <h2 class="mod-title">Tổng hợp dự án</h2>
         </div>
         <div class="col-xs-6 col-md-2 filter-item">
           <b-form-select v-model="filter.city" :options="optionsCity"></b-form-select>
@@ -23,33 +23,48 @@
       </div>
       <div class="mod-content">
         <div class="row">
-          <div v-for="(item, index) in items" :key="index" class="property col-6 col-sm-4 col-md-3">
-            <div class="pro-inner">
-              <div class="pro-img">
-                <nuxt-link to="/property/detail">
-                  <img :src="item.thumbnail" alt="">
-                </nuxt-link>
-              </div>
-              <div class="pro-info">
-                <div class="pro-title">
-                  <nuxt-link to="/property/detail" v-text="item.title"></nuxt-link>
-                </div>
-                <div class="pro-desc">
-                  <i class="fa fa-location-arrow" aria-hidden="true"></i> {{item.desc}}
-                </div>
-                <div class="pro-note">
-                  Comment mới nhất/CHưa có comment thì ko hiển thị
-                </div>
-                <div class="property_listing_details">
-                  <i class="fa fa-commenting-o" aria-hidden="true"></i> 12
-                  <i class="fa fa-camera-retro" aria-hidden="true"></i> 12
-                  <i class="fa fa-share-alt" aria-hidden="true"></i>
-                </div>
-              </div>
-            </div>
+          <div class="col-12 col-md-2">
+            <div class="sidebar">
+            <ul>
+              <li><a href="">Mua nhà ở đâu</a></li>
+              <li><a href="">Dự án nào</a></li>
+              <li><a href="">Camera nhà đất</a></li>
+            </ul>
           </div>
-          <div class="clear"></div>
+          </div>
+          <div class="col-12 col-md-10">
+             <div class="row">
+              <div v-for="(item, index) in items" :key="index" class="property col-6 col-sm-4 col-md-3">
+                <div class="pro-inner">
+                  <div class="pro-img">
+                    <nuxt-link to="/property/detail">
+                      <img :src="item.thumbnail" alt="">
+                    </nuxt-link>
+                  </div>
+                  <div class="pro-info">
+                    <div class="pro-title">
+                      <nuxt-link to="/property/detail" v-text="item.title"></nuxt-link>
+                    </div>
+                    <div class="pro-desc">
+                      <i class="fa fa-location-arrow" aria-hidden="true"></i> {{item.desc}}
+                    </div>
+                    <div class="pro-note">
+                      Comment mới nhất/CHưa có comment thì ko hiển thị
+                    </div>
+                    <div class="property_listing_details">
+                      <i class="fa fa-commenting-o" aria-hidden="true"></i> 12
+                      <i class="fa fa-camera-retro" aria-hidden="true"></i> 12
+                      <i class="fa fa-share-alt" aria-hidden="true"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="clear"></div>
+            </div>
+
+          </div>
         </div>
+       
       </div>
     </div>
   </div>
@@ -234,6 +249,23 @@ $pink : #e7005a;
       background-position: -127px 0;
     }
   }
+}
+.sidebar {
+  ul {
+      list-style: none;
+      padding-left: 0;
+      li {
+        background: #f8f9fa;
+        border-bottom: 1px solid #e5e5e5;
+        a {
+          display: block;
+          padding: 10px 20px;
+          &:hover {
+            text-decoration: none;
+          }
+        }
+      }
+    }
 }
 </style>
 

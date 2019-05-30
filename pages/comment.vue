@@ -1,5 +1,10 @@
 <template>
   <div class="container">
+    <img src="/images/StockSnap_KWRZNZ6DC6.jpg" alt="">
+    <div class="call-to-action text-center">
+      <h2>Kinh nghiệm và thông tin bạn biết là vô cùng hữu ích, hãy cùng chia sẻ !</h2>
+      <b-form-input type="text" placeholder="Nhập tên dự án bạn muốn viết bình luận"></b-form-input>
+    </div>
     <div class="list-comments row">
       <div class="comment col-6" v-for="(comment, index) in comments" :key="index">
         <div class="inner-comment">
@@ -34,6 +39,7 @@ export default {
 </script>
 
 <style lang="scss">
+$pink : #e7005a;
 .list-comments {
   .comment {
     .inner-comment {
@@ -50,6 +56,13 @@ export default {
       }
     }
     }
+  }
+}
+.call-to-action {
+  h2 {
+    color: $pink;
+    font-size: 25px;
+    margin-top: 20px;
   }
 }
 </style>
