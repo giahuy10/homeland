@@ -12,18 +12,17 @@
             <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
             <b-collapse id="nav-collapse" is-nav>
-              <b-navbar-nav>
-                <b-nav-item to="/property">Thông tin dự án</b-nav-item>
+              <b-navbar-nav class="mx-auto">
+                <b-nav-item to="/property">Dự án và tiến độ</b-nav-item>
                 <b-nav-item to="/comment">Bình luận</b-nav-item>
-                <b-nav-item to="/news">Tin tức</b-nav-item>
-                <b-nav-item to="/submit">Gửi thông tin dự án</b-nav-item>
-                <b-nav-item href="#">Thành viên</b-nav-item>
+                <b-nav-item to="/news">Camera nhà đất</b-nav-item>
+      
               </b-navbar-nav>
 
               <!-- Right aligned nav items -->
               <b-navbar-nav class="ml-auto">
-                <b-button variant="success">Gửi dự án</b-button>
-                <b-button variant="info">Đăng nhập</b-button>
+                <b-button variant="success" style="margin-right: 10px;"> <i class="fa fa-comment"></i> Viết bình luận</b-button> 
+                <b-button variant="info"> <i class="fa fa-user"></i> Đăng nhập</b-button>
               </b-navbar-nav>
             </b-collapse>
           </b-navbar>

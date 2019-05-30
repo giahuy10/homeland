@@ -1,12 +1,14 @@
 <template>
     <div class="news">
-        <h3 class="cat-title mod-title">{{title}}</h3>
+        <!-- <h3 class="cat-title mod-title">{{title}}</h3> -->
         <div class="row">
             <div class="col-6 col-md-4" v-for="(item, index) in items" :key="index">
                 <div class="inner-news">
                     <div class="row">
                         <div class="col-12 ">
+                            <nuxt-link to="/news/detail">
                             <img src="/images/news/Rockwell-Partners.jpg" alt="">
+                            </nuxt-link>
                         </div>
                         <div class="col-12 ">
                             <p>Khởi công song hành với tuyến đường cao tốc tphcm</p>
@@ -25,7 +27,7 @@ export default {
     props: ['title'],
     data () {
         return {
-            items: [1, 2, 3, 4, 5, 6]
+            items: [1, 2, 3, 4, 5, 6,7 , 8, 9,10,11,12]
         }
     }
 }
