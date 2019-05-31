@@ -2,7 +2,7 @@
   <div class="detail">
     <Slider></Slider>
     <div class="container">
-      
+
       <div class="top row">
         <div class="col-12 col-md-6">
           <img src="/images/ha-noi-home-land/main.jpg" alt="">
@@ -110,13 +110,13 @@
               <h4 id="comments">Đánh giá & Bình luận</h4>
               <div class="review">
 
-              
+
                 <b-row>
                   <b-col sm="2">
-                 
+
                     <button type="button" class="btn btn-primary">
                       Vị trí <span class="badge badge-light">{{review.location}}</span>
-                     
+
                     </button>
                   </b-col>
                   <b-col sm="10">
@@ -173,7 +173,13 @@
                   max-rows="6"
                   style="margin-bottom: 10px;"
                 ></b-form-textarea>
-                
+                <b-form-file
+                  v-model="file"
+                  multiple
+                  placeholder="Chọn ảnh..."
+                  drop-placeholder="Drop file here..."
+                ></b-form-file>
+                <br><br>
                 <button type="button" class="btn btn-success">Gửi bình luận</button>
                 <div class="list-chat">
                   <div class="chat">
@@ -194,7 +200,7 @@
                             </div>
                           </div>
                         </div>
-                        
+
                       </li>
                       <li class="media my-4">
                         <img src="/images/main-thumb-282821662-100-krruoowyyretxlddfvilxlmqdpnczfqg.jpeg" class="mr-3" alt="...">
@@ -241,6 +247,7 @@ export default {
   components: {Gallery, Slider},
   data () {
     return {
+      file: '',
       images: [
         '/images/1.jpg',
         '/images/2.jpg',
@@ -263,7 +270,7 @@ export default {
   methods: {
     handleScroll (event) {
       // Any code to be executed when the window is scrolled
-      if (window.scrollY > 500) {
+      if (window.scrollY > 700) {
         this.navClass = 'sticky'
       } else {
         this.navClass = ''
