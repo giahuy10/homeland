@@ -5,6 +5,7 @@
             <div class="col-12 col-md-9">
                 <div class="detail-content">
                     <h2>Hà Nội sẽ triển khai đường vành đai 4 và 5 trong giai đoạn 2021-2025</h2>
+                    <AddThis publicId="ra-51c907fe054c4829" />
                     <p><b>Mới đây Sở Giao thông Vận tải Hà Nội đã công bố báo cáo định hướng phát triển kết cấu hạ tầng giao thông giai đoạn 2021-2025. Trong giai đoạn này, kế hoạch của thành phố là hoàn thành đường vành đai 4 và tiến hành khởi công vành đai 5.</b></p>
                     <p style="line-height: 25.2px; margin-top: 17.0455px; margin-bottom: 17.0455px;">Cụ thể, trong&nbsp;giai đoạn 2021-2025, đối với hệ thống đường vành đai, định hướng của&nbsp;Hà Nội là&nbsp;hoàn thành đầu tư đồng bộ mặt cắt theo quy hoạch ở&nbsp;các đoạn tuyến còn lại của đường vành đai 3.</p>
                     <p style="line-height: 25.2px; margin-top: 17.0455px; margin-bottom: 17.0455px;">Đồng thời,&nbsp;TP cũng&nbsp;sẽ triển khai thi công và cơ bản hoàn thành đường vành đai 4 trên địa bàn, tiến hành khởi công một số đoạn tuyến của đường vành đai 5;&nbsp;cơ bản hoàn thành mạng lưới đường trên cao trong khu vực đô thị trung tâm.</p>
@@ -60,8 +61,19 @@
     </div>
 </template>
 
+<script>
+import AddThis from 'vue-simple-addthis-share'
+
+export default {
+  components: {
+    AddThis,
+  }
+}
+</script>
+
+
 <style lang="scss">
-$pink : #e7005a;
+$pink : #ffa800;
 .detail-content {
     padding-top: 20px;
 }
@@ -74,7 +86,7 @@ $pink : #e7005a;
     h3 {
         color:#fff;
         background: $pink;
-        
+
         font-size: 18px;
         // font-weight: normal;
         padding: 5px;
@@ -88,7 +100,7 @@ $pink : #e7005a;
     border: 1px solid #ccc;
     margin-bottom: 20px;
     h3 {
-        
+
         border-bottom: 1px solid #ccc;
         font-size: 18px;
         // font-weight: normal;

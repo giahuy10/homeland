@@ -2,7 +2,7 @@
   <div class="top-comments">
     <div class="container">
       <div class="inner">
-        <h2>Bình luận sôi nổi</h2>
+        <h2>Top thành viên</h2>
         <div class="users">
           <div v-for="(item, index) in items" :key="index" class="user">
             <img :src="item.avatar" alt="">

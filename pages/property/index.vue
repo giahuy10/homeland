@@ -146,7 +146,7 @@ export default {
       }
     }
   }
-  $pink : #e7005a;
+  $pink : #ffa800;
 
 
   .property {

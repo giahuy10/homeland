@@ -26,9 +26,11 @@
                   Đoạn giới thiệu dự án ở đây
                 </div>
                 <div class="property_listing_details">
-                  <i class="fa fa-commenting-o" aria-hidden="true"></i> 12 
+                  <i class="fa fa-commenting-o" aria-hidden="true"></i> 12
                   <i class="fa fa-camera-retro" aria-hidden="true"></i> 12
                   <i class="fa fa-share-alt" aria-hidden="true"></i>
+                  <i class="fa fa-heart" aria-hidden="true"></i>
+
                 </div>
               </div>
             </div>
@@ -44,7 +46,7 @@
 export default {
   data () {
     return {
-     
+
       items: [
         {
           title: 'Dự án Palace City',

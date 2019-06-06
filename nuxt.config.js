@@ -46,8 +46,8 @@ module.exports = {
   ** Plugins to load before mounting the App
   */
   plugins: [
-     { src: '~/plugins/vue-facebook-chat.js', ssr: false },
-     { src: '~/plugins/vue-flipbook.js', ssr: false}
+    // { src: '~/plugins/vue-facebook-chat.js', ssr: false },
+    // { src: '~/plugins/vue-flipbook.js', ssr: false}
   ],
 
   /*

@@ -9,11 +9,15 @@
                             <nuxt-link to="/news/detail">
                             <img src="/images/news/Rockwell-Partners.jpg" alt="">
                             </nuxt-link>
-                        </div>
-                        <div class="col-12 ">
-                            <p>Khởi công song hành với tuyến đường cao tốc tphcm</p>
-                            <p class="date">21/05/2019 | by Admin</p>
-
+                            <p><nuxt-link to="/news/detail">Khởi công song hành với tuyến đường cao tốc tphcm</nuxt-link></p>
+                            <div class="share">
+                              <div class="float-left">
+                                200 <i class="fa fa-eye" aria-hidden="true"></i>
+                              </div>
+                              <div class="float-right save-item">
+                                Lưu <i class="fa fa-heart" aria-hidden="true"></i>
+                              </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -53,6 +57,14 @@ export default {
         }
         a {
 
+        }
+        .share {
+          color: #85878a;
+          .save-item {
+            &:hover {
+              cursor: pointer;
+            }
+          }
         }
     }
 }

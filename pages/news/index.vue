@@ -2,7 +2,7 @@
     <div class="news container">
       <div class="row">
         <div class="col-3">
-  
+
           <ul class="news-menu">
             <li><a href="#">Camera nhà đất</a></li>
             <li><a href="#">Sự kiện</a></li>
@@ -37,14 +37,14 @@
             <div class="inner-mod">
               <div class="mod-content">
                 <div id="fb-root"></div>
-                <div class="fb-page" data-href="https://www.facebook.com/facebook" data-tabs="timeline" data-width="" data-height="" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/facebook" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/facebook">Facebook</a></blockquote></div>
+                <div class="fb-page" data-href="https://www.facebook.com/Homenland.vn" data-tabs="timeline" data-width="" data-height="" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/facebook" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/facebook">Facebook</a></blockquote></div>
               </div>
             </div>
           </div>
         </div>
         <div class="col-9">
           <News title="Tin tức dự án"/>
-         
+
         </div>
 
       </div>
@@ -60,7 +60,7 @@ export default {
 </script>
 
 <style lang="scss">
-$pink : #e7005a;
+$pink : #ffa800;
 .news {
   .news {
     padding-top: 0;

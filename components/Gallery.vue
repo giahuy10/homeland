@@ -72,7 +72,7 @@ export default {
     this.scroller.max = this.scroller.full - this.scroller.screen
   },
   methods: {
-   
+
     openImg (index) {
       this.currentItem = index
       this.$refs.myModalRef.show()
@@ -146,7 +146,7 @@ export default {
 }
 .scroller-wrap {
   position: relative;
-  width: 900px;
+  width: 100%;
   .scroller {
     height: 200px;
     overflow: hidden;

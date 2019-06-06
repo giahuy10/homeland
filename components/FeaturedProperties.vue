@@ -24,11 +24,11 @@
       <div class="mod-content">
         <div class="row">
           <div class="col-12 col-md-2">
-            <div class="sidebar">
+            <div class="sidebar" :class="navClass">
             <ul>
               <li><a href="">Mua nhà ở đâu</a></li>
               <li><a href="">Dự án nào</a></li>
-              <li><a href="">Camera nhà đất</a></li>
+              <li><a href="">Nhà đất TV</a></li>
             </ul>
           </div>
           </div>
@@ -40,6 +40,7 @@
                     <nuxt-link to="/property/detail">
                       <img :src="item.thumbnail" alt="">
                     </nuxt-link>
+                    <div class="price">1 tỷ - 2 tỷ</div>
                   </div>
                   <div class="pro-info">
                     <div class="pro-title">
@@ -55,6 +56,8 @@
                       <i class="fa fa-commenting-o" aria-hidden="true"></i> 12
                       <i class="fa fa-camera-retro" aria-hidden="true"></i> 12
                       <i class="fa fa-share-alt" aria-hidden="true"></i>
+                      <i class="fa fa-heart" aria-hidden="true"></i>
+
                     </div>
                   </div>
                 </div>
@@ -64,7 +67,7 @@
 
           </div>
         </div>
-       
+
       </div>
     </div>
   </div>
@@ -74,6 +77,7 @@
 export default {
   data () {
     return {
+      navClass: '',
       filter: {
         city: null,
         district: null,
@@ -96,7 +100,8 @@ export default {
         { value: null, text: '-- Loại --'},
         { value: 1, text: 'Căn hộ chung cư'},
         { value: 2, text: 'Biệt thự, liền kề'},
-        { value: 2, text: 'Shophouse'},
+        { value: 3, text: 'Shophouse'},
+        { value: 4, text: 'Nghỉ dưỡng'},
       ],
       optionsPrice: [
         { value: null, text: '-- Giá --'},
@@ -184,12 +189,27 @@ export default {
         }
       ]
     }
+  },
+  methods: {
+    handleScroll (event) {
+      // Any code to be executed when the window is scrolled
+      if (window.scrollY > 900) {
+        this.navClass = 'sticky'
+      } else {
+        this.navClass = ''
+      }
+    },
+  },
+  mounted () {
+    if (process.browser) {
+      window.addEventListener('scroll', this.handleScroll)
+    }
   }
 }
 </script>
 
 <style lang="scss" >
-$pink : #e7005a;
+$pink : #ffa800;
 .featured-properties {
   .filter-item {
     padding: 0 5px;
@@ -207,6 +227,17 @@ $pink : #e7005a;
     .pro-inner {
       border: 1px solid #ccc;
       box-shadow: 0 0 1px 0px #e3e3e3;
+      .pro-img {
+        position: relative;
+        .price {
+          position: absolute;
+          right: 0;
+          bottom: 0;
+          background: #ffa800a6;
+          padding: 5px 10px;
+          color: #fff;
+        }
+      }
       .pro-info {
         padding: 10px 20px;
       }
@@ -251,6 +282,10 @@ $pink : #e7005a;
   }
 }
 .sidebar {
+  &.sticky {
+    position: fixed;
+    top: 0;
+  }
   ul {
       list-style: none;
       padding-left: 0;

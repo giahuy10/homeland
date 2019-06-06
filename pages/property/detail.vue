@@ -62,14 +62,14 @@
                 <a href="#p-progress">Tiến độ</a>
               </li>
               <li>
-                <a href="#comments">Đánh giá & Bình luận</a>
+                <a href="#comments">Bình luận</a>
               </li>
               <li>
                 <a href="#map">Bản đồ</a>
               </li>
             </ul>
           </div>
-          <div class="col-12 col-md-10">
+          <div class="col-12 col-md-7">
             <div class="overview">
               <h4 id="overview">Tổng quan</h4>
               <div class="inner-overview" :class="open ? 'open' : ''">
@@ -107,80 +107,9 @@
               </ul>
             </div>
             <div class="comments">
-              <h4 id="comments">Đánh giá & Bình luận</h4>
-              <div class="review">
+              <h4 id="comments">Bình luận</h4>
 
 
-                <b-row>
-                  <b-col sm="2">
-
-                    <button type="button" class="btn btn-primary">
-                      Vị trí <span class="badge badge-light">{{review.location}}</span>
-
-                    </button>
-                  </b-col>
-                  <b-col sm="10">
-                     <b-form-input v-model="review.location" min="1" max="10" type="range"></b-form-input>
-                  </b-col>
-                </b-row>
-                <b-row>
-                  <b-col sm="2">
-                    <button type="button" class="btn btn-primary">
-                     Giá cả <span class="badge badge-light">{{review.price}}</span>
-                    </button>
-                  </b-col>
-                  <b-col sm="10">
-                     <b-form-input v-model="review.price" min="1" max="10" type="range"></b-form-input>
-                  </b-col>
-                </b-row>
-                <b-row>
-                  <b-col sm="2">
-                    <button type="button" class="btn btn-primary">
-                     Tiến độ <span class="badge badge-light">{{review.progress}}</span>
-                    </button>
-                  </b-col>
-                  <b-col sm="10">
-                     <b-form-input v-model="review.progress" min="1" max="10" type="range"></b-form-input>
-                  </b-col>
-                </b-row>
-                <b-row>
-                  <b-col sm="2">
-                    <button type="button" class="btn btn-primary">
-                     Chất lượng <span class="badge badge-light">{{review.quality}}</span>
-                    </button>
-                  </b-col>
-                  <b-col sm="10">
-                     <b-form-input v-model="review.quality" min="1" max="10" type="range"></b-form-input>
-                  </b-col>
-                </b-row>
-                <b-row>
-                  <b-col sm="2">
-                    <button type="button" class="btn btn-primary">
-                     Thiết kế <span class="badge badge-light">{{review.design}}</span>
-                    </button>
-                  </b-col>
-                  <b-col sm="10">
-                     <b-form-input v-model="review.design" min="1" max="10" type="range"></b-form-input>
-                  </b-col>
-                </b-row>
-                <button type="button" class="btn btn-success">Gửi đánh giá</button>
-              </div>
-                <br> <br>
-                <b-form-textarea
-                  id="textarea"
-                  placeholder="Viết bình luận của bạn..."
-                  rows="3"
-                  max-rows="6"
-                  style="margin-bottom: 10px;"
-                ></b-form-textarea>
-                <b-form-file
-                  v-model="file"
-                  multiple
-                  placeholder="Chọn ảnh..."
-                  drop-placeholder="Drop file here..."
-                ></b-form-file>
-                <br><br>
-                <button type="button" class="btn btn-success">Gửi bình luận</button>
                 <div class="list-chat">
                   <div class="chat">
                     <ul class="list-unstyled">
@@ -234,6 +163,136 @@
               <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d59593.520278147014!2d105.93197290008044!3d21.00886500208229!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0xb760f3c179e923f!2zVsSDbiBwaMOybmcgYsOhbiBow6BuZyBk4buxIMOhbiBIYW5vaSBIb21lbGFuZCBOZ3V54buFbiBWxINuIEPhu6s!5e0!3m2!1svi!2s!4v1559171088529!5m2!1svi!2s" width="600" height="450" frameborder="0" style="border:0" allowfullscreen></iframe>
             </div>
           </div>
+          <div class="col-12 col-md-3">
+            <div class="right-bar" :class="navClass">
+
+              <div class="lending-module">
+                 <h4>Công cụ tính khoản vay</h4>
+                <table class="table">
+                  <tr>
+
+                    <td><b-form-input v-model="text" placeholder="Số tiền vay"></b-form-input></td>
+                    <td>VNĐ</td>
+                  </tr>
+                  <tr>
+
+                    <td><b-form-input v-model="text" placeholder="Thời gian vay"></b-form-input></td>
+                    <td>tháng</td>
+                  </tr>
+                  <tr>
+
+                    <td><b-form-input v-model="text" placeholder="Lãi suất"></b-form-input></td>
+                    <td>%/năm</td>
+                  </tr>
+                  <tr>
+                    <td colspan="2" class="text-center">
+                      <b-button variant="success">Tính</b-button>
+                    </td>
+                  </tr>
+                </table>
+                <table class="table result">
+                  <tr>
+                    <td style="width: 50%;">Số tiền trả tháng đầu</td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td>Tổng lãi phải trả</td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td>Tổng số tiền gốc và lãi phải trả</td>
+                    <td></td>
+                  </tr>
+                </table>
+              </div>
+              <div class="write-review">
+                <b-button block v-b-modal.modal-1 variant="success"> <i class="fa fa-comment"></i> Viết bình luận</b-button>
+                <b-modal id="modal-1" title="Viết bình luận<" size="xl">
+                  <div class="review">
+                  <b-row>
+                    <b-col sm="2">
+
+                      <button type="button" class="btn btn-primary">
+                        Vị trí <span class="badge badge-light">{{review.location}}</span>
+
+                      </button>
+                    </b-col>
+                    <b-col sm="10">
+                      <b-form-input v-model="review.location" min="1" max="10" type="range"></b-form-input>
+                    </b-col>
+                  </b-row>
+                  <b-row>
+                    <b-col sm="2">
+                      <button type="button" class="btn btn-primary">
+                      Giá cả <span class="badge badge-light">{{review.price}}</span>
+                      </button>
+                    </b-col>
+                    <b-col sm="10">
+                      <b-form-input v-model="review.price" min="1" max="10" type="range"></b-form-input>
+                    </b-col>
+                  </b-row>
+                  <b-row>
+                    <b-col sm="2">
+                      <button type="button" class="btn btn-primary">
+                      Tiến độ <span class="badge badge-light">{{review.progress}}</span>
+                      </button>
+                    </b-col>
+                    <b-col sm="10">
+                      <b-form-input v-model="review.progress" min="1" max="10" type="range"></b-form-input>
+                    </b-col>
+                  </b-row>
+                  <b-row>
+                    <b-col sm="2">
+                      <button type="button" class="btn btn-primary">
+                      Chất lượng <span class="badge badge-light">{{review.quality}}</span>
+                      </button>
+                    </b-col>
+                    <b-col sm="10">
+                      <b-form-input v-model="review.quality" min="1" max="10" type="range"></b-form-input>
+                    </b-col>
+                  </b-row>
+                  <b-row>
+                    <b-col sm="2">
+                      <button type="button" class="btn btn-primary">
+                      Thiết kế <span class="badge badge-light">{{review.design}}</span>
+                      </button>
+                    </b-col>
+                    <b-col sm="10">
+                      <b-form-input v-model="review.design" min="1" max="10" type="range"></b-form-input>
+                    </b-col>
+                  </b-row>
+
+                </div>
+                <br> <br>
+                <b-form-textarea
+                  id="textarea"
+                  placeholder="Viết bình luận của bạn..."
+                  rows="3"
+                  max-rows="6"
+                  style="margin-bottom: 10px;"
+                ></b-form-textarea>
+                <b-form-file
+                  v-model="file"
+                  multiple
+                  placeholder="Chọn ảnh..."
+                  drop-placeholder="Drop file here..."
+                ></b-form-file>
+                <br><br>
+               <template slot="modal-footer" slot-scope="{ ok, cancel }">
+
+                  <!-- Emulate built in modal footer ok and cancel button actions -->
+                  <b-button size="sm" variant="success" @click="ok()">
+                    Gửi bình luận
+                  </b-button>
+                  <b-button size="sm" variant="danger" @click="cancel()">
+                    Hủy
+                  </b-button>
+
+                </template>
+                </b-modal>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -270,7 +329,7 @@ export default {
   methods: {
     handleScroll (event) {
       // Any code to be executed when the window is scrolled
-      if (window.scrollY > 700) {
+      if (window.scrollY > 800) {
         this.navClass = 'sticky'
       } else {
         this.navClass = ''
@@ -286,7 +345,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-$pink : #e7005a;
+$pink : #ffa800;
 .detail {
   .top {
     .short-desc {
@@ -391,17 +450,18 @@ $pink : #e7005a;
   &.sticky {
     position: fixed;
     top: 0;
+    width: 190px;
   }
   li {
     a {
       display: block;
       background: #eaeaea;
-      color: #e7005a;
+      color: $pink;
       padding: 10px;
       border-bottom: 1px solid #ffffff;
       &:hover {
         text-decoration: none;
-        background: #e7005a;
+        background: $pink;
         color: #eaeaea;
       }
     }
@@ -410,6 +470,29 @@ $pink : #e7005a;
 .review {
   .row {
     margin-bottom: 10px;
+  }
+}
+.right-bar {
+  &.sticky {
+    position: fixed;
+    top: 0;
+  }
+  .lending-module {
+    border: 1px solid #ccc;
+    margin-bottom: 30px;
+    background: #eaeaea;
+    h4 {
+      padding: 10px;
+      margin: 0;
+    }
+    .table {
+      tr {
+        td {
+          border: 0;
+          vertical-align: middle;
+        }
+      }
+    }
   }
 }
 </style>
