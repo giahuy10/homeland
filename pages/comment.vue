@@ -4,6 +4,7 @@
     <div class="call-to-action text-center">
       <h2>Kinh nghiệm và thông tin bạn biết là vô cùng hữu ích, hãy cùng chia sẻ !</h2>
       <b-form-input type="text" placeholder="Nhập tên dự án bạn muốn viết bình luận"></b-form-input>
+      <p>Nếu bạn không tìm thấy, hãy sử dụng công cụ tìm kiếm thông minh hơn <a href="#" @click.prevent="openSearch">tại đây</a></p>
     </div>
     <div class="list-comments row">
       <div class="comment col-6" v-for="(comment, index) in comments" :key="index">
@@ -34,6 +35,11 @@ export default {
     return {
       comments: [1, 2, 3, 4, 5, 6]
     }
+  },
+  methods: {
+    openSearch () {
+
+    }
   }
 }
 </script>
@@ -44,7 +50,7 @@ $pink : #e7005a;
   .comment {
     .inner-comment {
 
-    
+
     padding: 20px 20px 0 20px;
     border: 1px solid #ccc;
     margin-top: 30px;

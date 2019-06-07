@@ -5,9 +5,9 @@
         <div class="col-2">
           <div class="sidebar">
             <ul>
-              <li><a href="">Mua nhà ở đâu(Mới nhất)</a></li>
-              <li><a href="">Dự án nào (xem nhiều nhất)</a></li>
-              <li><a href="">Camera nhà đất</a></li>
+              <li><a href="">Mua nhà ở đâu</a></li>
+              <li><a href="">Dự án nào</a></li>
+              <li><a href="">Nhà đất TV</a></li>
             </ul>
           </div>
         </div>

@@ -1,5 +1,7 @@
 <template>
     <div class="news container">
+      <img src="/images/StockSnap_KWRZNZ6DC6.jpg" alt="">
+      <br><br>
       <div class="row">
         <div class="col-3">
 
@@ -51,11 +53,18 @@
 
     </div>
 </template>
-<script async defer crossorigin="anonymous" src="https://connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v3.3&appId=600848023607130&autoLogAppEvents=1"></script>
 <script>
 import News from '~/components/News.vue'
 export default {
-    components: { News }
+    components: { News },
+    mounted () {
+      if (process.browser) {
+        const el2 = document.createElement('script');
+        el2.setAttribute('id', 'facebook-comment')
+        el2.setAttribute('src', 'https://connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v3.3&appId=2103468729977241&autoLogAppEvents=1')
+        document.body.appendChild(el2);
+      }
+    }
 }
 </script>
 
@@ -72,13 +81,13 @@ $pink : #ffa800;
   li {
     a {
       display: block;
-      background: #eaeaea;
-      color: #e7005a;
+      background: #f8f9fa;
+      color: #98693e;
       padding: 10px;
       border-bottom: 1px solid #ffffff;
       &:hover {
         text-decoration: none;
-        background: #e7005a;
+        background: $pink;
         color: #eaeaea;
       }
     }

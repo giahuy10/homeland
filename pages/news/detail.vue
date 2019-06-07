@@ -1,11 +1,13 @@
 <template>
     <div class="news-detail">
         <div class="container">
+          <img src="/images/StockSnap_KWRZNZ6DC6.jpg" alt="">
+          <br><br>
         <div class="row">
             <div class="col-12 col-md-9">
                 <div class="detail-content">
                     <h2>Hà Nội sẽ triển khai đường vành đai 4 và 5 trong giai đoạn 2021-2025</h2>
-                    <AddThis publicId="ra-51c907fe054c4829" />
+                    <div class="addthis_native_toolbox"></div>
                     <p><b>Mới đây Sở Giao thông Vận tải Hà Nội đã công bố báo cáo định hướng phát triển kết cấu hạ tầng giao thông giai đoạn 2021-2025. Trong giai đoạn này, kế hoạch của thành phố là hoàn thành đường vành đai 4 và tiến hành khởi công vành đai 5.</b></p>
                     <p style="line-height: 25.2px; margin-top: 17.0455px; margin-bottom: 17.0455px;">Cụ thể, trong&nbsp;giai đoạn 2021-2025, đối với hệ thống đường vành đai, định hướng của&nbsp;Hà Nội là&nbsp;hoàn thành đầu tư đồng bộ mặt cắt theo quy hoạch ở&nbsp;các đoạn tuyến còn lại của đường vành đai 3.</p>
                     <p style="line-height: 25.2px; margin-top: 17.0455px; margin-bottom: 17.0455px;">Đồng thời,&nbsp;TP cũng&nbsp;sẽ triển khai thi công và cơ bản hoàn thành đường vành đai 4 trên địa bàn, tiến hành khởi công một số đoạn tuyến của đường vành đai 5;&nbsp;cơ bản hoàn thành mạng lưới đường trên cao trong khu vực đô thị trung tâm.</p>
@@ -18,6 +20,8 @@
 <p style="line-height: 25.2px; margin-top: 17.0455px; margin-bottom: 17.0455px;">Trước đó, TP&nbsp;đã đầu tư đường vành đai 3 Hà Nội (ký hiệu toàn tuyến là CT.20). Đây là một trong những&nbsp;tuyến giao thông đường bộ quan trọng của thủ đô, có tổng&nbsp;chiều&nbsp;dài khoảng 65 km, đi qua các quận và huyện gồm Đông Anh, Bắc Từ Liêm, Nam Từ Liêm, Cầu Giấy, Thanh Xuân, Thanh Trì, Hoàng Mai, Long Biên, Gia Lâm.</p>
 <p style="line-height: 25.2px; margin-top: 17.0455px; margin-bottom: 17.0455px;">Theo&nbsp;quy hoạch đường vành đai 3, giai đoạn I gồm các&nbsp;đoạn Nội Bài - Mai Dịch - Thanh Xuân - Pháp Vân - cầu Thanh Trì cấu thành bởi đường đô thị hai bên kết hợp với đường cao tốc đô thị ở giữa. Trong giai đoạn II, theo quy hoạch sẽ làm 8.912 m gồm 385 m&nbsp;đường và 8.527 m cầu cạn chính tuyến, gồm 4 làn cao tốc, 2 làn dừng khẩn cấp. Hiện tại, TP đã hoàn thành đường cao tốc trên cao đoạn từ phía Nam cầu Thanh Trì đến cuối đường Phạm Văn Đồng (cạnh Trường Đại học Quốc gia Hà Nội). Dự kiến trong giai đoạn 2016 - 2020 sẽ làm tiếp 5,2 km đường cao tốc trên cao đoạn từ Mai Dịch đến cầu Thăng Long.</p>
                 </div>
+                <div class="addthis_native_toolbox"></div>
+                <div class="fb-comments" data-href="https://developers.facebook.com/docs/plugins/comments#configurator" data-width="" data-numposts="5"></div>
             </div>
             <div class="col-12 col-md-3">
                 <div class="side-bar-right">
@@ -67,6 +71,42 @@ import AddThis from 'vue-simple-addthis-share'
 export default {
   components: {
     AddThis,
+  },
+  data () {
+    return {
+      publicId: {
+        type: String,
+        required: true
+      },
+      cdn: {
+        type: String,
+        default: '//s7.addthis.com/js/300/addthis_widget.js'
+      },
+    }
+  },
+  mounted () {
+    // (function(d, s, id) {
+    //       var js, fjs = d.getElementsByTagName(s)[0];
+    //       if (d.getElementById(id)) return;
+    //       js = d.createElement(s); js.id = id;
+    //       js.src = `https://connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v3.2&appId=600848023607130&autoLogAppEvents=1`;
+    //       fjs.parentNode.insertBefore(js, fjs);
+    //     }(document, 'script', 'facebook-jssdk'));
+    if (process.browser) {
+        if (document.getElementById('addthis-share') !== null) {
+          return window.addthis.layers.refresh();
+        }
+
+        const el = document.createElement('script');
+        el.setAttribute('id', 'addthis-share')
+        el.setAttribute('src', '//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-51c907fe054c4829')
+        document.body.appendChild(el);
+
+        const el2 = document.createElement('script');
+        el2.setAttribute('id', 'facebook-comment')
+        el2.setAttribute('src', 'https://connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v3.3&appId=2103468729977241&autoLogAppEvents=1')
+        document.body.appendChild(el2);
+      }
   }
 }
 </script>

@@ -171,17 +171,17 @@
                 <table class="table">
                   <tr>
 
-                    <td><b-form-input v-model="text" placeholder="Số tiền vay"></b-form-input></td>
+                    <td><b-form-input  placeholder="Số tiền vay"></b-form-input></td>
                     <td>VNĐ</td>
                   </tr>
                   <tr>
 
-                    <td><b-form-input v-model="text" placeholder="Thời gian vay"></b-form-input></td>
+                    <td><b-form-input  placeholder="Thời gian vay"></b-form-input></td>
                     <td>tháng</td>
                   </tr>
                   <tr>
 
-                    <td><b-form-input v-model="text" placeholder="Lãi suất"></b-form-input></td>
+                    <td><b-form-input placeholder="Lãi suất"></b-form-input></td>
                     <td>%/năm</td>
                   </tr>
                   <tr>
@@ -455,7 +455,7 @@ $pink : #ffa800;
   li {
     a {
       display: block;
-      background: #eaeaea;
+      background: #f8f9fa;
       color: $pink;
       padding: 10px;
       border-bottom: 1px solid #ffffff;
@@ -480,7 +480,7 @@ $pink : #ffa800;
   .lending-module {
     border: 1px solid #ccc;
     margin-bottom: 30px;
-    background: #eaeaea;
+    background: #f8f9fa;
     h4 {
       padding: 10px;
       margin: 0;
