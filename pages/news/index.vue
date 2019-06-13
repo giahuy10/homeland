@@ -35,7 +35,7 @@
             </div>
           </div>
           <div class="module facebook">
-            <h4 class="module-title">HomenLand fanpage</h4>
+            <h4 class="module-title">Follow us</h4>
             <div class="inner-mod">
               <div class="mod-content">
                 <div id="fb-root"></div>
@@ -82,13 +82,13 @@ $pink : #ffa800;
     a {
       display: block;
       background: #f8f9fa;
-      color: #98693e;
+      color: #000;
       padding: 10px;
       border-bottom: 1px solid #ffffff;
       &:hover {
         text-decoration: none;
         background: $pink;
-        color: #eaeaea;
+        color: #fff;
       }
     }
   }

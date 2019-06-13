@@ -38,3 +38,26 @@ a {
     max-width: 1280px;
 }
 }
+
+.news-menu {
+  li {
+    a {
+      &.active {
+        background: #ffa800;
+        color: #fff;
+      }
+    }
+  }
+}
+
+.col-20 {
+  width: 20%;
+  padding-right: 15px;
+  padding-left: 15px;
+}
+
+.col-80 {
+  width: 80%;
+  padding-right: 15px;
+  padding-left: 15px;
+}

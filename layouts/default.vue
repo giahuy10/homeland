@@ -8,21 +8,14 @@
         <div class="navigation">
           <b-navbar toggleable="lg" type="light" variant="light">
             <b-navbar-brand to="/"><img style="height: 50px;" src="/images/homenland-logo.png"></b-navbar-brand>
-
             <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
-
             <b-collapse id="nav-collapse" is-nav>
-              <b-navbar-nav class="mx-auto">
+              <b-navbar-nav class="ml-auto">
                 <b-nav-item to="/property">Dự án và tiến độ</b-nav-item>
                 <b-nav-item to="/comment">Bình luận</b-nav-item>
                 <b-nav-item to="/news">Camera nhà đất</b-nav-item>
-      
-              </b-navbar-nav>
-
-              <!-- Right aligned nav items -->
-              <b-navbar-nav class="ml-auto">
-                <b-button variant="success" style="margin-right: 10px;"> <i class="fa fa-comment"></i> Viết bình luận</b-button> 
-                <b-button variant="info"> <i class="fa fa-user"></i> Đăng nhập</b-button>
+                <b-button variant="success" @click="$router.push({path: '/comment'})" style="margin-right: 10px; margin-left: 100px;"> <i class="fa fa-comment"></i> Viết bình luận</b-button>
+                <b-button variant="info" @click="$router.push({path: '/login'})"> <i class="fa fa-user"></i> Đăng nhập</b-button>
               </b-navbar-nav>
             </b-collapse>
           </b-navbar>
@@ -107,23 +100,21 @@ $pink : #e7005a;
   .logo {
     width: 20%;
   }
-  .menu {
-    width: 55%;
-    ul {
-      list-style: none;
-      text-align: center;
-      li {
-        display: inline-block;
-        a {
-          display: block;
-          padding: 10px;
-          color: $pink;
-          font-size: 20px;
-          text-decoration: none;
-          text-transform: uppercase;
-        }
+
+  ul.navbar-nav {
+
+    li {
+
+      a.nav-link {
+        display: block;
+        padding: 10px;
+        color: #824915;
+        font-size: 20px;
+        text-decoration: none;
+
       }
     }
+
   }
   .search {
     width: 25%;
@@ -139,7 +130,8 @@ $pink : #e7005a;
 .footer {
   padding: 40px 0;
   margin-top: 40px;
-  background: #eee;
+  background: #98693e;
+  color: white;
   font-size: 14px;
   h3 {
     margin-bottom: 20px;

@@ -23,7 +23,7 @@
       </div>
       <div class="mod-content">
         <div class="row">
-          <div class="col-12 col-md-2">
+          <div class="col-20">
             <div class="sidebar" :class="navClass">
             <ul>
               <li><a href="">Mua nhà ở đâu</a></li>
@@ -32,7 +32,7 @@
             </ul>
           </div>
           </div>
-          <div class="col-12 col-md-10">
+          <div class="col-80">
              <div class="row">
               <div v-for="(item, index) in items" :key="index" class="property col-6 col-sm-4 col-md-3">
                 <div class="pro-inner">
@@ -53,10 +53,16 @@
                       Comment mới nhất/CHưa có comment thì ko hiển thị
                     </div>
                     <div class="property_listing_details">
-                      <i class="fa fa-commenting-o" aria-hidden="true"></i> 12
-                      <i class="fa fa-camera-retro" aria-hidden="true"></i> 12
-                      <i class="fa fa-share-alt" aria-hidden="true"></i>
-                      <i class="fa fa-heart" aria-hidden="true"></i>
+                      <div class="float-left">
+                        <i class="fa fa-commenting-o" aria-hidden="true"></i> 12
+                        <i class="fa fa-camera-retro" aria-hidden="true"></i> 12
+                      </div>
+                      <div class="float-right">
+                        <i class="fa fa-share-alt" aria-hidden="true"></i>
+                        <i class="fa fa-heart" aria-hidden="true"></i>
+                      </div>
+                      <div class="clearfix"></div>
+
 
                     </div>
                   </div>
@@ -218,8 +224,6 @@ $pink : #ffa800;
     padding-top: 20px;
   }
   .property {
-
-    // padding: 10px;
     margin-bottom: 30px;
     @media screen and (max-width: 767px) {
       padding: 0 5px;
@@ -246,7 +250,7 @@ $pink : #ffa800;
   .pro-title {
     font-size: 18px;
     a {
-      color: $pink;
+      color: #17a2b8;
     }
   }
   .pro-desc {
@@ -285,22 +289,25 @@ $pink : #ffa800;
   &.sticky {
     position: fixed;
     top: 0;
+    width: 210px;
   }
   ul {
-      list-style: none;
-      padding-left: 0;
-      li {
-        background: #f8f9fa;
-        border-bottom: 1px solid #e5e5e5;
-        a {
-          display: block;
-          padding: 10px 20px;
-          &:hover {
-            text-decoration: none;
-          }
+    list-style: none;
+    padding-left: 0;
+    li {
+      background: #f8f9fa;
+      border-bottom: 1px solid #e5e5e5;
+      a {
+        display: block;
+        padding: 10px 20px;
+        &:hover {
+          text-decoration: none;
+          background: $pink;
+          color: #fff;
         }
       }
     }
+  }
 }
 </style>
 

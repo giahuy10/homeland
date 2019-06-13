@@ -1,7 +1,7 @@
 <template>
   <div class="homepage">
     <Slider/>
-    <OtherProperties/>
+    <OtherProperties title="true"/>
     <FeaturedProperties/>
 
     <TopComments/>

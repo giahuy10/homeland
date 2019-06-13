@@ -3,21 +3,19 @@
     <img src="/images/StockSnap_KWRZNZ6DC6.jpg" alt="">
     <div class="call-to-action text-center">
       <h2>Kinh nghiệm và thông tin bạn biết là vô cùng hữu ích, hãy cùng chia sẻ !</h2>
-      <b-form-input type="text" placeholder="Nhập tên dự án bạn muốn viết bình luận"></b-form-input>
-      <p>Nếu bạn không tìm thấy, hãy sử dụng công cụ tìm kiếm thông minh hơn <a href="#" @click.prevent="openSearch">tại đây</a></p>
+      <b-form-input type="text" style="height: 70px; margin-bottom: 15px;" placeholder="Nhập tên dự án bạn muốn viết bình luận"></b-form-input>
+      <p>Nếu bạn không tìm thấy, hãy sử dụng công cụ tìm kiếm thông minh hơn <a href="#" @click.prevent="showModal">tại đây</a></p>
     </div>
     <div class="list-comments row">
       <div class="comment col-6" v-for="(comment, index) in comments" :key="index">
         <div class="inner-comment">
         <b-media>
           <img slot="aside" src="/images/main-thumb-282821662-100-krruoowyyretxlddfvilxlmqdpnczfqg.jpeg" alt="Media Aside">
-
           <p>
-              <b>Huy Nguyễn</b>
-              <br> <a href="">Dự án homeland Hà Nội</a>
-              <br> <small>18:30 21-05-2019</small>
-            </p>
-
+            <b>Huy Nguyễn</b>
+            <br> <a href="">Dự án homeland Hà Nội</a>
+            <br> <small>18:30 21-05-2019</small>
+          </p>
           <!-- b-[Optional: add media children here for nesting] -->
         </b-media>
         <div class="comment-content">
@@ -26,6 +24,9 @@
         </div>
       </div>
     </div>
+    <b-modal ref="my-modal" hide-footer id="modal-1" title="Tìm kiếm nâng cao">
+      <p class="my-4">Hello from modal!</p>
+    </b-modal>
   </div>
 </template>
 
@@ -39,7 +40,13 @@ export default {
   methods: {
     openSearch () {
 
-    }
+    },
+    showModal() {
+      this.$refs['my-modal'].show()
+    },
+    hideModal() {
+      this.$refs['my-modal'].hide()
+    },
   }
 }
 </script>

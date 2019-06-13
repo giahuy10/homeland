@@ -31,9 +31,15 @@
                     Đoạn giới thiệu dự án ở đây
                   </div>
                   <div class="property_listing_details">
+                   <div class="float-left">
                     <i class="fa fa-commenting-o" aria-hidden="true"></i> 12
                     <i class="fa fa-camera-retro" aria-hidden="true"></i> 12
+                  </div>
+                  <div class="float-right">
                     <i class="fa fa-share-alt" aria-hidden="true"></i>
+                    <i class="fa fa-heart" aria-hidden="true"></i>
+                  </div>
+                  <div class="clearfix"></div>
                   </div>
                 </div>
               </div>
@@ -130,6 +136,8 @@ export default {
 </script>
 
 <style lang="scss">
+$pink : #ffa800;
+
 .list-properties {
   padding-top: 20px;
   .sidebar {
@@ -142,11 +150,14 @@ export default {
         a {
           display: block;
           padding: 10px 20px;
+          &:hover {
+            background: $pink;
+            color: #fff;
+          }
         }
       }
     }
   }
-  $pink : #ffa800;
 
 
   .property {
