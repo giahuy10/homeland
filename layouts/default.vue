@@ -15,7 +15,11 @@
                 <b-nav-item to="/comment">Bình luận</b-nav-item>
                 <b-nav-item to="/news">Camera nhà đất</b-nav-item>
                 <b-button variant="success" @click="$router.push({path: '/comment'})" style="margin-right: 10px; margin-left: 100px;"> <i class="fa fa-comment"></i> Viết bình luận</b-button>
-                <b-button variant="info" @click="$router.push({path: '/login'})"> <i class="fa fa-user"></i> Đăng nhập</b-button>
+
+                <b-button v-if="!$store.state.auth" variant="info" @click="$router.push({path: '/login'})"> <i class="fa fa-user"></i> Đăng nhập</b-button>
+
+                <b-button v-else variant="info" @click="$router.push({path: '/account'})"> <i class="fa fa-user"></i> Tài khoản</b-button>
+
               </b-navbar-nav>
             </b-collapse>
           </b-navbar>
@@ -100,18 +104,14 @@ $pink : #e7005a;
   .logo {
     width: 20%;
   }
-
   ul.navbar-nav {
-
     li {
-
       a.nav-link {
         display: block;
         padding: 10px;
         color: #824915;
         font-size: 20px;
         text-decoration: none;
-
       }
     }
 

@@ -17,13 +17,23 @@ module.exports = (sequelize, DataTypes) => {
     facilities: DataTypes.TEXT,
     map: DataTypes.TEXT,
     createdBy: DataTypes.INTEGER,
-    state: DataTypes.INTEGER
+    state: DataTypes.INTEGER,
+    totalWidth: DataTypes.INTEGER,
+    totalImages: DataTypes.INTEGER,
+    totalComments: DataTypes.INTEGER,
+    thumbnail: DataTypes.STRING
+
   }, {});
   Property.associate = function(models) {
     // associations can be defined here
     Property.hasMany(models.PropertyMedia, {
-      as: 'proMedia',
+      as: 'images',
       foreignKey: 'proId',
+      sourceKey: 'id'
+    })
+    Property.hasMany(models.Comment, {
+      as: 'comments',
+      foreignKey: 'itemId',
       sourceKey: 'id'
     })
   };

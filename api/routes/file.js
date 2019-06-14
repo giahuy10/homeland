@@ -2,7 +2,7 @@ var express = require('express')
 var router = express.Router()
 var model = require('../models').User
 var multer   =  require( 'multer' )
-
+var Jimp = require('jimp')
 var checkUserLogged = require('../utils/checkUserLogged')
 var moment = require('moment')
 var storage = multer.diskStorage({
@@ -44,10 +44,32 @@ router
       } );
     }
 
+    let heightThumb = 300
+    let widthThumb = Math.ceil(heightThumb * dimensions.width / dimensions.height)
+    let thumbnail = req.file.destination + '/thumb/'+moment().format('YYYY-MM-DD') +"-"+req.file.originalname
     let folder = '/images/'+req.headers.folder+'/'
 
-    return res.status( 200 ).json( {location: folder+req.file.filename})
-
+    Jimp.read(req.file.destination + '/' + req.file.filename)
+    .then(crop => {
+      crop
+        .resize(widthThumb, heightThumb) // resize
+        .quality(100) // set JPEG quality
+        // .greyscale() // set greyscale
+        .write(thumbnail); // save
+      return res.status( 200 ).json(
+        {
+          location: folder+req.file.filename,
+          thumbnail: folder+'thumb/'+req.file.filename,
+          height: dimensions.height,
+          width: dimensions.width,
+          widthThumb,
+          heightThumb
+        }
+      )
+    })
+    .catch(err => {
+      console.error(err);
+    });
   })
 
 module.exports = router;

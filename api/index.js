@@ -24,13 +24,13 @@ var news = require('./routes/news')
 var property = require('./routes/property')
 var user = require('./routes/user')
 var file = require('./routes/file')
-//var comment = require('./routes/comment')
+var comments = require('./routes/comments')
 
 app.use('/news', news)
 app.use('/property', property)
 app.use('/user', user)
 app.use('/file', file)
-//app.use('/comment', comment)
+app.use('/comments', comments)
 // Export the server middleware
 export default {
   path: '/api',

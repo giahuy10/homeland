@@ -80,15 +80,21 @@
           ></b-form-textarea>
         </b-form-group>
 
-        <b-form-group id="input-group-1" label="Hình ảnh:" label-for="input-1">
-          <input type="file" class="form-control" placeholder="" ref="file" v-on:change="handleFileUpload()" :disabled="item.images.length >=5">
+        <b-form-group id="input-group-1" label="Ảnh đại diện:" label-for="input-1">
+          <input type="file" class="form-control" placeholder="" ref="thumbnail" v-on:change="handleThumbnailUpload()" >
+          <b-spinner v-if="thumbnailLoading" label="Loading..."></b-spinner>
+          <img class="thumbnail" v-if="item.thumbnail" :src="item.thumbnail" alt="">
+        </b-form-group>
+
+        <b-form-group id="input-group-1" label="Ảnh dự án:" label-for="input-1">
+          <input type="file" class="form-control" placeholder="" ref="file" v-on:change="handleFileUpload()" :disabled="item.images && item.images.length >=5">
           <b-spinner v-if="imageLoading" label="Loading..."></b-spinner>
         </b-form-group>
 
-        <div class="images" v-if="item.images.length > 0">
+        <div class="images" v-if="item.images && item.images.length > 0">
           <div class="img" v-for="(image, index) in item.images" :key="index">
             <div class="inner-img">
-              <img :src="image" alt="">
+              <img :src="image.thumbnail" alt="">
               <i class="fa fa-trash" @click="removeImage(index)"></i>
             </div>
 
@@ -96,8 +102,9 @@
           <div class="clearfix"></div>
         </div>
 
+        <b-spinner v-if="saveLoading" label="Loading..."></b-spinner>
 
-        <b-button type="submit" variant="primary">Submit</b-button>
+        <b-button v-else type="submit" variant="primary">Submit</b-button>
       </b-form>
     </div>
   </div>
@@ -107,18 +114,22 @@
 import Editor from '@tinymce/tinymce-vue'
 import location from '~/static/local.json'
 export default {
+  middleware: ['checkRightProperty'],
   components: {
     'editor': Editor
   },
   mounted () {
-    if ( this.item.city ) {
-      this.getDistricts()
+
+    if (this.$route.params.id > 0) {
+      this.getDetail()
     }
+
   },
   data () {
     return {
       saveLoading: false,
       imageLoading: false,
+      thumbnailLoading: false,
       item: {
         title: '',
         location: '',
@@ -133,6 +144,7 @@ export default {
         facilities: '',
         map: '',
         state: 0,
+        thumbnail: '',
         images: []
       },
       cities: location,
@@ -164,13 +176,19 @@ export default {
     }
   },
   methods: {
+    getDetail () {
+      this.$axios.get(`/api/property/${this.$route.params.id}`)
+        .then(res => {
+          console.log(res)
+          this.item = res.data
+          this.getDistricts()
+        })
+        .catch(err => console.log(err.response))
+    },
     onSubmit () {
       this.saveLoading = true
-      this.$axios.post('/api/property', this.item, {
-          headers: {
-            'token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7ImlkIjoxLCJmaXJzdE5hbWUiOiJodXkiLCJsYXN0TmFtZSI6Ik5ndXllbiIsImVtYWlsIjoiYW5qYWthaHV5QGdtYWlsLmNvbSIsInBhc3N3b3JkIjoic2hhMSRkYWUyNzQwMCQxJDgxYjJlODI2ZTRiOWE0YjFlNGM2MjYwNzZmYmE3Mjc1NGU3ZDYwMjEiLCJkb2IiOiIyMDE5LTEyLTEyIiwiZ2VuZGVyIjoxLCJzdGF0dXMiOjEsInN0YXRlIjowLCJsZXZlbCI6MSwiYXZhdGFyIjoiaW1hZ2UuanBnIiwidG9rZW4iOm51bGwsImNyZWF0ZWRBdCI6IjIwMTktMDYtMTJUMTA6NDk6MzYuMDAwWiIsInVwZGF0ZWRBdCI6IjIwMTktMDYtMTJUMTA6NDk6MzYuMDAwWiJ9LCJpYXQiOjE1NjA0MjM0ODN9.3LcLZmStt9ZnO1V-oMqKWH9zyIhBg4-7B4_7mexTYDE'
-          }
-        })
+      if (this.item.id) {
+        this.$axios.put(`/api/property/${this.item.id}`, this.item)
         .then(res => {
           console.log(res)
           this.saveLoading = false
@@ -178,6 +196,18 @@ export default {
         .catch(err => {
           console.log(err.response)
         })
+      } else {
+        this.$axios.post('/api/property', this.item)
+        .then(res => {
+          console.log(res)
+          this.saveLoading = false
+          this.$router.push({path: `/property/edit/${res.data.id}`})
+        })
+        .catch(err => {
+          console.log(err.response)
+        })
+      }
+
 
     },
     getDistricts () {
@@ -196,13 +226,40 @@ export default {
         {
           headers: {
             'Content-Type': 'multipart/form-data',
-            'folder': 'properties',
-            'token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7ImlkIjoxLCJmaXJzdE5hbWUiOiJodXkiLCJsYXN0TmFtZSI6Ik5ndXllbiIsImVtYWlsIjoiYW5qYWthaHV5QGdtYWlsLmNvbSIsInBhc3N3b3JkIjoic2hhMSRkYWUyNzQwMCQxJDgxYjJlODI2ZTRiOWE0YjFlNGM2MjYwNzZmYmE3Mjc1NGU3ZDYwMjEiLCJkb2IiOiIyMDE5LTEyLTEyIiwiZ2VuZGVyIjoxLCJzdGF0dXMiOjEsInN0YXRlIjowLCJsZXZlbCI6MSwiYXZhdGFyIjoiaW1hZ2UuanBnIiwidG9rZW4iOm51bGwsImNyZWF0ZWRBdCI6IjIwMTktMDYtMTJUMTA6NDk6MzYuMDAwWiIsInVwZGF0ZWRBdCI6IjIwMTktMDYtMTJUMTA6NDk6MzYuMDAwWiJ9LCJpYXQiOjE1NjA0MjM0ODN9.3LcLZmStt9ZnO1V-oMqKWH9zyIhBg4-7B4_7mexTYDE'
+            'folder': 'properties'
           }
         }
         ).then(res => {
+          console.log(res)
           this.imageLoading = false
-          this.item.images.push(res.data.location)
+          this.item.images.push({
+            source: res.data.location,
+            thumbnail: res.data.thumbnail,
+            height: res.data.heightThumb,
+            width: res.data.widthThumb
+          })
+        })
+        .catch(err => {
+          console.log(err.response)
+        })
+    },
+    handleThumbnailUpload () {
+      this.thumbnailLoading = true
+      let file = this.$refs.thumbnail.files[0];
+      let formData = new FormData();
+      formData.append('file', file);
+      formData.append('type', 'poster')
+      this.$axios.post( '/api/file/upload', formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            'folder': 'properties'
+          }
+        }
+        ).then(res => {
+          console.log(res)
+          this.thumbnailLoading = false
+          this.item.thumbnail = res.data.thumbnail
         })
         .catch(err => {
           console.log(err.response)

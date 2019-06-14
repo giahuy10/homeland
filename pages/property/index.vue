@@ -5,9 +5,10 @@
         <div class="col-2">
           <div class="sidebar">
             <ul>
-              <li><a href="">Mua nhà ở đâu</a></li>
-              <li><a href="">Dự án nào</a></li>
-              <li><a href="">Nhà đất TV</a></li>
+              <li><a href="#" @click.prevent="sortBy('createdAt')">Mua nhà ở đâu</a></li>
+              <li><a href="#" @click.prevent="sortBy('hits')">Dự án nào</a></li>
+              <li><a href="#" @click.prevent="sortBy('createdAt')">Nhà đất TV</a></li>
+              <li><a href="#" @click.prevent="$router.push({path: '/property/edit/0'})">Gửi thông tin</a></li>
             </ul>
           </div>
         </div>

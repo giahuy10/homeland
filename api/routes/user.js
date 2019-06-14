@@ -79,7 +79,6 @@ router
   })
 
   // Verify account
-
   .post('/verify/:token', (req, res) => {
 
   })

@@ -3,7 +3,7 @@
     <div class="container-inner">
       <div class="scroller-wrap">
         <div class="scroller" ref="scroller">
-          <div class="scroller-inner" ref="scroller_inner" :style="'left:'+scroller.left+'px'">
+          <div class="scroller-inner" ref="scroller_inner" :style="'left:'+scroller.left+'px; width: '+totalWidth+'px'">
             <div class="scroller-item" v-for="(item, index) in items" :key="index" ref="scroller_items">
               <img :src="'/images/ha-noi-home-land/'+item.thumbnail" alt="" @click="openImg(index)">
             </div>
@@ -66,10 +66,14 @@ export default {
       }
     }
   },
+  props: ['totalWidth'],
   mounted () {
-    this.scroller.full = 2575 // this.$refs.scroller_inner.clientWidth
+    this.scroller.full = this.totalWidth // this.$refs.scroller_inner.clientWidth
     this.scroller.screen = this.$refs.scroller.clientWidth
     this.scroller.max = this.scroller.full - this.scroller.screen
+    console.log(this.scroller.max)
+    console.log(this.scroller.full)
+    console.log(this.scroller.screen)
   },
   methods: {
 
@@ -100,6 +104,8 @@ export default {
         console.log('left: ', this.scroller.left)
         console.log('step: ', this.scroller.step)
         console.log('max: ', this.scroller.max)
+        console.log('screen: ', this.scroller.screen)
+        console.log('full: ', this.scroller.full)
         if (this.scroller.left - this.scroller.step * 2 < 0 - this.scroller.max) {
           this.scroller.left = 0 - this.scroller.max
         } else {
@@ -148,10 +154,10 @@ export default {
   position: relative;
   width: 100%;
   .scroller {
-    height: 200px;
+    height: 300px;
     overflow: hidden;
     .scroller-inner {
-      width: 2575px;
+
       position: relative;
       left: 0;
       transition: all 0.5s;
@@ -162,7 +168,7 @@ export default {
           cursor: pointer;
         }
         img {
-          height: 200px;
+          height: 300px;
           width: auto;
         }
       }

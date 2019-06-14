@@ -9,6 +9,7 @@
             <li><a href="#" @click.prevent="currentTabComponent = 'Activities'" :class="currentTabComponent == 'Activities' ? 'active' : ''">Hoạt động cá nhân</a></li>
             <li><a href="#" @click.prevent="currentTabComponent = 'Saved'" :class="currentTabComponent == 'Saved' ? 'active' : ''">Lưu trữ</a></li>
             <li><a href="#" @click.prevent="currentTabComponent = 'Account'" :class="currentTabComponent == 'Account' ? 'active' : ''">Tài khoản</a></li>
+            <li><a href="#" @click.prevent="logout">Đăng xuất</a></li>
           </ul>
         </div>
         <div class="col-12 col-md-10">
@@ -20,16 +21,26 @@
 </template>
 
 <script>
+const Cookie = process.client ? require('js-cookie') : undefined
+
 import Activities from '~/components/Activities'
 import Saved from '~/components/Saved'
 import Account from '~/components/Account'
 export default {
+  middleware: 'authenticated',
   components: {
     Activities, Saved, Account
   },
   data () {
     return {
       currentTabComponent: 'Activities'
+    }
+  },
+  methods: {
+    logout() {
+      Cookie.remove('auth')
+      this.$store.commit('setAuth', null)
+      this.$router.push({path: '/'})
     }
   }
 }

@@ -35,6 +35,9 @@ module.exports = {
       owner: {
         type: Sequelize.STRING
       },
+      thumbnail: {
+        type: Sequelize.STRING
+      },
       price: {
         type: Sequelize.INTEGER
       },
@@ -57,6 +60,15 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       state: {
+        type: Sequelize.INTEGER
+      },
+      totalWidth: {
+        type: Sequelize.INTEGER
+      },
+      totalImages: {
+        type: Sequelize.INTEGER
+      },
+      totalComments: {
         type: Sequelize.INTEGER
       },
       createdAt: {

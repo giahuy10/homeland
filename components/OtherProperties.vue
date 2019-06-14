@@ -11,25 +11,25 @@
           <div v-for="(item, index) in items" :key="index" class="property col-20">
             <div class="pro-inner">
               <div class="pro-img">
-                <nuxt-link to="/property/detail">
+                <nuxt-link :to="`/property/detail/${item.id}`">
                   <img :src="item.thumbnail" alt="">
                 </nuxt-link>
-                <div class="price">1 tỷ - 2 tỷ</div>
+                <div class="price">{{item.price}}</div>
               </div>
               <div class="pro-info">
                 <div class="pro-title">
-                  <nuxt-link to="/property/detail" v-text="item.title"></nuxt-link>
+                  <nuxt-link :to="`/property/detail/${item.id}`" v-text="item.title"></nuxt-link>
                 </div>
                 <div class="pro-desc">
-                  <i class="fa fa-location-arrow" aria-hidden="true"></i> {{item.desc}}
+                  <i class="fa fa-location-arrow" aria-hidden="true"></i> {{item.location}}
                 </div>
                 <div class="pro-note">
-                  Đoạn giới thiệu dự án ở đây
+
                 </div>
                 <div class="property_listing_details">
                   <div class="float-left">
-                    <i class="fa fa-commenting-o" aria-hidden="true"></i> 12
-                    <i class="fa fa-camera-retro" aria-hidden="true"></i> 12
+                    <i class="fa fa-commenting-o" aria-hidden="true"></i> {{item.totalComments}}
+                    <i class="fa fa-camera-retro" aria-hidden="true"></i> {{item.totalImages}}
                   </div>
                   <div class="float-right">
                     <i class="fa fa-share-alt" aria-hidden="true"></i>
@@ -50,40 +50,23 @@
 <script>
 export default {
   props: ['title'],
+  mounted () {
+    this.getItems()
+  },
+  methods: {
+    getItems () {
+      this.$axios.get('/api/property?perPage=5&currentPage=1')
+        .then(res => {
+          console.log(res)
+          this.items = res.data.result
+        })
+        .catch(err => console.log(err.response))
+    }
+  },
   data () {
     return {
 
       items: [
-        {
-          title: 'Dự án Palace City',
-          thumbnail: '/images/house-525x328.jpg',
-          desc: '54 Liễu Giai - Ba Đình',
-          price: '2 tỷ'
-        },
-        {
-          title: 'Dự án Khai Sơn',
-          thumbnail: '/images/1.jpg',
-          desc: '54 Liễu Giai - Ba Đình',
-          price: '2 tỷ'
-        },
-        {
-          title: 'Dự án North Diamond',
-          thumbnail: '/images/2.jpg',
-          desc: '54 Liễu Giai - Ba Đình',
-          price: '2 tỷ'
-        },
-        {
-          title: 'Dự án Vin City',
-          thumbnail: '/images/3.jpg',
-          desc: '54 Liễu Giai - Ba Đình',
-          price: '2 tỷ'
-        },
-        {
-          title: 'Dự án Vin City',
-          thumbnail: '/images/3.jpg',
-          desc: '54 Liễu Giai - Ba Đình',
-          price: '2 tỷ'
-        }
       ]
     }
   }
@@ -91,6 +74,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+.pro-img {
+  img {
+    height: 150px;
+    width: 100%;
+  }
+}
 </style>
 

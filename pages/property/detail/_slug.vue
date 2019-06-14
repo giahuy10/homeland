@@ -8,41 +8,44 @@
           <img src="/images/ha-noi-home-land/main.jpg" alt="">
         </div>
         <div class="short-desc col-12 col-md-6">
-          <h2>Hà Nội HomeLand</h2>
+          <h2>{{item.title}}</h2>
 
-          <p> Công ty cổ phần đầu tư Hải Phát Thủ Đô <br>
+          <p> {{item.owner}} <br>
           Căn hộ chung cư và dịch vụ
           </p>
 
           <table>
-            <tr>
-              <td>
-                <span class="score">9</span>
-                <span class="name">Vị trí</span>
-              </td>
+            <tbody>
+              <tr>
+                <td>
+                  <span class="score">9</span>
+                  <span class="name">Vị trí</span>
+                </td>
 
-              <td>
-                <span class="score">8</span>
-                <span class="name">Giá cả</span>
-              </td>
-              <td>
-                <span class="score">8</span>
-                <span class="name">Tiến độ</span>
-              </td>
-              <td>
-                <span class="score">8</span>
-                <span class="name">Chất lượng</span>
-              </td>
-              <td>
-                <span class="score">8</span>
-                <span class="name">Thiết kế</span>
-              </td>
-            </tr>
+                <td>
+                  <span class="score">8</span>
+                  <span class="name">Giá cả</span>
+                </td>
+                <td>
+                  <span class="score">8</span>
+                  <span class="name">Tiến độ</span>
+                </td>
+                <td>
+                  <span class="score">8</span>
+                  <span class="name">Chất lượng</span>
+                </td>
+                <td>
+                  <span class="score">8</span>
+                  <span class="name">Thiết kế</span>
+                </td>
+              </tr>
+            </tbody>
+
           </table>
           <ul>
-            <li>Phường Thượng Thanh, Long Biên, Hà Nội (đoạn cầu Chui – cầu Đông trù)</li>
+            <li>{{item.location}}</li>
             <li><b class="text-pink">Đang xây dựng</b></li>
-            <li><b class="text-pink">1 tỷ 2 - 2 tỷ 2</b></li>
+            <li><b class="text-pink">{{item.price}}</b></li>
           </ul>
 
         </div>
@@ -73,85 +76,41 @@
             <div class="overview">
               <h4 id="overview">Trang chủ</h4>
               <div class="inner-overview" :class="open ? 'open' : ''">
-                <ul>
-                  <li>Tổng Diện tích khu đất: 17,101 m2 (diện tích xây dựng: 16,832 m2)</li>
-                  <li>Diện tích thương mại: 3,830 m2</li>
-                  <li>Đất canh xanh, cảnh quan, TDTT: 2,900 m2</li>
-                  <li>Đất giao thông nội bộ: 7,369 m2</li>
-                  <li>Mật độ xây dựng: 39,95 %</li>
-                  <li>Thiết kế: CT CP tập đoàn BRG/ Tư vấn giám sát: CT Beacons</li>
-                </ul>
+                <div v-html="item.overview"></div>
               </div>
               <a href="#" @click.prevent="open=true" v-if="!open">Xem thêm</a>
               <a href="#" @click.prevent="open=false" v-else>Thu gọn</a>
             </div>
             <div class="galleries">
               <h4 id="galleries">Ảnh dự án</h4>
-              <Gallery/>
+              <Gallery :images="item.images" :totalWidth="item.totalWidth"/>
                 <h5>Sản phẩm</h5>
-                <ul>
-                  <li>4 tòa tháp cao 18 tầng, 1224 căn hộ, 18 căn/sàn/tòa (tính trung bình) </li>
-                  <li>Tầng 1 – thương mại dịch vu, tầng 2-18 nhà ở</li>
-                  <li>1-3 phòng ngủ, diện tích từ 58 m2 – 95 m2</li>
-                </ul>
+                <div v-html="item.product"></div>
                 <h5>Tiện tích</h5>
-                <ul>
-                  <li>2 tầng hầm gửi xe, bể bơi ngoài trời, phòng khám 27/4, khu vực bán lẻ tầng 1</li>
-                </ul>
+                <div v-html="item.facilities"></div>
             </div>
             <div class="p-progress">
               <h4 id="p-progress">Tiến độ</h4>
-              <ul>
-                <li>Khởi công: 2017</li>
-                <li>Dự kiến hoàn thành: Quý 3/2019</li>
-              </ul>
+              <div v-html="item.progress"></div>
             </div>
             <div class="comments">
               <h4 id="comments">Bình luận</h4>
-
-
                 <div class="list-chat">
                   <div class="chat">
                     <ul class="list-unstyled">
-                      <li class="media">
-                        <img src="/images/bf0258ac8c31fac4213c10748532bf08.png" class="mr-3" alt="...">
-                        <div class="media-body">
-                          <h5 class="mt-0 mb-1">List-based media object</h5>
-                          Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus. <br>
 
-                          <a href="#" @click.prevent="openReply = true">Trả lời</a>
-                          <div v-if="openReply">
-                            <div class="input-group mb-3">
-                              <input type="text" class="form-control" placeholder="Gửi phản hồi của bạn" aria-label="Recipient's username" aria-describedby="basic-addon2">
-                              <div class="input-group-append">
-                                <span class="input-group-text" id="basic-addon2">Gửi</span>
-                              </div>
-                            </div>
+                      <li class="media" :class="comment.parent ? 'child' : ''" v-for="(comment, index) in comments" :key="index">
+                        <img :src="comment.user.avatar" class="mr-3" alt="...">
+                        <div class="media-body">
+                          <div class="comment-text">
+                            <b>
+                              <nuxt-link to="#">{{comment.user.firstName +' '+comment.user.lastName}}</nuxt-link>
+                            </b>
+                            {{comment.text}}
                           </div>
-                        </div>
+                          <div class="reply"><a href="#">Like</a> <a href="#">Reply</a></div>
 
-                      </li>
-                      <li class="media my-4">
-                        <img src="/images/main-thumb-282821662-100-krruoowyyretxlddfvilxlmqdpnczfqg.jpeg" class="mr-3" alt="...">
-                        <div class="media-body">
-                          <h5 class="mt-0 mb-1">List-based media object</h5>
-                          Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
-                          <div class="media mt-3">
-                            <a class="mr-3" href="#">
-                              <img src="/images/0.jfif" class="mr-3" alt="...">
-                            </a>
-                            <div class="media-body">
-                              <h5 class="mt-0">Media heading</h5>
-                              Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
-                            </div>
-                          </div>
-                        </div>
-                      </li>
-                      <li class="media">
-                        <img src="/images/62979450.jfif" class="mr-3" alt="...">
-                        <div class="media-body">
-                          <h5 class="mt-0 mb-1">List-based media object</h5>
-                          Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
+
                         </div>
                       </li>
                     </ul>
@@ -169,6 +128,9 @@
               <div class="lending-module">
                  <h4>Công cụ tính khoản vay</h4>
                 <table class="table">
+                  <tbody>
+
+
                   <tr>
 
                     <td><b-form-input v-model="loan.total" placeholder="Số tiền vay"></b-form-input></td>
@@ -189,8 +151,12 @@
                       <b-button variant="info" @click.prevent="calculateLoan">Tính</b-button>
                     </td>
                   </tr>
+                  </tbody>
                 </table>
                 <table class="table result" v-if="loan.result">
+                  <tbody>
+
+
                   <tr>
                     <td style="width: 50%;">Số tiền trả tháng đầu</td>
                     <td>{{formatNumber(loan.monthlyPayment)}}</td>
@@ -203,6 +169,7 @@
                     <td>Tổng số tiền gốc và lãi phải trả</td>
                     <td>{{formatNumber(loan.loanPayment)}}</td>
                   </tr>
+                  </tbody>
                 </table>
               </div>
               <div class="write-review">
@@ -304,8 +271,11 @@ import Slider from '~/components/Slider.vue'
 import Gallery from '~/components/Gallery.vue';
 export default {
   components: {Gallery, Slider},
+
   data () {
     return {
+      comments: [],
+      item: {},
       activeMenu: 'overview',
       file: '',
       loan: {
@@ -337,6 +307,22 @@ export default {
     }
   },
   methods: {
+    getComments () {
+      this.$axios.get(`/api/property/comment/${this.$route.params.slug}`)
+        .then(res => {
+          console.log(res)
+          this.comments = res.data.result
+        })
+    },
+    getDetail () {
+      this.$axios.get(`/api/property/${this.$route.params.slug}`)
+        .then(res => {
+          console.log(res)
+          this.item = res.data
+          this.getDistricts()
+        })
+        .catch(err => console.log(err.response))
+    },
     calculateLoan () {
       this.loan.monthlyPayment = ((this.loan.interest_rate/(100 * 12)) * this.loan.total) / ( 1 - Math.pow(1 + this.loan.interest_rate / 1200, ( 0 - this.loan.months)))
       this.loan.loanPayment = Math.round(this.loan.monthlyPayment * this.loan.months)
@@ -360,6 +346,8 @@ export default {
     if (process.browser) {
       window.addEventListener('scroll', this.handleScroll)
     }
+    this.getDetail()
+    this.getComments()
   }
 }
 </script>
@@ -432,23 +420,33 @@ $pink : #ffa800;
 .list-chat {
   margin-top: 20px;
   .chat {
-    .message {
-      .row {
-        > div {
-          padding: 5px 5px;
-        }
-      }
-      .username {
-        // display: block;
+    .media {
+      margin-bottom: 10px;
+      &.child {
+        margin-left: 40px;
       }
       img {
-        width: 40px;
+        width: 44px;
+        height: 44px;
         border-radius: 100%;
       }
+      .media-body {
+        .comment-text {
+          border-radius: 20px;
+          background: #f2f3f5;
+          padding: 10px 20px;
+        }
+        .reply {
+          a {
+            font-size: 12px;
+            color: #926034;
+            margin-left: 5px;
+          }
+        }
+
+      }
     }
-    .sub-chat{
-      padding-left: 40px;
-    }
+
   }
 }
 .detail-content {
