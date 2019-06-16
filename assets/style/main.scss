@@ -40,11 +40,23 @@ a {
 }
 
 .news-menu {
+  list-style: none;
+  padding-left: 0;
   li {
     a {
-      &.active {
-        background: #ffa800;
+      display: block;
+      background: #f8f9fa;
+      color: #000;
+      padding: 10px;
+      border-bottom: 1px solid #ffffff;
+      &:hover {
+        text-decoration: none;
+        background: $pink;
         color: #fff;
+      }
+      &.nuxt-link-exact-active {
+        color:#fff;
+        background:$pink;
       }
     }
   }
@@ -60,4 +72,19 @@ a {
   width: 80%;
   padding-right: 15px;
   padding-left: 15px;
+}
+
+.btn-brown {
+  color: #fff;
+  background: #8f5c2e;
+}
+
+.btn-blue {
+  color: #fff;
+  background: #5ea1d1;
+}
+
+.btn-orange {
+  color: #fff;
+  background: #ffa800;
 }

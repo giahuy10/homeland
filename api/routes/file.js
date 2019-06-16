@@ -28,7 +28,7 @@ router
   })
 
   // Upload image
-  .post( '/upload', [upload.single( 'file' ) , checkUserLogged ], function( req, res, next ) {
+  .post( '/upload', [upload.single( 'file' )  ], function( req, res, next ) {
 
     if ( !req.file.mimetype.startsWith( 'image/' ) ) {
       return res.status( 422 ).json( {
@@ -38,13 +38,13 @@ router
 
     var dimensions = sizeOf( req.file.path );
 
-    if ( ( dimensions.width < 200 ) || ( dimensions.height < 120 ) ) {
+    if ( ( dimensions.width < 100 ) || ( dimensions.height < 100 ) ) {
       return res.status( 422 ).json( {
-        error : 'The image must be at least 200 x 120px'
+        error : 'Kích thước ảnh tối thiểu là 100 x 100px'
       } );
     }
 
-    let heightThumb = 300
+    let heightThumb = req.headers.folder == 'avatar'? 100 : 300
     let widthThumb = Math.ceil(heightThumb * dimensions.width / dimensions.height)
     let thumbnail = req.file.destination + '/thumb/'+moment().format('YYYY-MM-DD') +"-"+req.file.originalname
     let folder = '/images/'+req.headers.folder+'/'

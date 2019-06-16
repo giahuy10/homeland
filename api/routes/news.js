@@ -14,12 +14,16 @@ router
         var currentPage = req.query.currentPage ? parseInt(req.query.currentPage) : 1
         var totalPages = Math.ceil(data.count / limit)
         var offset = limit * (currentPage - 1)
+        var oderBy = req.query.orderBy ? req.query.orderBy : 'createdAt'
         model.findAll({
+          order: [
+            [oderBy, 'DESC'],
+          ],
           limit: limit,
           offset: offset,
         })
           .then((news) => {
-            res.status(200).json({'result': news, 'count': data.count, 'pages': totalPages, 'currentPage': currentPage});
+            res.status(200).json({'result': news, oderBy, 'count': data.count, 'pages': totalPages, 'currentPage': currentPage});
           })
       })
       .catch(err => res.json(err))
@@ -27,7 +31,18 @@ router
 
   // Get detail News by ID
   .get('/:id', (req, res) => {
-    model.findByPk(req.params.id)
+    model.findOne({
+      where: {
+        $or: [
+          {
+            id: req.params.id
+          },
+          { 
+            slug: req.params.id
+          },
+        ]
+      }
+    })
       .then(data => {
         data.update({
           hits: data.hits + 1

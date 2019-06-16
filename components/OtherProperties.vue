@@ -2,7 +2,7 @@
   <div class="featured-properties">
     <div class="container">
       <div class="row">
-        <div class="col-xs-12 col-md-3">
+        <div class="col-20">
           <h2 v-if="title" class="mod-title">Dự án mới</h2>
         </div>
       </div>

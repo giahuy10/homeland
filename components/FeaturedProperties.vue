@@ -2,7 +2,7 @@
   <div class="featured-properties">
     <div class="container">
       <div class="row">
-        <div class="col-xs-12 col-md-3">
+        <div class="col-20">
           <h2 class="mod-title">Tổng hợp dự án</h2>
         </div>
         <div class="col-xs-6 col-md-2 filter-item">

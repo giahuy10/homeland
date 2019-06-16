@@ -48,12 +48,32 @@ router
     model.findByPk(req.params.id).then(data => res.json(data)).catch(err => res.json(err))
   })
 
+  .post('/checkEmail', (req, res) => {
+    model.findOne({
+      where: {
+        email: req.body.email
+      }
+    })
+      .then(data => {
+        if (data) {
+          let token = jwt.sign( {data}, 'LOIKPOKLSK1029KJ')
+          res.json( { token, user: data} )
+        } else {
+          res.status(404).json({ 'msg' : 'Not found '+req.params.email })
+        }
+      })
+  })
   // Insert new user
-  .post('/', checkUserLogged, (req, res) => {
+  .post('/', (req, res) => {
     req.body.password = passwordHash.generate(req.body.password)
-    req.body.state = 0
+    req.body.state = 1
     req.body.level = 1
-    model.create(req.body).then(data => res.send(data)).catch(err => res.json(err))
+    model.create(req.body)
+      .then(data => {
+        let token = jwt.sign( {data}, 'LOIKPOKLSK1029KJ')
+        res.json( { token, user: data} )
+      })
+      .catch(err => res.json(err))
   })
 
   // Login
@@ -67,7 +87,7 @@ router
         if (data) {
           if (passwordHash.verify(req.body.password, data.password)) {
             let token = jwt.sign( {data}, 'LOIKPOKLSK1029KJ')
-            res.json( { token} )
+            res.json( { token, user: data} )
           } else {
             res.status(401).json({ 'msg' : 'Incorrect password' })
           }
@@ -122,6 +142,16 @@ router
     let folder = '/images/news/'
 
     return res.status( 200 ).json( {location: folder+req.file.filename})
+
+  })
+  
+  .get('/stat/:type/:id', (req, res) => {
+    // type: news, properties
+    model.findByPk(req.params.id, {
+      include: [req.params.type]
+    })
+    .then(data => res.json(data))
+    .catch(err => res.json(err))
 
   })
 

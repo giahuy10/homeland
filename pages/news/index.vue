@@ -69,40 +69,7 @@ export default {
 </script>
 
 <style lang="scss">
-$pink : #ffa800;
-.news {
-  .news {
-    padding-top: 0;
-  }
-}
-.news-menu {
-  list-style: none;
-  padding-left: 0;
-  li {
-    a {
-      display: block;
-      background: #f8f9fa;
-      color: #000;
-      padding: 10px;
-      border-bottom: 1px solid #ffffff;
-      &:hover {
-        text-decoration: none;
-        background: $pink;
-        color: #fff;
-      }
-    }
-  }
-}
-.popular {
-  ul {
-    list-style: none;
-    padding-left: 0px;
-    li {
-      border-bottom: 1px dotted #ccc;
-      padding: 5px 0;
-    }
-  }
-}
+
 </style>
 
 

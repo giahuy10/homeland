@@ -1,24 +1,47 @@
 <template>
-  <div class="container">
+  <div class="container login-page">
     <h1>Đăng nhập</h1>
     <div>
-      <label for="email">
-        <input id="email" type="email" v-model="login.email">
-      </label>
-      <label for="password">
-        <input id="password" type="password" v-model="login.password">
-      </label>
-      <button @click="postLogin">
-        Đăng nhập
-      </button>
-      <p>The credentials are not verified for the example purpose.</p>
+      <b-form @submit.prevent="postLogin" >
+      <b-form-group
+        id="input-group-1"
+        label="Email:"
+        label-for="input-1"
+      >
+        <b-form-input
+          id="input-1"
+          v-model="login.email"
+          type="email"
+          required
+          placeholder="Enter email"
+        ></b-form-input>
+      </b-form-group>
+
+      <b-form-group id="input-group-2" label="Password:" label-for="input-2">
+        <b-form-input
+          id="input-2"
+          v-model="login.password"
+          required
+          placeholder="Enter name"
+        ></b-form-input>
+      </b-form-group>
+      <b-button block type="submit" variant="primary">Đăng nhập</b-button>
+     <b-button block @click.prevent="loginByGoogle" variant="google"> <i class="fa fa-google-plus"></i> Đăng nhập bằng Google</b-button>
+     <b-button block @click.prevent="loginByFacebook" variant="facebook"> <i class="fa fa-facebook"></i> Đăng nhập bằng Facebook</b-button>
+      <br>
+      <p>Chưa có tài khoản? <a href="#" @click.prevent="$router.push({path: '/register'})">Đăng ký ngay</a></p>
+ 
+    </b-form>
     </div>
   </div>
 </template>
 
 <script>
 const Cookie = process.client ? require('js-cookie') : undefined
+import firebase from '@/plugins/firebase'
 
+const googleProvider = new firebase.auth.GoogleAuthProvider()
+const facebookProvider = new firebase.auth.FacebookAuthProvider()
 export default {
   middleware: 'notAuthenticated',
   data () {
@@ -39,9 +62,70 @@ export default {
           }
           this.$store.commit('setAuth', auth) // mutating to store for client rendering
           Cookie.set('auth', auth) // saving token in cookie for server rendering
+          this.$store.commit('setUser', res.data.user) // mutating to store for client rendering
+          Cookie.set('user', res.data.user) // saving token in cookie for server rendering
           this.$router.push('/')
+        })
+    },
+    loginByFacebook () {
+      firebase.auth().signInWithPopup(facebookProvider)
+          .then(data => {
+            this.checkEmail(data.user, 'facebook')
+          })
+          .catch(err => {
+            this.checkEmail ({email: err.email}, 'facebook')
+          })
+    },
+    loginByGoogle () {
+      
+        firebase.auth().signInWithPopup(googleProvider)
+          .then(data => {
+            this.checkEmail(data.user, 'google')
+            
+          })
+          .catch(err => {
+            this.checkEmail ({email: err.email}, 'google')
+          })
+    
+    },
+    checkEmail (user, provider) {
+      console.log('checkemail')
+      this.$axios.post(`/api/user/checkEmail`, user)
+        .then(res => {
+          const auth = {
+            accessToken: res.data.token
+          }
+          this.$store.commit('setAuth', auth) // mutating to store for client rendering
+          Cookie.set('auth', auth) // saving token in cookie for server rendering
+          this.$store.commit('setUser', res.data.user) // mutating to store for client rendering
+          Cookie.set('user', res.data.user) // saving token in cookie for server rendering
+          this.$router.push('/account')
+        })
+        .catch(err => {
+          console.log(err.response)
+          localStorage.setItem(`${provider}UserData`, JSON.stringify(user))
+          this.$router.push({path: '/register'})
         })
     }
   }
 }
 </script>
+
+<style lang="scss">
+.btn-google {
+  background: #dd4b39;
+  color:#fff;
+}
+.btn-facebook {
+  background: #3b5998;
+  color:#fff;
+}
+.login-page {
+  h1 {
+    font-size: 30px;
+        color: #8f5c2e;
+    text-align: center;
+    margin-top: 20px;
+  }
+}
+</style>

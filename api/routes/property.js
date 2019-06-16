@@ -104,8 +104,17 @@ router
 
   // Get detail property by ID
   .get('/:id', (req, res) => {
-    model.findByPk(req.params.id, {
-      include: ['images', 'comments']
+    model.findOne({
+      where: {
+        $or: [
+          {
+            id: req.params.id
+          },
+          { 
+            slug: req.params.id
+          },
+        ]
+      }
     })
       .then(data => {
         data.update({

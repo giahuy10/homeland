@@ -108,7 +108,7 @@
                             </b>
                             {{comment.text}}
                           </div>
-                          <div class="reply"><a href="#">Like</a> <a href="#">Reply</a></div>
+                          <div class="reply"><a href="#">Thích</a> <a href="#">Thảo luận</a></div>
 
 
                         </div>

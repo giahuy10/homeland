@@ -23,6 +23,9 @@ module.exports = {
       width: {
         type: Sequelize.INTEGER
       },
+      createdBy: {
+        type: Sequelize.INTEGER
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

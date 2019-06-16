@@ -21,6 +21,9 @@ module.exports = {
       thumbnail: {
         type: Sequelize.STRING
       },
+      category: {
+        type: Sequelize.STRING
+      },
       state: {
         type: Sequelize.INTEGER
       },

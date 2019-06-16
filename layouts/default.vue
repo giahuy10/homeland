@@ -13,12 +13,23 @@
               <b-navbar-nav class="ml-auto">
                 <b-nav-item to="/property">Dự án và tiến độ</b-nav-item>
                 <b-nav-item to="/comment">Bình luận</b-nav-item>
-                <b-nav-item to="/news">Camera nhà đất</b-nav-item>
-                <b-button variant="success" @click="$router.push({path: '/comment'})" style="margin-right: 10px; margin-left: 100px;"> <i class="fa fa-comment"></i> Viết bình luận</b-button>
+                <b-nav-item to="/news/camera">Camera nhà đất</b-nav-item>
+                <b-button variant="brown" @click="$router.push({path: '/comment'})" style="margin-right: 10px; margin-left: 100px;"> <i class="fa fa-comment"></i> Viết bình luận</b-button>
 
-                <b-button v-if="!$store.state.auth" variant="info" @click="$router.push({path: '/login'})"> <i class="fa fa-user"></i> Đăng nhập</b-button>
+                <b-button v-if="!$store.state.auth" variant="orange" @click="$router.push({path: '/login'})"> <i class="fa fa-user"></i> Đăng nhập</b-button>
 
-                <b-button v-else variant="info" @click="$router.push({path: '/account'})"> <i class="fa fa-user"></i> Tài khoản</b-button>
+
+                <b-nav-item-dropdown v-else right>
+                  <!-- Using 'button-content' slot -->
+                  <template slot="button-content">
+                    <img :src="userDetail.avatar" alt="" class="menu-avatar">
+                    <em>{{userDetail.lastName}}</em>
+                  </template>
+                  <b-dropdown-item to="/account"><i class="fa fa-plus-square" aria-hidden="true"></i> Hoạt động</b-dropdown-item>
+                  <b-dropdown-item to="/account/saved"><i class="fa fa-heart" aria-hidden="true"></i> Lưu trữ</b-dropdown-item>
+                  <b-dropdown-item to="/account/update"><i class="fa fa-plus-square" aria-hidden="true"></i> Thông tin cá nhân</b-dropdown-item>
+                  <b-dropdown-item href="#" @click.prevent="logOut"><i class="fa fa-sign-out" aria-hidden="true"></i> Đăng xuất</b-dropdown-item>
+                </b-nav-item-dropdown>
 
               </b-navbar-nav>
             </b-collapse>
@@ -94,6 +105,19 @@ export default {
     return {
 
     }
+  },
+  computed: {
+    userDetail () {
+      return this.$store.state.user
+    }
+  },
+  methods: {
+    logOut() {
+      Cookie.remove('auth')
+      this.$store.commit('setAuth', null)
+      this.$router.push({path: '/'})
+      localStorage.clear()
+    }
   }
 }
 </script>
@@ -101,6 +125,11 @@ export default {
 <style lang="scss">
 $pink : #e7005a;
 .navigation {
+  .menu-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 100%;
+  }
   .logo {
     width: 20%;
   }
@@ -154,4 +183,5 @@ $pink : #e7005a;
     }
   }
 }
+
 </style>
