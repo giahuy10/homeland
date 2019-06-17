@@ -4,7 +4,7 @@
     <div class="container">
 
       <div class="row">
-        <div class="col-2">
+        <div class="col-12 col-md-2">
           <div class="sidebar">
             <ul>
 

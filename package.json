@@ -39,6 +39,8 @@
     "vue-fb-customer-chat": "^0.1.4",
     "vue-flipbook": "^1.0.0",
     "vue-moment": "^4.0.0",
+    "vue-search-select": "^2.8.3",
+    "vue-select": "^3.1.0",
     "vue-simple-addthis-share": "^0.1.0",
     "vuetify": "^1.5.5",
     "vuetify-loader": "^1.2.1"

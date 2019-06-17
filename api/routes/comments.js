@@ -9,13 +9,23 @@ router
   // Get all News
   .get('/', (req, res) => {
     // model.findAll().then(data => res.json(data)).catch(err => res.json(err))
-    model.findAndCountAll()
+    model.findAndCountAll({
+      where: {
+        type: 1,
+        parent: 0
+      }
+    })
       .then(data => {
         var limit = req.query.perPage ? parseInt(req.query.perPage) : 18
         var currentPage = req.query.currentPage ? parseInt(req.query.currentPage) : 1
         var totalPages = Math.ceil(data.count / limit)
         var offset = limit * (currentPage - 1)
         model.findAll({
+          include: ['user', 'property'],
+          where: {
+            type: 1,
+            parent: 0
+          },
           limit: limit,
           offset: offset,
         })

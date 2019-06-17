@@ -2,7 +2,7 @@
   <div class="featured-properties">
     <div class="container">
       <div class="row">
-        <div class="col-20">
+        <div class="col-20 module-title">
           <h2 class="mod-title">Tổng hợp dự án</h2>
         </div>
         <div class="col-20 filter-item">
@@ -14,7 +14,7 @@
         <div class="col-10 filter-item">
           <b-form-select v-model="filter.type" @change="getItems" :options="optionsType"></b-form-select>
         </div>
-        <div class="col-25 filter-item">
+        <div class="col-25 filter-item filter-title">
           <b-form-input @change="getItems" v-model="filter.title" placeholder="Tên dự án, loại nhà, địa điểm..."></b-form-input>
         </div>
         <div class="col-15 filter-item">
@@ -29,7 +29,7 @@
       </div>
       <div class="mod-content">
         <div class="row">
-          <div class="col-20">
+          <div class="col-20 side">
             <div class="sidebar" :class="navClass">
             <ul>
               <li><a href="#" :class="filter.sortBy == 'id' ? 'active' : ''" @click.prevent="filter.sortBy = 'id' , getItems()">Mua nhà ở đâu</a></li>
@@ -38,7 +38,7 @@
             </ul>
           </div>
           </div>
-          <div class="col-80">
+          <div class="col-80 main">
              <div class="row">
               <div v-for="(item, index) in items" :key="index" class="property col-6 col-sm-4 col-md-3">
                 <Property :item="item" />
@@ -207,6 +207,10 @@ $pink : #ffa800;
     position: fixed;
     top: 0;
     width: 210px;
+    @media screen and (max-width: 767px) {
+      position: relative;
+      width: auto;
+    }
   }
   ul {
     list-style: none;

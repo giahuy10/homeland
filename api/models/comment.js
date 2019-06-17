@@ -15,6 +15,11 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: 'createdBy',
       sourceKey: 'id'
     })
+    Comment.belongsTo(models.Property, {
+      as: 'property',
+      foreignKey: 'itemId',
+      sourceKey: 'id'
+    })
   };
   return Comment;
 };

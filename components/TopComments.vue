@@ -75,6 +75,9 @@ export default {
       display: inline-block;
       width: 12%;
       padding: 10px;
+      @media screen and (max-width: 767px) {
+        width: 33%;
+      }
       img {
         border-radius: 100%;
       }

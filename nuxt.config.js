@@ -50,6 +50,7 @@ module.exports = {
   plugins: [
     '~/plugins/vue-axios',
     '~/plugins/vue-moment',
+    { src: '~/plugins/vue-select', ssr: false },
     // { src: '~/plugins/vue-facebook-chat.js', ssr: false },
     // { src: '~/plugins/vue-flipbook.js', ssr: false}
   ],

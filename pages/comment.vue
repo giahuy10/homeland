@@ -4,46 +4,108 @@
     <div class="container">
     <div class="call-to-action text-center">
       <h2>Kinh nghiệm và thông tin bạn biết là vô cùng hữu ích, hãy cùng chia sẻ !</h2>
-      <b-form-input type="text" style="height: 70px; margin-bottom: 15px;" placeholder="Nhập tên dự án bạn muốn viết bình luận"></b-form-input>
+      <div class="input-group" id="comment-box">
+                    <input type="text" class="form-control" v-model="protitle" placeholder="Nhập tên dự án bạn muốn viết bình luận" >
+                    <div class="input-group-append">
+                      <div class="input-group-text" @click="searchProperty"><i class="fa fa-search" aria-hidden="true"></i></div>
+                    </div>
+                  </div>
+      
+    <br>
       <p>Nếu bạn không tìm thấy, hãy sử dụng công cụ tìm kiếm thông minh hơn <a href="#" @click.prevent="showModal">tại đây</a></p>
+    </div>
+    <div class="search-result" v-if="properties && properties.length > 0">
+      <div class="row">
+        <div class="col-12 col-md-3" v-for="(item, index) in properties" :key="index">
+          <Property :item="item"></Property>
+        </div>
+      </div>
     </div>
     <div class="list-comments row">
       <div class="comment col-6" v-for="(comment, index) in comments" :key="index">
         <div class="inner-comment">
         <b-media>
-          <img slot="aside" src="/images/main-thumb-282821662-100-krruoowyyretxlddfvilxlmqdpnczfqg.jpeg" alt="Media Aside">
+          <img slot="aside" :src="comment.user.avatar" alt="Media Aside">
           <p>
-            <b>Huy Nguyễn</b>
-            <br> <a href="">Dự án homeland Hà Nội</a>
-            <br> <small>18:30 21-05-2019</small>
+            <b>{{comment.user.firstName+' '+comment.user.lastName}}</b>
+            <br> <nuxt-link :to="`/property/detail/${comment.itemId}`">{{comment.property.title}}</nuxt-link>
+            <br> <small>{{comment.createdAt | moment("DD/MM/YYYY, h:mm:ss a")}}</small>
           </p>
           <!-- b-[Optional: add media children here for nesting] -->
         </b-media>
         <div class="comment-content">
-          <p>Curabitur tincidunt erat sapien, eu finibus augue blandit et. Nam tincidunt consectetur massa, non sagittis massa ultricies at. Sed eu lorem dui. Donec magna leo, fringilla ut tellus in, luctus laoreet nibh. Sed ut elementum lectus. Integer facilisis elit nulla, quis ornare sapien cursus eget. Suspendisse sem ligula, feugiat sed vehicula sed, malesuada et est. Donec id egestas tellus. Vivamus tincidunt, enim at luctus ultricies, est justo ultricies odio, eget posuere metus dui fermentum dolor. Donec congue lobortis laoreet. Vestibulum in metus lobortis, semper odio quis, pulvinar magna. Sed quis sapien non nisl mollis blandit.</p>
+          <p>{{comment.text}}</p>
         </div>
         </div>
       </div>
     </div>
+    <br><br>
+    <b-pagination
+                    v-model="currentPage"
+                    :total-rows="rows"
+                    :per-page="perPage"
+                    aria-controls="my-table"
+                    ></b-pagination>
     <b-modal ref="my-modal" hide-footer id="modal-1" title="Tìm kiếm nâng cao">
-      <p class="my-4">Hello from modal!</p>
+      <p class="my-4">Đang cập nhật</p>
     </b-modal>
   </div>
   </div>
 </template>
 
 <script>
+import Property from '~/components/Property.vue'
 import Slider from '~/components/Slider.vue'
 export default {
-   components: {Slider},
+   components: {Slider, Property},
   data () {
     return {
-      comments: [1, 2, 3, 4, 5, 6]
+      searched: false,
+      properties: [],
+      protitle: '',
+      comments: [],
+      currentPage: 1,
+            rows: 0,
+            perPage: 10,
+      
     }
   },
   methods: {
+    searchProperty () {
+      this.searched = true
+      this.$axios.get(`/api/property?title=${this.protitle}`)
+        .then(res => {
+          console.log(res)
+          this.properties = res.data.result
+          if (this.properties.length <= 0) {
+            this.toast('Kết quả','Không tìm thấy dự án nào phù hợp', 'warning')
+          } else {
+            this.toast('Kết quả','Tìm thấy '+this.properties.length+' dự án', 'success')
+          }
+        })
+        .catch(err => console.log(err.response))
+    },
+    toast(title, text, variant) {
+      console.log('ok')
+        this.$bvToast.toast(text, {
+          title: title,
+          toaster: 'b-toaster-bottom-right',
+          solid: true,
+          appendToast: true,
+          variant: variant
+        })
+      },
     openSearch () {
 
+    },
+    getItem() {
+this.$axios.get(`/api/comments?currentPage=${this.currentPage}&perPage=${this.perPage}`)
+                .then(res => {
+                    console.log(res)
+                    this.comments = res.data.result
+                    this.rows = res.data.count
+                })
+                .catch(err => console.log(err))
     },
     showModal() {
       this.$refs['my-modal'].show()
@@ -51,6 +113,9 @@ export default {
     hideModal() {
       this.$refs['my-modal'].hide()
     },
+  },
+  mounted () {
+    this.getItem()
   }
 }
 </script>

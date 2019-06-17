@@ -166,3 +166,27 @@ a {
         padding: 10px 20px;
       }
     }
+
+@media (max-width: 767px) {
+
+  .property.col-20 {
+    width: 50%;
+  }
+  .col-20.module-title {
+    width: 100%;
+  }
+  .filter-item {
+    width: 50%;
+    max-width: 100%;
+    flex: 0 0 50%;
+    margin-bottom: 5px;
+  }
+  .col-25.filter-item.filter-title {
+    width: 100%;
+    max-width: 100%;
+    flex: 0 0 100%;
+  }
+  .col-20.side, .col-80.main {
+    width: 100%;
+  }
+}
