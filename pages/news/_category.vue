@@ -1,8 +1,8 @@
 <template>
     <div class="category">
+        <Slider/>
         <div class="container">
-            <img src="/images/StockSnap_KWRZNZ6DC6.jpg" alt="">
-            <br><br>
+
             <div class="row">
                 <div class="col-12 col-md-3">
                     <ul class="news-menu">
@@ -12,32 +12,15 @@
                         <li>
                             <nuxt-link to="/news/edit/0">Gửi bài viết</nuxt-link>
                         </li>
-                       
+
                     </ul>
                 </div>
                 <div class="col-12 col-md-6">
                     <div class="row">
                     <div class="col-6 col-md-6" v-for="(item, index) in items" :key="index">
-                        <div class="inner-news">
-                            <div class="row">
-                                <div class="col-12 ">
-                                    <nuxt-link :to="`/news/detail/${item.slug}`">
-                                    <img :src="item.thumbnail" alt="">
-                                    </nuxt-link>
-                                    <p><nuxt-link :to="`/news/detail/${item.slug}`">{{item.title}}</nuxt-link></p>
-                                    <div class="share">
-                                    <div class="float-left">
-                                        {{item.hits}} <i class="fa fa-eye" aria-hidden="true"></i>
-                                    </div>
-                                    <div class="float-right save-item">
-                                        Lưu <i class="fa fa-heart" aria-hidden="true"></i>
-                                    </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <Post :item="item"/>
                     </div>
-                    
+
                 </div>
                 <br><br>
                 <b-pagination
@@ -56,7 +39,7 @@
                             <li v-for="(item,index) in populars" :key="index">
                                 <nuxt-link :to="`/news/detail/${item.slug}`">{{item.title}}</nuxt-link>
                             </li>
-                        
+
                         </ul>
                     </div>
                     </div>
@@ -76,7 +59,10 @@
 </template>
 
 <script>
+import Post from '~/components/Post.vue'
+import Slider from '~/components/Slider.vue'
 export default {
+  components: {Slider, Post},
     data () {
         return {
             currentPage: 1,

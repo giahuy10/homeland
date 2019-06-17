@@ -18,24 +18,24 @@
             <tbody>
               <tr>
                 <td>
-                  <span class="score">9</span>
+                  <span class="score">{{Math.ceil(reviewResult.location_avg) }}</span>
                   <span class="name">Vị trí</span>
                 </td>
 
                 <td>
-                  <span class="score">8</span>
+                  <span class="score">{{Math.ceil(reviewResult.price_avg) }}</span>
                   <span class="name">Giá cả</span>
                 </td>
                 <td>
-                  <span class="score">8</span>
+                  <span class="score">{{Math.ceil(reviewResult.progress_avg) }}</span>
                   <span class="name">Tiến độ</span>
                 </td>
                 <td>
-                  <span class="score">8</span>
+                  <span class="score">{{Math.ceil(reviewResult.quality_avg) }}</span>
                   <span class="name">Chất lượng</span>
                 </td>
                 <td>
-                  <span class="score">8</span>
+                  <span class="score">{{Math.ceil(reviewResult.design_avg) }}</span>
                   <span class="name">Thiết kế</span>
                 </td>
               </tr>
@@ -108,7 +108,7 @@
                             </b>
                             {{comment.text}}
                           </div>
-                          <div class="reply"><a href="#">Thích</a> <a href="#">Thảo luận</a></div>
+                          <div class="reply"><a href="#" @click.prevent="save(comment.id)">Thích</a> <a href="#comment-box" @click="commentParent = comment.parent, commentText = '@'+comment.user.lastName+' '">Thảo luận</a></div>
 
 
                         </div>
@@ -116,6 +116,13 @@
                     </ul>
                   </div>
                 </div>
+                <div class="input-group" id="comment-box">
+                  <input type="text" class="form-control" v-model="commentText" placeholder="Hãy cho mọi người biết suy nghĩ của bạn về dự án này" >
+                  <div class="input-group-append">
+                    <div class="input-group-text" @click="sendComment"><i class="fa fa-reply-all" aria-hidden="true"></i></div>
+                  </div>
+                </div>
+
             </div>
             <div class="map">
               <h4 id="map">Bản đồ</h4>
@@ -178,7 +185,7 @@
               </div>
               <div class="write-review">
                 <b-button block v-b-modal.modal-1 variant="info"> <i class="fa fa-comment"></i> Viết bình luận</b-button>
-                <b-modal id="modal-1" title="Viết bình luận<" size="xl">
+                <b-modal id="modal-1" title="Viết bình luận" size="xl">
                   <div class="review">
                   <b-row>
                     <b-col sm="2">
@@ -234,7 +241,7 @@
                   </b-row>
 
                 </div>
-                <br> <br>
+                <!-- <br> <br>
                 <b-form-textarea
                   id="textarea"
                   placeholder="Viết bình luận của bạn..."
@@ -247,13 +254,15 @@
                   multiple
                   placeholder="Chọn ảnh..."
                   drop-placeholder="Drop file here..."
-                ></b-form-file>
+                ></b-form-file> -->
                 <br><br>
                <template slot="modal-footer" slot-scope="{ ok, cancel }">
 
                   <!-- Emulate built in modal footer ok and cancel button actions -->
-                  <b-button size="sm" variant="success" @click="ok()">
-                    Gửi bình luận
+
+                  <b-spinner v-if="reviewLoading" label="Loading..."></b-spinner>
+                  <b-button v-else size="sm" variant="success" @click="submitReview()">
+                    Gửi nhận xét
                   </b-button>
                   <b-button size="sm" variant="danger" @click="cancel()">
                     Hủy
@@ -277,7 +286,11 @@ export default {
   components: {Gallery, Slider},
 
   data () {
+
     return {
+      reviewLoading: false,
+      commentParent: 0,
+      commentText: '',
       optionsPrice: {
         1: '600tr - 1 tỷ',
         2: '1 tỷ - 3 tỷ',
@@ -317,18 +330,63 @@ export default {
         price:5,
         progress: 5,
         quality: 5,
-        design:5
+        design:5,
+        proId: 0
       },
-      navClass: ''
+      navClass: '',
+      reviewResult: {
+        location_avg: 0,
+        price_avg:0,
+        progress_avg: 0,
+        quality_avg: 0,
+        design_avg:0,
+      }
     }
   },
   methods: {
+    save (itemId) {
+
+      this.$axios.post('/api/saved', {
+        type: 1,
+        itemId: itemId
+      })
+      .then(res => console.log(res))
+      .catch(err=> console.log(err.response))
+    },
+    getReview () {
+      this.$axios.get(`/api/reviews/${this.$route.params.slug}`)
+        .then(res => {
+          console.log('review', res)
+          this.reviewResult = res.data
+        })
+        .catch(err => console.log(err.response))
+    },
+    submitReview () {
+      this.reviewLoading = true
+      this.review.proId = this.item.id
+      this.$axios.post(`/api/reviews`, this.review)
+        .then(res => {
+          this.review = {
+            location: 5,
+            price:5,
+            progress: 5,
+            quality: 5,
+            design:5,
+            proId: 0
+          }
+          this.reviewLoading = false
+          this.$bvModal.hide('modal-1')
+          this.getReview()
+        })
+        .catch(err => console.log(err.response))
+    },
     getComments () {
       this.$axios.get(`/api/property/comment/${this.$route.params.slug}`)
         .then(res => {
           console.log(res)
           this.comments = res.data.result
         })
+        .catch(err => console.log(err.response))
     },
     getDetail () {
       this.$axios.get(`/api/property/${this.$route.params.slug}`)
@@ -363,6 +421,21 @@ export default {
     formatNumber(num) {
       return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
     },
+    sendComment () {
+      this.$axios.post('/api/comments', {
+        type: 1,
+        itemId: this.item.id,
+        parent: this.commentParent,
+        text: this.commentText
+      })
+      .then(res => {
+        console.log(res)
+        this.getComments()
+        this.commentText = ''
+      })
+      .catch(err => console.log(err.response))
+
+    }
 
   },
   mounted () {
@@ -371,6 +444,7 @@ export default {
     }
     this.getDetail()
     this.getComments()
+    this.getReview()
   },
   watch: {
     price: function(newValue) {
@@ -506,6 +580,10 @@ $pink : #ffa800;
     position: fixed;
     top: 0;
     width: 190px;
+    @media screen and (max-width: 767px) {
+      position: relative;
+      width: auto;
+    }
   }
   li {
     a {
@@ -534,6 +612,9 @@ $pink : #ffa800;
   &.sticky {
     position: fixed;
     top: 0;
+    @media screen and (max-width: 767px) {
+      position: relative;
+    }
   }
   .lending-module {
     border: 1px solid #ccc;

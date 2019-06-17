@@ -1,10 +1,9 @@
 var express = require('express')
 var router = express.Router()
-var model = require('../models').Comment
-var property = require('../models').Property
-var activity = require('../models').Activity
+var model = require('../models').PropertyRating
+var sequelize = require('../models').sequelize
 var checkUserLogged = require('../utils/checkUserLogged')
-
+var activity = require('../models').Activity
 router
   // Get all News
   .get('/', (req, res) => {
@@ -28,11 +27,20 @@ router
 
   // Get detail News by ID
   .get('/:id', (req, res) => {
-    model.findByPk(req.params.id)
+    model.findOne({
+      attributes: [
+        [sequelize.fn('AVG', sequelize.col('location')), 'location_avg'],
+        [sequelize.fn('AVG', sequelize.col('price')), 'price_avg'],
+        [sequelize.fn('AVG', sequelize.col('progress')), 'progress_avg'],
+        [sequelize.fn('AVG', sequelize.col('quality')), 'quality_avg'],
+        [sequelize.fn('AVG', sequelize.col('design')), 'design_avg']
+      ],
+
+      where: {
+        proId: req.params.id
+      }
+    })
       .then(data => {
-        data.update({
-          hits: data.hits + 1
-        })
         res.json(data)
       })
       .catch(err => res.json(err))
@@ -41,26 +49,7 @@ router
   // Insert News
   .post('/', checkUserLogged, (req, res) => {
     req.body.createdBy = req.decoded.data.id
-    req.body.state = 1
-
-    // save activity
-    activity.create({
-      createdBy: req.decoded.data.id,
-      type: 1,
-      typeItem: req.body.parent ? 1 : 3,
-      itemId: req.body.itemId,
-      note: JSON.stringify(req.body)
-    }).then(response => console.log(response)).catch(err => console.log(err))
-
-    property.findByPk(req.body.itemId)
-      .then(data => {
-        data.update({
-            totalComments: data.totalComments + 1,
-
-          }).then(response => console.log(response))
-            .catch(err => console.log(err))
-      })
-      .catch(err => console.log(err))
+    // req.body.state = 1
     model.create(req.body).then(data => res.send(data)).catch(err => res.status(500).json(err))
   })
 

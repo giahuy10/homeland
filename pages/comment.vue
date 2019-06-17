@@ -1,6 +1,7 @@
 <template>
-  <div class="container">
-    <img src="/images/StockSnap_KWRZNZ6DC6.jpg" alt="">
+  <div class="comments">
+    <Slider/>
+    <div class="container">
     <div class="call-to-action text-center">
       <h2>Kinh nghiệm và thông tin bạn biết là vô cùng hữu ích, hãy cùng chia sẻ !</h2>
       <b-form-input type="text" style="height: 70px; margin-bottom: 15px;" placeholder="Nhập tên dự án bạn muốn viết bình luận"></b-form-input>
@@ -28,10 +29,13 @@
       <p class="my-4">Hello from modal!</p>
     </b-modal>
   </div>
+  </div>
 </template>
 
 <script>
+import Slider from '~/components/Slider.vue'
 export default {
+   components: {Slider},
   data () {
     return {
       comments: [1, 2, 3, 4, 5, 6]

@@ -6,6 +6,7 @@ var multer   =  require( 'multer' )
 var jwt = require('jsonwebtoken')
 var checkUserLogged = require('../utils/checkUserLogged')
 var moment = require('moment')
+var activity = require('../models').Activity
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
     // console.log(req.params)

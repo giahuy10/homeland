@@ -1,7 +1,6 @@
 <template>
     <div class="news container">
-      <img src="/images/StockSnap_KWRZNZ6DC6.jpg" alt="">
-      <br><br>
+      <Slider/>
       <div class="row">
         <div class="col-3">
 
@@ -54,9 +53,11 @@
     </div>
 </template>
 <script>
+import Slider from '~/components/Slider.vue'
+
 import News from '~/components/News.vue'
 export default {
-    components: { News },
+    components: { News, Slider },
     mounted () {
       if (process.browser) {
         const el2 = document.createElement('script');

@@ -1,10 +1,9 @@
 var express = require('express')
 var router = express.Router()
-var model = require('../models').Comment
-var property = require('../models').Property
-var activity = require('../models').Activity
+var model = require('../models').Saved
+var sequelize = require('../models').sequelize
 var checkUserLogged = require('../utils/checkUserLogged')
-
+var activity = require('../models').Activity
 router
   // Get all News
   .get('/', (req, res) => {
@@ -27,41 +26,51 @@ router
   })
 
   // Get detail News by ID
-  .get('/:id', (req, res) => {
-    model.findByPk(req.params.id)
-      .then(data => {
-        data.update({
-          hits: data.hits + 1
-        })
-        res.json(data)
-      })
-      .catch(err => res.json(err))
+  .get('/:type', checkUserLogged, (req, res) => {
+    // model.findAll({
+    //   where: {
+    //     type: req.params.type,
+    //     createdBy: req.decoded.data.id
+    //   }
+    // })
+    //   .then(data => {
+    //     res.json(data)
+    //   })
+    //   .catch(err => res.json(err))
+    let table = 'comments'
+    if (req.params.type == 3) {
+      table = 'properties'
+    }
+    if (req.params.type == 2) {
+      table = 'news'
+    }
+    sequelize
+    .query(`SELECT t.* FROM saveds as s INNER JOIN ${table} as t ON s.itemId = t.id where s.type = ${req.params.type} and s.createdBy = ${req.decoded.data.id}`, { raw: true })
+    .then(data => {
+      res.json(data[0])
+    })
   })
 
   // Insert News
   .post('/', checkUserLogged, (req, res) => {
     req.body.createdBy = req.decoded.data.id
-    req.body.state = 1
-
-    // save activity
-    activity.create({
-      createdBy: req.decoded.data.id,
-      type: 1,
-      typeItem: req.body.parent ? 1 : 3,
-      itemId: req.body.itemId,
-      note: JSON.stringify(req.body)
-    }).then(response => console.log(response)).catch(err => console.log(err))
-
-    property.findByPk(req.body.itemId)
+    model.findOne({
+      where: {
+        type: req.body.type,
+        itemId: req.body.itemId,
+        createdBy: req.decoded.data.id
+      }
+    })
       .then(data => {
-        data.update({
-            totalComments: data.totalComments + 1,
-
-          }).then(response => console.log(response))
-            .catch(err => console.log(err))
+        if (data) {
+          data.destroy().then(() => {
+            res.json({msg: 'Removed'})
+          }).catch(err => console.log(err))
+        } else {
+          model.create(req.body).then(data => res.send(data)).catch(err => res.status(500).json(err))
+        }
       })
-      .catch(err => console.log(err))
-    model.create(req.body).then(data => res.send(data)).catch(err => res.status(500).json(err))
+
   })
 
   // Update News

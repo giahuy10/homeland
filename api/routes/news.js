@@ -3,11 +3,15 @@ var router = express.Router()
 var model = require('../models').News
 var slug = require('slug')
 var checkUserLogged = require('../utils/checkUserLogged')
-
+var activity = require('../models').Activity
 router
   // Get all News
   .get('/', (req, res) => {
-    // model.findAll().then(data => res.json(data)).catch(err => res.json(err))
+    var category = req.query.category ? req.query.category : ''
+    let where = {}
+    if (category) {
+      where.category = category
+    }
     model.findAndCountAll()
       .then(data => {
         var limit = req.query.perPage ? parseInt(req.query.perPage) : 18
@@ -37,7 +41,7 @@ router
           {
             id: req.params.id
           },
-          { 
+          {
             slug: req.params.id
           },
         ]

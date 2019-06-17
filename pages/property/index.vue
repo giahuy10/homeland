@@ -1,13 +1,17 @@
 <template>
   <div class="list-properties">
+    <Slider/>
     <div class="container">
+
       <div class="row">
         <div class="col-2">
           <div class="sidebar">
             <ul>
-              <li><a href="#" @click.prevent="sortBy('createdAt')">Mua nhà ở đâu</a></li>
-              <li><a href="#" @click.prevent="sortBy('hits')">Dự án nào</a></li>
-              <li><a href="#" @click.prevent="sortBy('createdAt')">Nhà đất TV</a></li>
+
+              <li><a href="#" :class="filter.sortBy == 'id' ? 'active' : ''" @click.prevent="filter.sortBy = 'id' , getItems()">Mua nhà ở đâu</a></li>
+              <li><a href="#" :class="filter.sortBy == 'hits' ? 'active' : ''" @click.prevent="filter.sortBy = 'hits', getItems()">Dự án nào</a></li>
+              <li><a href="#">Nhà đất TV</a></li>
+
               <li><a href="#" @click.prevent="$router.push({path: '/property/edit/0'})">Gửi thông tin</a></li>
             </ul>
           </div>
@@ -36,12 +40,13 @@
 
 <script>
 import Property from '~/components/Property.vue'
+import Slider from '~/components/Slider.vue'
 
 export default {
   mounted () {
     this.getItems()
   },
-  components: {Property},
+  components: {Property, Slider},
   data () {
     return {
       items: [],
@@ -49,13 +54,23 @@ export default {
       perPage: 20,
       pageOptions: [ 5, 10, 20, 50, 100],
       rows: 0,
+      filter: {
+        sortBy: 'id'
+      }
     }
   },
   methods: {
     getItems () {
-
-      this.$axios.get(`/api/property?currentPage=${this.currentPage}&perPage=${this.perPage}`)
+       var str = "";
+      for (var key in this.filter) {
+          if (str != "") {
+              str += "&";
+          }
+          str += key + "=" + encodeURIComponent(this.filter[key]);
+      }
+      this.$axios.get(`/api/property?currentPage=${this.currentPage}&perPage=${this.perPage}&${str}`)
         .then(res => {
+          console.log(res)
           this.items = res.data.result
           this.rows = res.data.count
         })
@@ -73,7 +88,7 @@ export default {
 $pink : #ffa800;
 
 .list-properties {
-  padding-top: 20px;
+
   .sidebar {
     ul {
       list-style: none;
@@ -109,43 +124,7 @@ $pink : #ffa800;
       }
     }
   }
-  .pro-title {
-    font-size: 18px;
-    a {
-      color: $pink;
-    }
-  }
-  .pro-desc {
-    font-size: 13px;
-  }
-  .property_listing_details {
-    color: #85878a;
-    font-size: 16px;
-    .inforoom, .infobath, .infosize {
-      background-image: url(/images/unit.png);
-      font-size: 14px;
-      line-height: 30px;
-      background-repeat: no-repeat;
-      margin-right: 15px;
-      padding-left: 23px;
-      color: #3a4659;
-      color: #8593a9;
-      font-size: 13px;
-    }
-    .price {
-      color: #8593a9;
-      font-size: 13px;
-    }
-    .inforoom {
-      background-position: 0 -1px;
-    }
-    .infobath {
-      background-position: -63px -1px;
-    }
-    .infosize {
-      background-position: -127px 0;
-    }
-  }
+
 
 }
 

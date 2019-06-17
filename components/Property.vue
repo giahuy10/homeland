@@ -24,7 +24,7 @@
           </div>
           <div class="float-right">
             <i class="fa fa-share-alt" aria-hidden="true"></i>
-            <i class="fa fa-heart" aria-hidden="true"></i>
+            <i class="fa fa-heart" aria-hidden="true" @click="save(item.id)"></i>
           </div>
           <div class="clearfix"></div>
         </div>
@@ -49,6 +49,63 @@ export default {
         8: 'Trên 30 tỷ'
       },
     }
+  },
+  methods: {
+    save (itemId) {
+
+      this.$axios.post('/api/saved', {
+        type: 3,
+        itemId: itemId
+      })
+      .then(res => console.log(res))
+      .catch(err=> console.log(err.response))
+    }
   }
 }
 </script>
+
+<style lang="scss">
+$pink : #ffa800;
+i.fa {
+  &:hover {
+    cursor: pointer;
+  }
+}
+  .pro-title {
+    font-size: 18px;
+    a {
+      color: $pink;
+    }
+  }
+  .pro-desc {
+    font-size: 13px;
+  }
+  .property_listing_details {
+    color: #ae5e6c;
+    font-size: 16px;
+    .inforoom, .infobath, .infosize {
+      background-image: url(/images/unit.png);
+      font-size: 14px;
+      line-height: 30px;
+      background-repeat: no-repeat;
+      margin-right: 15px;
+      padding-left: 23px;
+      color: #3a4659;
+      color: #8593a9;
+      font-size: 13px;
+    }
+    .price {
+      color: #8593a9;
+      font-size: 13px;
+    }
+    .inforoom {
+      background-position: 0 -1px;
+    }
+    .infobath {
+      background-position: -63px -1px;
+    }
+    .infosize {
+      background-position: -127px 0;
+    }
+  }
+</style>

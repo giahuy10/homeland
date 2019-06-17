@@ -5,7 +5,7 @@ var modelComment = require('../models').Comment
 var modelMedia = require('../models').PropertyMedia
 var slug = require('slug')
 var checkUserLogged = require('../utils/checkUserLogged')
-
+var activity = require('../models').Activity
 function buildList (parentId, items, parents, html) {
 
   if (parents[parentId]) {
@@ -58,6 +58,7 @@ router
         var offset = limit * (currentPage - 1)
         model.findAll({
           where: where,
+          include: ['comments'],
           order: [
             [oderBy, 'DESC'],
           ],
@@ -92,7 +93,7 @@ router
       }
     })
       .then(data => {
-        var limit = req.query.perPage ? parseInt(req.query.perPage) : 18
+        var limit = req.query.perPage ? parseInt(req.query.perPage) : 100
         var currentPage = req.query.currentPage ? parseInt(req.query.currentPage) : 1
         var totalPages = Math.ceil(data.count / limit)
         var offset = limit * (currentPage - 1)
