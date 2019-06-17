@@ -20,14 +20,47 @@ function buildList (parentId, items, parents, html) {
 router
   // Get all Properties
   .get('/', (req, res) => {
-    // model.findAll().then(data => res.json(data)).catch(err => res.json(err))
-    model.findAndCountAll()
+
+    var city = req.query.city ? parseInt(req.query.city) : 0
+    var district = req.query.district ? parseInt(req.query.district) : 0
+    var type = req.query.type ? parseInt(req.query.type) : 0
+    var price = req.query.price ? parseInt(req.query.price) : 0
+    var oderBy = req.query.sortBy ? req.query.sortBy : 'id'
+
+    var title = req.query.title ? req.query.title : ''
+
+    let where = {}
+    if (city) {
+      where.city = city
+    }
+    if (district) {
+      where.district = district
+    }
+    if (type) {
+      where.type = type
+    }
+    if (price) {
+      where.price = price
+    }
+    if (title) {
+      where.title = {
+         $like: '%'+title+'%'
+      }
+    }
+
+    model.findAndCountAll({
+      where: where
+    })
       .then(data => {
         var limit = req.query.perPage ? parseInt(req.query.perPage) : 18
         var currentPage = req.query.currentPage ? parseInt(req.query.currentPage) : 1
         var totalPages = Math.ceil(data.count / limit)
         var offset = limit * (currentPage - 1)
         model.findAll({
+          where: where,
+          order: [
+            [oderBy, 'DESC'],
+          ],
           limit: limit,
           offset: offset,
         })
@@ -79,15 +112,19 @@ router
           .then((comments) => {
             let items = {}
             let parents = {}
-            comments.forEach(item => {
-              items[item.id] = item
-              if (!parents[item.parent]) {
-                parents[item.parent] = []
-              }
-              parents[item.parent].push(item.id)
-            })
+            if (comments && comments.length > 0) {
+              comments.forEach(item => {
+                items[item.id] = item
+                if (!parents[item.parent]) {
+                  parents[item.parent] = []
+                }
+                parents[item.parent].push(item.id)
+              })
+            }
+
             var final = []
-            parents[0].forEach(item => {
+            if (parents) {
+              parents[0].forEach(item => {
               final.push(items[item])
               if (parents[item]) {
                 parents[item].forEach(item => {
@@ -95,6 +132,8 @@ router
                 })
               }
             })
+            }
+
 
             res.status(200).json({'result': final, 'count': data.count, 'pages': totalPages, 'currentPage': currentPage});
           })
@@ -110,7 +149,7 @@ router
           {
             id: req.params.id
           },
-          { 
+          {
             slug: req.params.id
           },
         ]

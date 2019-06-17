@@ -133,8 +133,12 @@
 
                   <tr>
 
-                    <td><b-form-input v-model="loan.total" placeholder="Số tiền vay"></b-form-input></td>
+                    <td><b-form-input v-model="price" placeholder="Số tiền vay"></b-form-input>
+
+
+                    </td>
                     <td>VNĐ</td>
+
                   </tr>
                   <tr>
 
@@ -274,6 +278,7 @@ export default {
 
   data () {
     return {
+      price: 0,
       comments: [],
       item: {},
       activeMenu: 'overview',
@@ -324,9 +329,15 @@ export default {
         .catch(err => console.log(err.response))
     },
     calculateLoan () {
-      this.loan.monthlyPayment = ((this.loan.interest_rate/(100 * 12)) * this.loan.total) / ( 1 - Math.pow(1 + this.loan.interest_rate / 1200, ( 0 - this.loan.months)))
+      let total = this.price
+      total = total.replace(/,/g, '')
+
+      console.log(total)
+      total = parseInt(total)
+      console.log(total)
+      this.loan.monthlyPayment = ((this.loan.interest_rate/(100 * 12)) * total) / ( 1 - Math.pow(1 + this.loan.interest_rate / 1200, ( 0 - this.loan.months)))
       this.loan.loanPayment = Math.round(this.loan.monthlyPayment * this.loan.months)
-      this.loan.totalInterest = Math.round(this.loan.monthlyPayment * this.loan.months - this.loan.total)
+      this.loan.totalInterest = Math.round(this.loan.monthlyPayment * this.loan.months - total)
       this.loan.monthlyPayment = Math.round(this.loan.monthlyPayment)
       this.loan.result = true
     },
@@ -340,7 +351,8 @@ export default {
     },
     formatNumber(num) {
       return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
-    }
+    },
+
   },
   mounted () {
     if (process.browser) {
@@ -348,6 +360,13 @@ export default {
     }
     this.getDetail()
     this.getComments()
+  },
+  watch: {
+    price: function(newValue) {
+      const result = newValue.replace(/\D/g, "")
+        .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      this.$nextTick(() => this.price = result);
+    }
   }
 }
 </script>

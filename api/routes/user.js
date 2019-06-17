@@ -105,6 +105,9 @@ router
 
   // Update News
   .put('/:id', (req, res) => {
+    if (req.body.updatePassword) {
+      req.body.password = passwordHash.generate(req.body.updatePassword)
+    }
     model.update(
         req.body,
         { where: {id: req.params.id} }
@@ -144,7 +147,7 @@ router
     return res.status( 200 ).json( {location: folder+req.file.filename})
 
   })
-  
+
   .get('/stat/:type/:id', (req, res) => {
     // type: news, properties
     model.findByPk(req.params.id, {

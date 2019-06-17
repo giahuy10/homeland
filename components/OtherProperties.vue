@@ -9,36 +9,7 @@
       <div class="mod-content">
         <div class="row">
           <div v-for="(item, index) in items" :key="index" class="property col-20">
-            <div class="pro-inner">
-              <div class="pro-img">
-                <nuxt-link :to="`/property/detail/${item.id}`">
-                  <img :src="item.thumbnail" alt="">
-                </nuxt-link>
-                <div class="price">{{item.price}}</div>
-              </div>
-              <div class="pro-info">
-                <div class="pro-title">
-                  <nuxt-link :to="`/property/detail/${item.id}`" v-text="item.title"></nuxt-link>
-                </div>
-                <div class="pro-desc">
-                  <i class="fa fa-location-arrow" aria-hidden="true"></i> {{item.location}}
-                </div>
-                <div class="pro-note">
-
-                </div>
-                <div class="property_listing_details">
-                  <div class="float-left">
-                    <i class="fa fa-commenting-o" aria-hidden="true"></i> {{item.totalComments}}
-                    <i class="fa fa-camera-retro" aria-hidden="true"></i> {{item.totalImages}}
-                  </div>
-                  <div class="float-right">
-                    <i class="fa fa-share-alt" aria-hidden="true"></i>
-                    <i class="fa fa-heart" aria-hidden="true"></i>
-                  </div>
-                  <div class="clearfix"></div>
-                </div>
-              </div>
-            </div>
+            <Property :item="item" />
           </div>
           <div class="clear"></div>
         </div>
@@ -48,7 +19,9 @@
 </template>
 
 <script>
+import Property from '~/components/Property.vue'
 export default {
+  components: {Property},
   props: ['title'],
   mounted () {
     this.getItems()
@@ -67,7 +40,17 @@ export default {
     return {
 
       items: [
-      ]
+      ],
+      optionsPrice: {
+        1: '600tr - 1 tỷ',
+        2: '1 tỷ - 3 tỷ',
+        3: '3 tỷ - 5 tỷ',
+        4: '5 tỷ - 7 tỷ',
+        5: '7 tỷ - 10 tỷ',
+        6: '10 tỷ - 20 tỷ',
+        7: '20 tỷ - 30 tỷ',
+        8: 'Trên 30 tỷ'
+      },
     }
   }
 }

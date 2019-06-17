@@ -22,8 +22,8 @@
                 <b-nav-item-dropdown v-else right>
                   <!-- Using 'button-content' slot -->
                   <template slot="button-content">
-                    <img :src="userDetail.avatar" alt="" class="menu-avatar">
-                    <em>{{userDetail.lastName}}</em>
+                    <img :src="userDetail ? userDetail.avatar : ''" alt="" class="menu-avatar">
+                    <em>{{userDetail ? userDetail.lastName : ''}}</em>
                   </template>
                   <b-dropdown-item to="/account"><i class="fa fa-plus-square" aria-hidden="true"></i> Hoạt động</b-dropdown-item>
                   <b-dropdown-item to="/account/saved"><i class="fa fa-heart" aria-hidden="true"></i> Lưu trữ</b-dropdown-item>
@@ -100,6 +100,8 @@
 </template>
 
 <script>
+const Cookie = process.client ? require('js-cookie') : undefined
+
 export default {
   data() {
     return {

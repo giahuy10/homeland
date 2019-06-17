@@ -15,38 +15,19 @@
         <div class="col-12 col-md-10">
           <div class="row">
             <div v-for="(item, index) in items" :key="index" class="property col-6 col-sm-4 col-md-3">
-              <div class="pro-inner">
-                <div class="pro-img">
-                  <nuxt-link to="/property/detail">
-                    <img :src="item.thumbnail" alt="">
-                  </nuxt-link>
-                </div>
-                <div class="pro-info">
-                  <div class="pro-title">
-                    <nuxt-link to="/property/detail" v-text="item.title"></nuxt-link>
-                  </div>
-                  <div class="pro-desc">
-                    <i class="fa fa-location-arrow" aria-hidden="true"></i> {{item.desc}}
-                  </div>
-                  <div class="pro-note">
-                    Đoạn giới thiệu dự án ở đây
-                  </div>
-                  <div class="property_listing_details">
-                   <div class="float-left">
-                    <i class="fa fa-commenting-o" aria-hidden="true"></i> 12
-                    <i class="fa fa-camera-retro" aria-hidden="true"></i> 12
-                  </div>
-                  <div class="float-right">
-                    <i class="fa fa-share-alt" aria-hidden="true"></i>
-                    <i class="fa fa-heart" aria-hidden="true"></i>
-                  </div>
-                  <div class="clearfix"></div>
-                  </div>
-                </div>
-              </div>
+              <Property :item="item"/>
             </div>
             <div class="clear"></div>
           </div>
+          <b-pagination
+            v-model="currentPage"
+            :total-rows="rows"
+            :per-page="perPage"
+            aria-controls="my-table"
+            @change="changePage"
+            limit="10"
+            class="float-left"
+          ></b-pagination>
         </div>
       </div>
     </div>
@@ -54,84 +35,36 @@
 </template>
 
 <script>
+import Property from '~/components/Property.vue'
+
 export default {
+  mounted () {
+    this.getItems()
+  },
+  components: {Property},
   data () {
     return {
-      items: [
-        {
-          title: 'Dự án Palace City',
-          thumbnail: '/images/house-525x328.jpg',
-          desc: '54 Liễu Giai - Ba Đình',
-          price: '2 tỷ'
-        },
-        {
-          title: 'Dự án Khai Sơn',
-          thumbnail: '/images/1.jpg',
-          desc: '54 Liễu Giai - Ba Đình',
-          price: '2 tỷ'
-        },
-        {
-          title: 'North Diamond',
-          thumbnail: '/images/2.jpg',
-          desc: '54 Liễu Giai - Ba Đình',
-          price: '2 tỷ'
-        },
-        {
-          title: 'Dự án Vin City',
-          thumbnail: '/images/3.jpg',
-          desc: '54 Liễu Giai - Ba Đình',
-          price: '2 tỷ'
-        },
-        {
-          title: 'Dự án The Garden',
-          thumbnail: '/images/4.png',
-          desc: '54 Liễu Giai - Ba Đình',
-          price: '2 tỷ'
-        },
-        {
-          title: 'Dự án Central Park',
-          thumbnail: '/images/5.jpg',
-          desc: '54 Liễu Giai - Ba Đình',
-          price: '2 tỷ'
-        },
-        {
-          title: 'Dự án Thảo Nguyên',
-          thumbnail: '/images/6.jpg',
-          desc: '54 Liễu Giai - Ba Đình',
-          price: '2 tỷ'
-        },
-        {
-          title: 'Dự án Nam Cường',
-          thumbnail: '/images/7.jpg',
-          desc: '54 Liễu Giai - Ba Đình',
-          price: '2 tỷ'
-        },
-        {
-          title: 'Dự án Bà Nà Hill',
-          thumbnail: '/images/8.jpg',
-          desc: '54 Liễu Giai - Ba Đình',
-          price: '2 tỷ'
-        },
-        {
-          title: 'Dự án Lotte Park',
-          thumbnail: '/images/9.jpg',
-          desc: '54 Liễu Giai - Ba Đình',
-          price: '2 tỷ'
-        },
-        {
-          title: 'Dự án Sông Hồng',
-          thumbnail: '/images/10.jpg',
-          desc: '54 Liễu Giai - Ba Đình',
-          price: '2 tỷ'
-        },
-        {
-          title: 'Dự án Palace City',
-          thumbnail: '/images/11.jpg',
-          desc: '54 Liễu Giai - Ba Đình',
-          price: '2 tỷ'
-        }
-      ]
+      items: [],
+      currentPage: 1,
+      perPage: 20,
+      pageOptions: [ 5, 10, 20, 50, 100],
+      rows: 0,
     }
+  },
+  methods: {
+    getItems () {
+
+      this.$axios.get(`/api/property?currentPage=${this.currentPage}&perPage=${this.perPage}`)
+        .then(res => {
+          this.items = res.data.result
+          this.rows = res.data.count
+        })
+        .catch(err => console.log(err.response))
+    },
+    changePage (page) {
+      this.currentPage = page
+      this.getItems()
+    },
   }
 }
 </script>

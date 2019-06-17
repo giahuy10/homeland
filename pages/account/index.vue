@@ -1,21 +1,7 @@
 <template>
   <div class="account">
     <div class="container">
-      <div class="background">
-        <div class="row">
-            <div class="col-12 col-md-3">
-                <div class="user-detail text-center">
-                    <div class="avatar ">
-                        <img :src="userDetail.avatar" alt="">
-                    </div>
-                    <h3>{{userDetail.lastName}}</h3>
-                </div>
-            </div>
-            <div class="col-12 col-md-9">
-
-            </div>
-        </div>
-     </div>
+      <User/>
       <div class="row">
         <div class="col-12 col-md-2">
           <ul class="news-menu">
@@ -39,14 +25,14 @@
 
 <script>
 const Cookie = process.client ? require('js-cookie') : undefined
-
+import User from '~/components/User'
 import Activities from '~/components/Activities'
 import Saved from '~/components/Saved'
 import Account from '~/components/Account'
 export default {
   middleware: 'authenticated',
   components: {
-    Activities, Saved, Account
+    Activities, Saved, Account, User
   },
   data () {
     return {
@@ -69,14 +55,4 @@ export default {
 }
 </script>
 
-<style lang="scss">
-.user-detail {
-  padding: 40px 0;
-      background: rgba(0, 0, 0, 0.5);
-    color: #fff;
-}
-.background {
-  background: url('/banner-profile.png');
-  background-size: cover;
-}
-</style>
+

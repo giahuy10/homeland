@@ -1,8 +1,7 @@
 <template>
   <div class="account">
     <div class="container">
-      <img src="/images/StockSnap_KWRZNZ6DC6.jpg" alt="">
-      <br><br>
+      <User/>
       <div class="row">
         <div class="col-12 col-md-2">
           <ul class="news-menu">
@@ -26,6 +25,7 @@
 
 <script>
 const Cookie = process.client ? require('js-cookie') : undefined
+import User from '~/components/User'
 
 import Activities from '~/components/Activities'
 import Saved from '~/components/Saved'
@@ -33,7 +33,7 @@ import Account from '~/components/Account'
 export default {
   middleware: 'authenticated',
   components: {
-    Activities, Saved, Account
+    Activities, Saved, Account, User
   },
   data () {
     return {

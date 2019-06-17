@@ -5,20 +5,26 @@
         <div class="col-20">
           <h2 class="mod-title">Tổng hợp dự án</h2>
         </div>
-        <div class="col-xs-6 col-md-2 filter-item">
-          <b-form-select v-model="filter.city" :options="optionsCity"></b-form-select>
+        <div class="col-20 filter-item">
+          <b-form-select v-model="filter.city" @change="getDistricts(), getItems()">
+            <option value="">Chọn thành phố</option>
+            <option v-for="(city, index) in cities" :key="index" :value="city.id"> {{city.name}}</option>
+          </b-form-select>
         </div>
-        <div class="col-xs-6 col-md-1 filter-item">
-          <b-form-select v-model="filter.type" :options="optionsType"></b-form-select>
+        <div class="col-10 filter-item">
+          <b-form-select v-model="filter.type" @change="getItems" :options="optionsType"></b-form-select>
         </div>
-        <div class="col-xs-6 col-md-3 filter-item">
-          <b-form-input placeholder="Tên dự án, loại nhà, địa điểm..."></b-form-input>
+        <div class="col-25 filter-item">
+          <b-form-input @change="getItems" v-model="filter.title" placeholder="Tên dự án, loại nhà, địa điểm..."></b-form-input>
         </div>
-        <div class="col-xs-6 col-md-2 filter-item">
-          <b-form-select v-model="filter.district" :options="optionsDistrict"></b-form-select>
+        <div class="col-15 filter-item">
+          <b-form-select v-model="filter.district" @change="getItems">
+            <option value="">Quận/huyện</option>
+            <option v-for="(district, index) in districts" :key="index" :value="district.id"> {{district.name}}</option>
+          </b-form-select>
         </div>
-        <div class="col-xs-6 col-md-1 filter-item">
-          <b-form-select v-model="filter.price" :options="optionsPrice"></b-form-select>
+        <div class="col-10 filter-item">
+          <b-form-select v-model="filter.price" :options="optionsPrice" @change="getItems"></b-form-select>
         </div>
       </div>
       <div class="mod-content">
@@ -26,47 +32,16 @@
           <div class="col-20">
             <div class="sidebar" :class="navClass">
             <ul>
-              <li><a href="">Mua nhà ở đâu</a></li>
-              <li><a href="">Dự án nào</a></li>
-              <li><a href="">Nhà đất TV</a></li>
+              <li><a href="#" :class="filter.sortBy == 'id' ? 'active' : ''" @click.prevent="filter.sortBy = 'id' , getItems()">Mua nhà ở đâu</a></li>
+              <li><a href="#" :class="filter.sortBy == 'hits' ? 'active' : ''" @click.prevent="filter.sortBy = 'hits', getItems()">Dự án nào</a></li>
+              <li><a href="#">Nhà đất TV</a></li>
             </ul>
           </div>
           </div>
           <div class="col-80">
              <div class="row">
               <div v-for="(item, index) in items" :key="index" class="property col-6 col-sm-4 col-md-3">
-                <div class="pro-inner">
-                  <div class="pro-img">
-                    <nuxt-link to="/property/detail">
-                      <img :src="item.thumbnail" alt="">
-                    </nuxt-link>
-                    <div class="price">1 tỷ - 2 tỷ</div>
-                  </div>
-                  <div class="pro-info">
-                    <div class="pro-title">
-                      <nuxt-link to="/property/detail" v-text="item.title"></nuxt-link>
-                    </div>
-                    <div class="pro-desc">
-                      <i class="fa fa-location-arrow" aria-hidden="true"></i> {{item.desc}}
-                    </div>
-                    <div class="pro-note">
-                      Comment mới nhất/CHưa có comment thì ko hiển thị
-                    </div>
-                    <div class="property_listing_details">
-                      <div class="float-left">
-                        <i class="fa fa-commenting-o" aria-hidden="true"></i> 12
-                        <i class="fa fa-camera-retro" aria-hidden="true"></i> 12
-                      </div>
-                      <div class="float-right">
-                        <i class="fa fa-share-alt" aria-hidden="true"></i>
-                        <i class="fa fa-heart" aria-hidden="true"></i>
-                      </div>
-                      <div class="clearfix"></div>
-
-
-                    </div>
-                  </div>
-                </div>
+                <Property :item="item" />
               </div>
               <div class="clear"></div>
             </div>
@@ -80,120 +55,43 @@
 </template>
 
 <script>
+import Property from '~/components/Property.vue'
+import location from '~/static/local.json'
+
 export default {
+  components: {Property},
   data () {
     return {
       navClass: '',
       filter: {
-        city: null,
-        district: null,
-        type: null,
-        price: null
+        city: '',
+        district:  '',
+        type: '',
+        price: '',
+        sortBy: 'id',
+        title: ''
       },
-      optionsCity: [
-        { value: null, text: '-- Thành phố --'},
-        { value: 1, text: 'Hà Nội'},
-        { value: 2, text: 'Hồ Chí Minh'},
-        { value: 2, text: 'Đà nẵng'},
-      ],
-      optionsDistrict: [
-        { value: null, text: '-- Quận/Huyện --'},
-        { value: 1, text: 'Gia Lâm'},
-        { value: 2, text: 'Ba Đình'},
-        { value: 2, text: 'Thanh Xuân'},
-      ],
+      cities: location,
+      districts: [],
       optionsType: [
-        { value: null, text: '-- Loại --'},
+        { value: '', text: '-- Loại --'},
         { value: 1, text: 'Căn hộ chung cư'},
         { value: 2, text: 'Biệt thự, liền kề'},
         { value: 3, text: 'Shophouse'},
         { value: 4, text: 'Nghỉ dưỡng'},
       ],
       optionsPrice: [
-        { value: null, text: '-- Giá --'},
+        { value: '', text: '-- Giá --'},
         { value: 1, text: '600tr - 1 tỷ'},
         { value: 2, text: '1 tỷ - 3 tỷ'},
-        { value: 2, text: '3 tỷ - 5 tỷ'},
-        { value: 2, text: '5 tỷ - 7 tỷ'},
-        { value: 2, text: '7 tỷ - 10 tỷ'},
-        { value: 2, text: '10 tỷ - 20 tỷ'},
-        { value: 2, text: '20 tỷ - 30 tỷ'},
-        { value: 2, text: 'Trên 30 tỷ'},
+        { value: 3, text: '3 tỷ - 5 tỷ'},
+        { value: 4, text: '5 tỷ - 7 tỷ'},
+        { value: 5, text: '7 tỷ - 10 tỷ'},
+        { value: 6, text: '10 tỷ - 20 tỷ'},
+        { value: 7, text: '20 tỷ - 30 tỷ'},
+        { value: 8, text: 'Trên 30 tỷ'},
       ],
-      items: [
-        {
-          title: 'Dự án Palace City',
-          thumbnail: '/images/house-525x328.jpg',
-          desc: '54 Liễu Giai - Ba Đình',
-          price: '2 tỷ'
-        },
-        {
-          title: 'Dự án Khai Sơn',
-          thumbnail: '/images/1.jpg',
-          desc: '54 Liễu Giai - Ba Đình',
-          price: '2 tỷ'
-        },
-        {
-          title: 'Dự án North Diamond',
-          thumbnail: '/images/2.jpg',
-          desc: '54 Liễu Giai - Ba Đình',
-          price: '2 tỷ'
-        },
-        {
-          title: 'Dự án Vin City',
-          thumbnail: '/images/3.jpg',
-          desc: '54 Liễu Giai - Ba Đình',
-          price: '2 tỷ'
-        },
-        {
-          title: 'Dự án The Garden',
-          thumbnail: '/images/4.png',
-          desc: '54 Liễu Giai - Ba Đình',
-          price: '2 tỷ'
-        },
-        {
-          title: 'Dự án Central Park',
-          thumbnail: '/images/5.jpg',
-          desc: '54 Liễu Giai - Ba Đình',
-          price: '2 tỷ'
-        },
-        {
-          title: 'Dự án Thảo Nguyên',
-          thumbnail: '/images/6.jpg',
-          desc: '54 Liễu Giai - Ba Đình',
-          price: '2 tỷ'
-        },
-        {
-          title: 'Dự án Nam Cường',
-          thumbnail: '/images/7.jpg',
-          desc: '54 Liễu Giai - Ba Đình',
-          price: '2 tỷ'
-        },
-        {
-          title: 'Dự án Bà Nà Hill',
-          thumbnail: '/images/8.jpg',
-          desc: '54 Liễu Giai - Ba Đình',
-          price: '2 tỷ'
-        },
-        {
-          title: 'Dự án Lotte Park',
-          thumbnail: '/images/9.jpg',
-          desc: '54 Liễu Giai - Ba Đình',
-          price: '2 tỷ'
-        },
-        {
-          title: 'Dự án Sông Hồng',
-          thumbnail: '/images/10.jpg',
-          desc: '54 Liễu Giai - Ba Đình',
-          price: '2 tỷ'
-        },
-        {
-          title: 'Dự án Palace City',
-          thumbnail: '/images/11.jpg',
-          desc: '54 Liễu Giai - Ba Đình',
-          price: '2 tỷ'
-        }
-      ]
+      items: []
     }
   },
   methods: {
@@ -205,11 +103,30 @@ export default {
         this.navClass = ''
       }
     },
+    getDistricts () {
+      this.districts = location[this.filter.city - 1].districts
+    },
+    getItems () {
+      var str = "";
+      for (var key in this.filter) {
+          if (str != "") {
+              str += "&";
+          }
+          str += key + "=" + encodeURIComponent(this.filter[key]);
+      }
+      console.log(str)
+      this.$axios.get(`/api/property?${str}`)
+        .then(res => {
+          this.items = res.data.result
+        })
+        .catch(err => console.log(err.response))
+    }
   },
   mounted () {
     if (process.browser) {
       window.addEventListener('scroll', this.handleScroll)
     }
+    this.getItems()
   }
 }
 </script>
@@ -301,6 +218,11 @@ $pink : #ffa800;
         display: block;
         padding: 10px 20px;
         &:hover {
+          text-decoration: none;
+          background: $pink;
+          color: #fff;
+        }
+        &.active {
           text-decoration: none;
           background: $pink;
           color: #fff;

@@ -68,6 +68,33 @@ a {
   padding-left: 15px;
 }
 
+.col-10 {
+  width: 10%;
+  padding-right: 15px;
+  padding-left: 15px;
+  flex: 0 0 10%;
+  max-width: 10%;
+}
+
+.col-25 {
+  width: 25%;
+  padding-right: 15px;
+  padding-left: 15px;
+}
+
+.col-15 {
+  width: 15%;
+  padding-right: 15px;
+  padding-left: 15px;
+  flex: 0 0 15%;
+  max-width: 15%;
+}
+.col-30 {
+  width: 30%;
+  padding-right: 15px;
+  padding-left: 15px;
+}
+
 .col-80 {
   width: 80%;
   padding-right: 15px;
@@ -88,3 +115,22 @@ a {
   color: #fff;
   background: #ffa800;
 }
+
+.pro-inner {
+      border: 1px solid #ccc;
+      box-shadow: 0 0 1px 0px #e3e3e3;
+      .pro-img {
+        position: relative;
+        .price {
+          position: absolute;
+          right: 0;
+          bottom: 0;
+          background: #ffa800a6;
+          padding: 5px 10px;
+          color: #fff;
+        }
+      }
+      .pro-info {
+        padding: 10px 20px;
+      }
+    }
