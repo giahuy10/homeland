@@ -45,7 +45,7 @@
           <ul>
             <li>{{item.location}}</li>
             <li><b class="text-pink">Đang xây dựng</b></li>
-            <li><b class="text-pink">{{item.price}}</b></li>
+            <li><b class="text-pink">{{optionsPrice[item.price]}}</b></li>
           </ul>
 
         </div>
@@ -278,6 +278,17 @@ export default {
 
   data () {
     return {
+      optionsPrice: {
+        1: '600tr - 1 tỷ',
+        2: '1 tỷ - 3 tỷ',
+        3: '3 tỷ - 5 tỷ',
+        4: '5 tỷ - 7 tỷ',
+        5: '7 tỷ - 10 tỷ',
+        6: '10 tỷ - 20 tỷ',
+        7: '20 tỷ - 30 tỷ',
+        8: 'Trên 30 tỷ'
+      },
+
       price: 0,
       comments: [],
       item: {},
