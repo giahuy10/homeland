@@ -1,6 +1,7 @@
 var express = require('express')
 var router = express.Router()
 var model = require('../models').News
+var modelComment = require('../models').Comment
 var slug = require('slug')
 var checkUserLogged = require('../utils/checkUserLogged')
 var activity = require('../models').Activity
@@ -12,7 +13,9 @@ router
     if (category) {
       where.category = category
     }
-    model.findAndCountAll()
+    model.findAndCountAll({
+      where: where
+    })
       .then(data => {
         var limit = req.query.perPage ? parseInt(req.query.perPage) : 18
         var currentPage = req.query.currentPage ? parseInt(req.query.currentPage) : 1
@@ -20,6 +23,7 @@ router
         var offset = limit * (currentPage - 1)
         var oderBy = req.query.orderBy ? req.query.orderBy : 'createdAt'
         model.findAll({
+          where: where,
           order: [
             [oderBy, 'DESC'],
           ],
@@ -32,7 +36,62 @@ router
       })
       .catch(err => res.json(err))
   })
+  .get('/comment/:id', (req, res) => {
+    modelComment.findAndCountAll({
+      where: {
+        itemId: req.params.id,
+        type: 1
+      }
+    })
+      .then(data => {
+        var limit = req.query.perPage ? parseInt(req.query.perPage) : 100
+        var currentPage = req.query.currentPage ? parseInt(req.query.currentPage) : 1
+        var totalPages = Math.ceil(data.count / limit)
+        var offset = limit * (currentPage - 1)
+        modelComment.findAll({
+          include: ['user'],
+          where: {
+            itemId: req.params.id,
+            type: 2
+          },
+          limit: limit,
+          offset: offset,
+          order: [
+            ['parent', 'ASC'],
+            ['createdAt', 'ASC']
+          ]
+        })
+          .then((comments) => {
+            let items = {}
+            let parents = {}
+            if (comments && comments.length > 0) {
+              comments.forEach(item => {
+                items[item.id] = item
+                if (!parents[item.parent]) {
+                  parents[item.parent] = []
+                }
+                parents[item.parent].push(item.id)
+              })
+            }
 
+            var final = []
+            if (parents) {
+              parents[0].forEach(item => {
+              final.push(items[item])
+              if (parents[item]) {
+                parents[item].forEach(item => {
+                  final.push(items[item])
+                })
+              }
+            })
+            }
+
+
+            res.status(200).json({'result': final, 'count': data.count, 'pages': totalPages, 'currentPage': currentPage});
+          })
+      })
+      .catch(err => res.json(err))
+  })
   // Get detail News by ID
   .get('/:id', (req, res) => {
     model.findOne({
@@ -60,10 +119,21 @@ router
   .post('/', checkUserLogged, (req, res) => {
     req.body.slug = slug(req.body.title)
     req.body.createdBy = req.decoded.data.id
-    req.body.state = 1
+    req.body.state = req.decoded.data.level > 1 ? 1 : -1
     req.body.hits = 0
     req.body.saved = 0
-    model.create(req.body).then(data => res.send(data)).catch(err => res.status(500).json(err))
+    
+    model.create(req.body).then(data => {
+      // save activity
+      activity.create({
+        createdBy: req.decoded.data.id,
+        type: 1,
+        typeItem: 2,
+        itemId: data.id,
+        note: JSON.stringify(data)
+      }).then(response => console.log(response)).catch(err => console.log(err))
+    res.send(data)
+    }).catch(err => res.status(500).json(err))
   })
 
   // Update News

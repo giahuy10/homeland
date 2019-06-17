@@ -48,16 +48,19 @@
             <h3>Hoạt động</h3>
             <ul>
               <li>
-                <a>Viết bình luận</a>
+                
+                <nuxt-link to="/comment">Viết bình luận</nuxt-link>
               </li>
               <li>
-                <a>Thêm dự án</a>
+                <nuxt-link to="/property/edit/0">Thêm dự án</nuxt-link>
               </li>
               <li>
-                <a>Trợ giúp và câu hỏi thường gặp</a>
+                <nuxt-link to="/help">Trợ giúp và câu hỏi thường gặp</nuxt-link>
+               
               </li>
               <li>
-                <a>Quy định</a>
+                <nuxt-link to="/toc">Quy định</nuxt-link>
+                
               </li>
             </ul>
           </div>
@@ -65,16 +68,20 @@
             <h3>Công ty</h3>
             <ul>
               <li>
-                <a>Giới thiệu</a>
+                <nuxt-link to="/about">Giới thiệu</nuxt-link>
+                
               </li>
               <li>
-                <a>Quy chế hoạt động</a>
+               
+                <nuxt-link to="/policy">Quy chế hoạt động</nuxt-link>
               </li>
               <li>
-                <a>Bảo mật thông tin</a>
+                <nuxt-link to="/privacy">Bảo mật thông tin</nuxt-link>
+                
               </li>
               <li>
-                <a>Góp ý</a>
+                <nuxt-link to="/feedback">Góp ý</nuxt-link>
+                
               </li>
             </ul>
           </div>
@@ -83,13 +90,16 @@
             <h3>Liên hệ</h3>
             <ul>
               <li>
-                <a>Facebook</a>
+                <a href=" https://www.facebook.com/Homenland.vn/" target="_blank">Facebook</a>
               </li>
               <li>
-                <a>Youtube</a>
+                <a href="https://www.youtube.com/channel/UCxWd4GzCvjeOiOIt-LH-9_Q?view_as=subscriber" target="_blank" >Youtube</a>
               </li>
               <li>
-                <a>Email: info@homenland.vn</a>
+                <a href="https://www.instagram.com/homenland.vn/" target="_blank">Instagram</a>
+              </li>
+              <li>
+                <a href="mailto:info@homenland.vn">Email: info@homenland.vn</a>
               </li>
             </ul>
           </div>
@@ -183,6 +193,9 @@ $pink : #e7005a;
       border: 0;
       margin-top: 10px;
     }
+  }
+  a {
+    color:#fff;
   }
 }
 

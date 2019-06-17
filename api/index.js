@@ -27,6 +27,7 @@ var file = require('./routes/file')
 var comments = require('./routes/comments')
 var reviews = require('./routes/reviews')
 var saved = require('./routes/saved')
+var activities = require('./routes/activities')
 app.use('/news', news)
 app.use('/property', property)
 app.use('/user', user)
@@ -34,6 +35,7 @@ app.use('/file', file)
 app.use('/comments', comments)
 app.use('/reviews', reviews),
 app.use('/saved', saved)
+app.use('/activities', activities)
 // Export the server middleware
 export default {
   path: '/api',

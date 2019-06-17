@@ -33,28 +33,7 @@ export default {
   data () {
     return {
       currentItem: '',
-      items: [
-        {
-          thumbnail: '8b9cf202b03855660c29.jpg',
-          full: '8b9cf202b03855660c29.jpg'
-        },
-        {
-          thumbnail: '9aabe0c3a1f944a71de8.jpg',
-          full: '9aabe0c3a1f944a71de8.jpg'
-        },
-        {
-          thumbnail: '42ee9860da5a3f04664b.jpg',
-          full: '42ee9860da5a3f04664b.jpg'
-        },
-        {
-          thumbnail: '64a78319c123247d7d32.jpg',
-          full: '64a78319c123247d7d32.jpg'
-        },
-        {
-          thumbnail: '996f32ae709495cacc85.jpg',
-          full: '996f32ae709495cacc85.jpg'
-        }
-      ],
+      
       scroller: {
         full: 0,
         screen: 0,
@@ -66,14 +45,14 @@ export default {
       }
     }
   },
-  props: ['totalWidth'],
+  props: ['totalWidth', 'items'],
   mounted () {
-    this.scroller.full = this.totalWidth // this.$refs.scroller_inner.clientWidth
-    this.scroller.screen = this.$refs.scroller.clientWidth
-    this.scroller.max = this.scroller.full - this.scroller.screen
-    console.log(this.scroller.max)
-    console.log(this.scroller.full)
-    console.log(this.scroller.screen)
+    if (items && items.length > 0) {
+      this.scroller.full = this.totalWidth // this.$refs.scroller_inner.clientWidth
+      this.scroller.screen = this.$refs.scroller.clientWidth
+      this.scroller.max = this.scroller.full - this.scroller.screen
+      
+    }
   },
   methods: {
 

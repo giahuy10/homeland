@@ -57,9 +57,35 @@ export default {
         type: 3,
         itemId: itemId
       })
-      .then(res => console.log(res))
+      .then(res => {
+        let title = ''
+        let text = ''
+        let variant = ''
+        if(res.data.id) {
+          // Like
+          title = 'Thành công'
+          text = 'Bạn đã lưu dự án thành công'
+          variant = 'success'
+        } else{
+          // dislike
+          title = 'Thành công'
+          text = 'Bạn đã hủy lưu dự án'
+          variant = 'warning'
+        }
+        this.toast(title, text, variant)
+      })
       .catch(err=> console.log(err.response))
-    }
+    },
+    toast(title, text, variant) {
+      console.log('ok')
+        this.$bvToast.toast(text, {
+          title: title,
+          toaster: 'b-toaster-bottom-right',
+          solid: true,
+          appendToast: true,
+          variant: variant
+        })
+      }
   }
 }
 </script>

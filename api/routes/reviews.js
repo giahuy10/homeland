@@ -50,7 +50,17 @@ router
   .post('/', checkUserLogged, (req, res) => {
     req.body.createdBy = req.decoded.data.id
     // req.body.state = 1
-    model.create(req.body).then(data => res.send(data)).catch(err => res.status(500).json(err))
+    model.create(req.body).then(data => {
+      // save activity
+      activity.create({
+        createdBy: req.decoded.data.id,
+        type: 1,
+        typeItem: 4,
+        itemId: data.id,
+        note: JSON.stringify(data)
+      }).then(response => console.log(response)).catch(err => console.log(err))
+      res.send(data)
+    }).catch(err => res.status(500).json(err))
   })
 
   // Update News

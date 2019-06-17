@@ -83,7 +83,7 @@
             </div>
             <div class="galleries">
               <h4 id="galleries">Ảnh dự án</h4>
-              <Gallery :images="item.images" :totalWidth="item.totalWidth"/>
+              <Gallery :items="item.images" :totalWidth="item.totalWidth" v-if="item.images && item.images.length > 0"/>
                 <h5>Sản phẩm</h5>
                 <div v-html="item.product"></div>
                 <h5>Tiện tích</h5>
@@ -391,7 +391,7 @@ export default {
     getDetail () {
       this.$axios.get(`/api/property/${this.$route.params.slug}`)
         .then(res => {
-          console.log(res)
+          console.log('detail', res)
           this.item = res.data
           this.getDistricts()
         })
@@ -521,38 +521,7 @@ $pink : #ffa800;
     }
   }
 }
-.list-chat {
-  margin-top: 20px;
-  .chat {
-    .media {
-      margin-bottom: 10px;
-      &.child {
-        margin-left: 40px;
-      }
-      img {
-        width: 44px;
-        height: 44px;
-        border-radius: 100%;
-      }
-      .media-body {
-        .comment-text {
-          border-radius: 20px;
-          background: #f2f3f5;
-          padding: 10px 20px;
-        }
-        .reply {
-          a {
-            font-size: 12px;
-            color: #926034;
-            margin-left: 5px;
-          }
-        }
 
-      }
-    }
-
-  }
-}
 .detail-content {
   iframe {
     width: 100%;

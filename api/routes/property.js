@@ -169,7 +169,7 @@ router
   .post('/', checkUserLogged, (req, res) => {
     req.body.slug = slug(req.body.title)
     req.body.createdBy = req.decoded.data.id
-    req.body.state = 1
+    req.body.state = req.decoded.data.level > 1 ? 1 : -1
     req.body.hits = 0
     req.body.saved = 0
     req.body.totalImages = 0
@@ -179,6 +179,16 @@ router
     delete req.body.images
     model.create(req.body)
       .then(data => {
+
+          // save activity
+          activity.create({
+            createdBy: req.decoded.data.id,
+            type: 1,
+            typeItem: 3,
+            itemId: data.id,
+            note: JSON.stringify(data)
+          }).then(response => console.log(response)).catch(err => console.log(err))
+
         let totalWidth = 0
         let totalImages = 0
         let bulkData = []

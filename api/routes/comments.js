@@ -47,7 +47,7 @@ router
     activity.create({
       createdBy: req.decoded.data.id,
       type: 1,
-      typeItem: req.body.parent ? 1 : 3,
+      typeItem: 1,
       itemId: req.body.itemId,
       note: JSON.stringify(req.body)
     }).then(response => console.log(response)).catch(err => console.log(err))

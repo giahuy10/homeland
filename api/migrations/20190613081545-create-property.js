@@ -42,7 +42,7 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       progress: {
-        type: Sequelize.INTEGER
+        type: Sequelize.TEXT
       },
       overview: {
         type: Sequelize.TEXT

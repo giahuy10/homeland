@@ -17,6 +17,9 @@ router
         var totalPages = Math.ceil(data.count / limit)
         var offset = limit * (currentPage - 1)
         model.findAll({
+          order: [
+            ['createdAt', 'DESC'],
+          ],
           where: {
             createdBy: req.decoded.data.id
           },

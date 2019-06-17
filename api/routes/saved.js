@@ -63,11 +63,27 @@ router
     })
       .then(data => {
         if (data) {
+          activity.create({
+            createdBy: req.decoded.data.id,
+            type: 3,
+            typeItem: req.body.type,
+            itemId: data.id,
+            note: JSON.stringify(data)
+          }).then(response => console.log(response)).catch(err => console.log(err))
           data.destroy().then(() => {
             res.json({msg: 'Removed'})
           }).catch(err => console.log(err))
         } else {
-          model.create(req.body).then(data => res.send(data)).catch(err => res.status(500).json(err))
+          model.create(req.body).then(data => {
+            activity.create({
+              createdBy: req.decoded.data.id,
+              type: 2,
+              typeItem: req.body.type,
+              itemId: data.id,
+              note: JSON.stringify(data)
+            }).then(response => console.log(response)).catch(err => console.log(err))
+            res.send(data)
+          }).catch(err => res.status(500).json(err))
         }
       })
 

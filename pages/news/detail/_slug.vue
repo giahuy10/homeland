@@ -16,7 +16,38 @@
                     </div>
                 </div>
                 <div class="addthis_native_toolbox"></div>
-                <div class="fb-comments" data-href="https://developers.facebook.com/docs/plugins/comments#configurator" data-width="" data-numposts="5"></div>
+                <!-- <div class="fb-comments" data-href="https://developers.facebook.com/docs/plugins/comments#configurator" data-width="" data-numposts="5"></div> -->
+                <div class="comments">
+                <h4 id="comments">Bình luận</h4>
+                  <div class="list-chat">
+                    <div class="chat">
+                      <ul class="list-unstyled">
+
+                        <li class="media" :class="comment.parent ? 'child' : ''" v-for="(comment, index) in comments" :key="index">
+                          <img :src="comment.user.avatar" class="mr-3" alt="...">
+                          <div class="media-body">
+                            <div class="comment-text">
+                              <b>
+                                <nuxt-link to="#">{{comment.user.firstName +' '+comment.user.lastName}}</nuxt-link>
+                              </b>
+                              {{comment.text}}
+                            </div>
+                            <div class="reply"><a href="#" @click.prevent="save(comment.id)">Thích</a> <a href="#comment-box" @click=" setParent(comment), commentText = '@'+comment.user.lastName+' '">Thảo luận</a></div>
+
+
+                          </div>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                  <div class="input-group" id="comment-box">
+                    <input type="text" class="form-control" v-model="commentText" placeholder="Hãy cho mọi người biết suy nghĩ của bạn về dự án này" >
+                    <div class="input-group-append">
+                      <div class="input-group-text" @click="sendComment"><i class="fa fa-reply-all" aria-hidden="true"></i></div>
+                    </div>
+                  </div>
+
+              </div>
             </div>
             <div class="col-12 col-md-3">
                 <div class="side-bar-right">
@@ -59,6 +90,8 @@ export default {
   },
   data () {
     return {
+      commentParent: 0,
+      commentText: '',
       publicId: {
         type: String,
         required: true
@@ -75,12 +108,14 @@ export default {
           hits: 1
       },
       author: {},
-      items: []
+      items: [],
+      comments: []
     }
   },
   mounted () {
     this.getDetail()
     this.getItems()
+    
     // (function(d, s, id) {
     //       var js, fjs = d.getElementsByTagName(s)[0];
     //       if (d.getElementById(id)) return;
@@ -106,21 +141,79 @@ export default {
 
   },
   methods: {
+    setParent (comment) {
+      if (comment.parent) {
+        this.commentParent = comment.parent
+      } else {
+        this.commentParent = comment.id
+      }
+    },
+    sendComment () {
+      this.$axios.post('/api/comments', {
+        type: 2,
+        itemId: this.item.id,
+        parent: this.commentParent,
+        text: this.commentText
+      })
+      .then(res => {
+        console.log(res)
+        this.getComments()
+        this.commentText = ''
+      })
+      .catch(err => console.log(err.response))
+
+    },
+
+    getComments () {
+      this.$axios.get(`/api/news/comment/${this.item.id}`)
+        .then(res => {
+          console.log(res)
+          this.comments = res.data.result
+        })
+        .catch(err => console.log(err.response))
+    },
     save () {
 
       this.$axios.post('/api/saved', {
         type: 2,
         itemId: this.item.id
       })
-      .then(res => console.log(res))
+      .then(res => {
+        let title = ''
+        let text = ''
+        let variant = ''
+        if(res.data.id) {
+          // Like
+          title = 'Thành công'
+          text = 'Bạn đã lưu bài viết thành công'
+          variant = 'success'
+        } else{
+          // dislike
+          title = 'Thành công'
+          text = 'Bạn đã hủy lưu bài viết'
+          variant = 'warning'
+        }
+        this.toast(title, text, variant)
+      })
       .catch(err=> console.log(err.response))
     },
+    toast(title, text, variant) {
+      console.log('ok')
+        this.$bvToast.toast(text, {
+          title: title,
+          toaster: 'b-toaster-bottom-right',
+          solid: true,
+          appendToast: true,
+          variant: variant
+        })
+      },
       getDetail () {
       this.$axios.get(`/api/news/${this.$route.params.slug}`)
         .then(res => {
           console.log('item', res)
           this.item = res.data
           this.getUserDetail()
+          this.getComments()
         })
         .catch(err => console.log(err.response))
     },
