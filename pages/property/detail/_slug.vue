@@ -47,6 +47,12 @@
             <li><b class="text-pink">Đang xây dựng</b></li>
             <li><b class="text-pink">{{optionsPrice[item.price]}}</b></li>
           </ul>
+          <div v-if="item.state == -1 && userDetail && userDetail.level == 2">
+            <b-button variant="success" @click="approve">Phê duyệt bài viết</b-button>
+          </div>
+          <div v-if="userDetail && userDetail.level == 2">
+              <b-button variant="info" @click="$router.push({path: `/property/edit/${item.id}`})">Chỉnh sửa dự án</b-button>
+            </div>
 
         </div>
       </div>
@@ -93,7 +99,7 @@
               <h4 id="p-progress">Tiến độ</h4>
               <div v-html="item.progress"></div>
             </div>
-            <div class="comments">
+            <div class="comments" v-if="item.state == 1">
               <h4 id="comments">Bình luận</h4>
                 <div class="list-chat">
                   <div class="chat">
@@ -184,7 +190,7 @@
                 </table>
               </div>
               <div class="write-review">
-                <b-button block v-b-modal.modal-1 variant="info"> <i class="fa fa-comment"></i> Viết bình luận</b-button>
+                <b-button block v-b-modal.modal-1 variant="info" v-if="item.state == 1"> <i class="fa fa-comment"></i> Viết bình luận</b-button>
                 <b-modal id="modal-1" title="Viết bình luận" size="xl">
                   <div class="review">
                   <b-row>
@@ -435,6 +441,26 @@ export default {
       })
       .catch(err => console.log(err.response))
 
+    },
+    toast(title, text, variant) {
+      console.log('ok')
+        this.$bvToast.toast(text, {
+          title: title,
+          toaster: 'b-toaster-bottom-right',
+          solid: true,
+          appendToast: true,
+          variant: variant
+        })
+      },
+    approve () {
+      this.$axios.put(`/api/property/${this.item.id}`, {
+        state: 1
+      }).then(res => {
+        console.log(res)
+        this.toast('Thông báo', 'Phê duyệt dự án thành công', 'success')
+        this.getDetail()
+      })
+      .catch(err => console.log(err))
     }
 
   },
@@ -452,7 +478,12 @@ export default {
         .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
       this.$nextTick(() => this.price = result);
     }
-  }
+  },
+  computed: {
+    userDetail () {
+      return this.$store.state.user
+    }
+  },
 }
 </script>
 

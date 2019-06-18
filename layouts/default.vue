@@ -28,6 +28,10 @@
                   <b-dropdown-item to="/account"><i class="fa fa-plus-square" aria-hidden="true"></i> Hoạt động</b-dropdown-item>
                   <b-dropdown-item to="/account/saved"><i class="fa fa-heart" aria-hidden="true"></i> Lưu trữ</b-dropdown-item>
                   <b-dropdown-item to="/account/update"><i class="fa fa-plus-square" aria-hidden="true"></i> Thông tin cá nhân</b-dropdown-item>
+                  <template v-if="userDetail && userDetail.level == 2">
+                    <b-dropdown-item to="/account/verifypro"><i class="fa fa-check" aria-hidden="true"></i> Phê duyệt dự án</b-dropdown-item>
+                    <b-dropdown-item to="/account/verifynews"><i class="fa fa-check" aria-hidden="true"></i> Phê duyệt tin tức</b-dropdown-item>
+                  </template>
                   <b-dropdown-item href="#" @click.prevent="logOut"><i class="fa fa-sign-out" aria-hidden="true"></i> Đăng xuất</b-dropdown-item>
                 </b-nav-item-dropdown>
 
@@ -48,7 +52,7 @@
             <h3>Hoạt động</h3>
             <ul>
               <li>
-                
+
                 <nuxt-link to="/comment">Viết bình luận</nuxt-link>
               </li>
               <li>
@@ -56,11 +60,11 @@
               </li>
               <li>
                 <nuxt-link to="/help">Trợ giúp và câu hỏi thường gặp</nuxt-link>
-               
+
               </li>
               <li>
                 <nuxt-link to="/toc">Quy định</nuxt-link>
-                
+
               </li>
             </ul>
           </div>
@@ -69,19 +73,19 @@
             <ul>
               <li>
                 <nuxt-link to="/about">Giới thiệu</nuxt-link>
-                
+
               </li>
               <li>
-               
+
                 <nuxt-link to="/policy">Quy chế hoạt động</nuxt-link>
               </li>
               <li>
                 <nuxt-link to="/privacy">Bảo mật thông tin</nuxt-link>
-                
+
               </li>
               <li>
                 <nuxt-link to="/feedback">Góp ý</nuxt-link>
-                
+
               </li>
             </ul>
           </div>
@@ -126,7 +130,9 @@ export default {
   methods: {
     logOut() {
       Cookie.remove('auth')
+      Cookie.remove('user')
       this.$store.commit('setAuth', null)
+      this.$store.commit('setUser', null)
       this.$router.push({path: '/'})
       localStorage.clear()
     }

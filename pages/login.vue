@@ -20,6 +20,7 @@
       <b-form-group id="input-group-2" label="Password:" label-for="input-2">
         <b-form-input
           id="input-2"
+          type="password"
           v-model="login.password"
           required
           placeholder="Enter name"
@@ -30,7 +31,7 @@
      <b-button block @click.prevent="loginByFacebook" variant="facebook"> <i class="fa fa-facebook"></i> Đăng nhập bằng Facebook</b-button>
       <br>
       <p>Chưa có tài khoản? <a href="#" @click.prevent="$router.push({path: '/register'})">Đăng ký ngay</a></p>
- 
+
     </b-form>
     </div>
   </div>
@@ -77,16 +78,16 @@ export default {
           })
     },
     loginByGoogle () {
-      
+
         firebase.auth().signInWithPopup(googleProvider)
           .then(data => {
             this.checkEmail(data.user, 'google')
-            
+
           })
           .catch(err => {
             this.checkEmail ({email: err.email}, 'google')
           })
-    
+
     },
     checkEmail (user, provider) {
       console.log('checkemail')

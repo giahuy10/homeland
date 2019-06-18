@@ -9,9 +9,15 @@ router
   // Get all News
   .get('/', (req, res) => {
     var category = req.query.category ? req.query.category : ''
+    var verify = req.query.verify ? req.query.verify : ''
     let where = {}
     if (category) {
       where.category = category
+    }
+    if (verify) {
+      where.state = -1
+    } else {
+      where.state = 1
     }
     model.findAndCountAll({
       where: where
@@ -76,14 +82,16 @@ router
 
             var final = []
             if (parents) {
-              parents[0].forEach(item => {
-              final.push(items[item])
-              if (parents[item]) {
-                parents[item].forEach(item => {
-                  final.push(items[item])
+              if (parents[0] && parents[0].length > 0) {
+                parents[0].forEach(item => {
+                final.push(items[item])
+                if (parents[item]) {
+                  parents[item].forEach(item => {
+                    final.push(items[item])
+                  })
+                }
                 })
               }
-            })
             }
 
 
@@ -119,10 +127,10 @@ router
   .post('/', checkUserLogged, (req, res) => {
     req.body.slug = slug(req.body.title)
     req.body.createdBy = req.decoded.data.id
-    req.body.state = req.decoded.data.level > 1 ? 1 : -1
+    // req.body.state = req.decoded.data.level > 1 ? 1 : -1
     req.body.hits = 0
     req.body.saved = 0
-    
+
     model.create(req.body).then(data => {
       // save activity
       activity.create({
