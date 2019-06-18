@@ -6,7 +6,7 @@
         <div class="users">
           <div v-for="(item, index) in items" :key="index" class="user">
             <img :src="item.avatar" alt="">
-            <span>{{item.name}}</span>
+            <span>{{item.lastName}}</span>
           </div>
         </div>
       </div>
@@ -19,43 +19,20 @@
 export default {
   data () {
     return {
-      items: [
-        {
-          name: 'Eddy Nguyen',
-          avatar: '/images/0 (1).jfif'
-        },
-        {
-          name: 'Hoàng Oanh',
-          avatar: '/images/0.jfif'
-        },
-        {
-          name: 'Minh Khang',
-          avatar: '/images/8e6f9c2ddddea7c6d5bb836d19308754.jpeg'
-        },
-        {
-          name: 'Thái Hà',
-          avatar: '/images/62979450.jfif'
-        },
-        {
-          name: 'Hương Cẩm',
-          avatar: '/images/can-nhan-3.png'
-        },
-        {
-          name: 'Bảo Định',
-          avatar: '/images/main-thumb-282821662-100-krruoowyyretxlddfvilxlmqdpnczfqg.jpeg'
-        },
-        {
-          name: 'Khánh Băng',
-          avatar: '/images/photo.jpg'
-        },
-        {
-          name: 'Linh Trang',
-          avatar: '/images/Richard-McGregor-fivebooks-interview2-100x100.jpg'
-        },
-
-      ]
+      items: []
+    }
+  },
+  mounted () {
+    this.getItems()
+  },
+  methods: {
+    getItems () {
+      this.$axios.get('/api/user/top')
+        .then(res => this.items = res.data)
+        .catch(err => console.log(err.response))
     }
   }
+
 }
 </script>
 
