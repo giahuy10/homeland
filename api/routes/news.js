@@ -5,20 +5,26 @@ var modelComment = require('../models').Comment
 var slug = require('slug')
 var checkUserLogged = require('../utils/checkUserLogged')
 var activity = require('../models').Activity
+var sequelize = require('../models').sequelize
 router
   // Get all News
   .get('/', (req, res) => {
     var category = req.query.category ? req.query.category : ''
     var verify = req.query.verify ? req.query.verify : ''
     let where = {}
+    let whereRaw = "WHERE 1"
     if (category) {
       where.category = category
+      whereRaw += " and category ='"+category+"'"
     }
     if (verify) {
       where.state = -1
+      whereRaw += " and state = -1"
     } else {
       where.state = 1
+      whereRaw += " and state = 1"
     }
+    var userId = req.query.userId ? parseInt(req.query.userId) : 0
     model.findAndCountAll({
       where: where
     })
@@ -28,14 +34,15 @@ router
         var totalPages = Math.ceil(data.count / limit)
         var offset = limit * (currentPage - 1)
         var oderBy = req.query.orderBy ? req.query.orderBy : 'createdAt'
-        model.findAll({
-          where: where,
-          order: [
-            [oderBy, 'DESC'],
-          ],
-          limit: limit,
-          offset: offset,
-        })
+        // model.findAll({
+        //   where: where,
+        //   order: [
+        //     [oderBy, 'DESC'],
+        //   ],
+        //   limit: limit,
+        //   offset: offset,
+        // })
+        sequelize.query("SELECT n.*, s.id as `like` FROM `news` as n LEFT JOIN `saveds` as s ON n.id = s.itemId and s.type = 2 and s.createdBy = "+userId+" "+whereRaw+ " GROUP by n.id ORDER BY "+oderBy+" DESC LIMIT "+offset+", "+limit, { type: sequelize.QueryTypes.SELECT})
           .then((news) => {
             res.status(200).json({'result': news, oderBy, 'count': data.count, 'pages': totalPages, 'currentPage': currentPage});
           })
@@ -43,10 +50,11 @@ router
       .catch(err => res.json(err))
   })
   .get('/comment/:id', (req, res) => {
+    var userId = req.query.userId ? parseInt(req.query.userId) : 0
     modelComment.findAndCountAll({
       where: {
         itemId: req.params.id,
-        type: 1
+        type: 2
       }
     })
       .then(data => {
@@ -54,19 +62,20 @@ router
         var currentPage = req.query.currentPage ? parseInt(req.query.currentPage) : 1
         var totalPages = Math.ceil(data.count / limit)
         var offset = limit * (currentPage - 1)
-        modelComment.findAll({
-          include: ['user'],
-          where: {
-            itemId: req.params.id,
-            type: 2
-          },
-          limit: limit,
-          offset: offset,
-          order: [
-            ['parent', 'ASC'],
-            ['createdAt', 'ASC']
-          ]
-        })
+        // modelComment.findAll({
+        //   include: ['user'],
+        //   where: {
+        //     itemId: req.params.id,
+        //     type: 2
+        //   },
+        //   limit: limit,
+        //   offset: offset,
+        //   order: [
+        //     ['parent', 'ASC'],
+        //     ['createdAt', 'ASC']
+        //   ]
+        // })
+        sequelize.query("SELECT c.*, s.id as `like`, u.id as userId, firstName, lastName, avatar FROM `comments` as c LEFT JOIN `saveds` as s ON c.id = s.itemId and s.type = 1 and s.createdBy = "+userId+" INNER JOIN `users` as u ON u.id = c.createdBy where c.type = 2 and c.itemId = "+req.params.id+" GROUP by c.id ORDER BY parent ASC, createdAt ASC LIMIT " + offset + ", "+limit, { type: sequelize.QueryTypes.SELECT})
           .then((comments) => {
             let items = {}
             let parents = {}

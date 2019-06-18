@@ -115,7 +115,8 @@ export default {
           str += key + "=" + encodeURIComponent(this.filter[key]);
       }
       console.log(str)
-      this.$axios.get(`/api/property?${str}`)
+      let userId = this.userDetail ? this.userDetail.id : 0
+      this.$axios.get(`/api/property?${str}&userId=${userId}`)
         .then(res => {
           this.items = res.data.result
         })
@@ -127,7 +128,12 @@ export default {
       window.addEventListener('scroll', this.handleScroll)
     }
     this.getItems()
-  }
+  },
+  computed: {
+    userDetail () {
+      return this.$store.state.user
+    }
+  },
 }
 </script>
 
@@ -145,62 +151,8 @@ $pink : #ffa800;
     @media screen and (max-width: 767px) {
       padding: 0 5px;
     }
-    .pro-inner {
-      border: 1px solid #ccc;
-      box-shadow: 0 0 1px 0px #e3e3e3;
-      .pro-img {
-        position: relative;
-        .price {
-          position: absolute;
-          right: 0;
-          bottom: 0;
-          background: #ffa800a6;
-          padding: 5px 10px;
-          color: #fff;
-        }
-      }
-      .pro-info {
-        padding: 10px 20px;
-      }
-    }
   }
-  .pro-title {
-    font-size: 18px;
-    a {
-      color: #17a2b8;
-    }
-  }
-  .pro-desc {
-    font-size: 13px;
-  }
-  .property_listing_details {
-    color: #85878a;
-    font-size: 16px;
-    .inforoom, .infobath, .infosize {
-      background-image: url(/images/unit.png);
-      font-size: 14px;
-      line-height: 30px;
-      background-repeat: no-repeat;
-      margin-right: 15px;
-      padding-left: 23px;
-      color: #3a4659;
-      color: #8593a9;
-      font-size: 13px;
-    }
-    .price {
-      color: #8593a9;
-      font-size: 13px;
-    }
-    .inforoom {
-      background-position: 0 -1px;
-    }
-    .infobath {
-      background-position: -63px -1px;
-    }
-    .infosize {
-      background-position: -127px 0;
-    }
-  }
+
 }
 .sidebar {
   &.sticky {

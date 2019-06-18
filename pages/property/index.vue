@@ -59,6 +59,11 @@ export default {
       }
     }
   },
+  computed: {
+    userDetail () {
+      return this.$store.state.user
+    }
+  },
   methods: {
     getItems () {
        var str = "";
@@ -68,7 +73,8 @@ export default {
           }
           str += key + "=" + encodeURIComponent(this.filter[key]);
       }
-      this.$axios.get(`/api/property?currentPage=${this.currentPage}&perPage=${this.perPage}&${str}`)
+      let userId = this.userDetail ? this.userDetail.id : 0
+      this.$axios.get(`/api/property?currentPage=${this.currentPage}&perPage=${this.perPage}&${str}&userId=${userId}`)
         .then(res => {
           console.log(res)
           this.items = res.data.result

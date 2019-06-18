@@ -5,7 +5,7 @@
         <div class="scroller" ref="scroller">
           <div class="scroller-inner" ref="scroller_inner" :style="'left:'+scroller.left+'px; width: '+totalWidth+'px'">
             <div class="scroller-item" v-for="(item, index) in items" :key="index" ref="scroller_items">
-              <img :src="'/images/ha-noi-home-land/'+item.thumbnail" alt="" @click="openImg(index)">
+              <img :src="item.thumbnail" alt="" @click="openImg(index)">
             </div>
           </div>
         </div>
@@ -18,7 +18,7 @@
       <div class="d-block text-center img-modal">
 
 
-        <img :src="items[currentItem] ? '/images/ha-noi-home-land/'+items[currentItem].full : ''" alt="">
+        <img :src="items[currentItem] ? items[currentItem].full : ''" alt="">
 
 
         <a href="#" class="img-button next" @click.prevent="change(1)"><i class="fa fa-angle-double-right" aria-hidden="true"></i></a>
@@ -33,7 +33,7 @@ export default {
   data () {
     return {
       currentItem: '',
-      
+
       scroller: {
         full: 0,
         screen: 0,
@@ -47,11 +47,10 @@ export default {
   },
   props: ['totalWidth', 'items'],
   mounted () {
-    if (items && items.length > 0) {
+    if (this.items && this.items.length > 0) {
       this.scroller.full = this.totalWidth // this.$refs.scroller_inner.clientWidth
       this.scroller.screen = this.$refs.scroller.clientWidth
       this.scroller.max = this.scroller.full - this.scroller.screen
-      
     }
   },
   methods: {
