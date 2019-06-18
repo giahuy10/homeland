@@ -30,11 +30,21 @@
           <img class="thumbnail" v-if="item.thumbnail" :src="item.thumbnail" alt="">
         </b-form-group>
 
+        <b-form-group label="" v-if="user.level == 2">
+            <b-form-radio-group
+              id="btn-radios-1"
+              v-model="item.state"
+              :options="stateOptions"
+              buttons
+              name="radios-btn-default"
+              button-variant="outline-primary"
+            ></b-form-radio-group>
+          </b-form-group>
             <b-spinner v-if="saveLoading" label="Loading..."></b-spinner>
             <b-button v-else type="submit" variant="primary">
                 {{item.id ? 'Cập nhật nội dung' : 'Tạo nội dung'}}
             </b-button>
-           
+
             </b-form>
         </div>
     </div>
@@ -43,19 +53,28 @@
 <script>
 import Editor from '@tinymce/tinymce-vue'
 export default {
+
+    middleware: 'authenticated',
     mounted () {
         this.getDetail()
+        this.user = this.$store.state.user
     },
     components: {
     'editor': Editor
     },
     data () {
+
         return {
+          stateOptions: [
+        { text: 'Publish', value: 1 },
+        { text: 'Draft', value: -1 }
+      ],
+          user: {},
             categories: [
         { value: 'camera', text: 'Camera nhà đất'},
         { value: 'event', text: 'Sự kiện xung quanh'},
         { value: 'blog', text: 'Blog nhà nhất'},
-       
+
       ],
       saveLoading: false,
             thumbnailLoading: false,
@@ -63,7 +82,8 @@ export default {
                 title: '',
                 category: 'blog',
                 description: '',
-                thumbnail: ''
+                thumbnail: '',
+                state: -1
             },
             init: {
         plugins: 'print preview fullpage searchreplace autolink directionality visualblocks visualchars fullscreen image link media template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists wordcount imagetools textpattern help',
@@ -74,23 +94,34 @@ export default {
         }
     },
     methods: {
+      toast(title, text, variant) {
+      console.log('ok')
+        this.$bvToast.toast(text, {
+          title: title,
+          toaster: 'b-toaster-bottom-right',
+          solid: true,
+          appendToast: true,
+          variant: variant
+        })
+      },
         getDetail () {
             this.$axios.get(`/api/news/${this.$route.params.id}`)
         .then(res => {
           console.log(res)
           this.item = res.data
-         
+
         })
         .catch(err => console.log(err.response))
         },
         onSubmit () {
             this.saveLoading = true
-            
+
             if (this.item.id) {
                 this.$axios.put(`/api/news/${this.item.id}`, this.item)
                 .then(res => {
                 console.log(res)
-                this.saveLoading = false
+                this.toast('Thông báo', 'Cập nhật bài viết thành công', 'success')
+                  this.saveLoading = false
                 })
                 .catch(err => {
                 console.log(err.response)
@@ -99,8 +130,17 @@ export default {
                 this.$axios.post('/api/news', this.item)
                 .then(res => {
                 console.log(res)
-                this.saveLoading = false
-                this.$router.push({path: `/news/edit/${res.data.id}`})
+                  this.saveLoading = false
+                  if (this.user.level == 1) {
+                    this.toast('Thông báo', 'Tạo bài viết thành công. Bài viết sẽ được admin kiểm duyệt trong 48 giờ.', 'success')
+                  } else {
+                    this.toast('Thông báo', 'Tạo bài viết thành công', 'success')
+                  }
+
+
+                  setTimeout(() => { // we simulate the async request with timeout.
+                    this.$router.push({path: `/news/edit/${res.data.id}`})
+                  }, 4000)
                 })
                 .catch(err => {
                 console.log(err.response)
@@ -112,7 +152,7 @@ export default {
         let file = this.$refs.thumbnail.files[0];
         let formData = new FormData();
         formData.append('file', file);
-     
+
         this.$axios.post( '/api/file/upload', formData,
             {
             headers: {

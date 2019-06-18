@@ -16,8 +16,16 @@
                     </div>
                 </div>
                 <div class="addthis_native_toolbox"></div>
+                <div v-if="item.state == -1 && userDetail && userDetail.level == 2">
+                  <b-button variant="success" @click="approve">Phê duyệt bài viết</b-button>
+                </div>
+
+                <div v-if="userDetail && userDetail.level == 2">
+                  <b-button variant="info" @click="$router.push({path: `/news/edit/${item.id}`})">Chỉnh sửa bài viết</b-button>
+                </div>
+
                 <!-- <div class="fb-comments" data-href="https://developers.facebook.com/docs/plugins/comments#configurator" data-width="" data-numposts="5"></div> -->
-                <div class="comments">
+                <div class="comments" v-if="item.state == 1">
                 <h4 id="comments">Bình luận</h4>
                   <div class="list-chat">
                     <div class="chat">
@@ -41,7 +49,7 @@
                     </div>
                   </div>
                   <div class="input-group" id="comment-box">
-                    <input type="text" class="form-control" v-model="commentText" placeholder="Hãy cho mọi người biết suy nghĩ của bạn về dự án này" >
+                    <input type="text" class="form-control" v-model="commentText" placeholder="Hãy cho mọi người biết suy nghĩ của bạn về bài viết này" >
                     <div class="input-group-append">
                       <div class="input-group-text" @click="sendComment"><i class="fa fa-reply-all" aria-hidden="true"></i></div>
                     </div>
@@ -115,7 +123,7 @@ export default {
   mounted () {
     this.getDetail()
     this.getItems()
-    
+
     // (function(d, s, id) {
     //       var js, fjs = d.getElementsByTagName(s)[0];
     //       if (d.getElementById(id)) return;
@@ -234,7 +242,22 @@ export default {
                 })
                 .catch(err => console.log(err))
         },
-  }
+    approve () {
+      this.$axios.put(`/api/news/${this.item.id}`, {
+        state: 1
+      }).then(res => {
+        console.log(res)
+        this.toast('Thông báo', 'Phê duyệt bài viết thành công', 'success')
+        this.getDetail()
+      })
+      .catch(err => console.log(err))
+    }
+  },
+  computed: {
+    userDetail () {
+      return this.$store.state.user
+    }
+  },
 }
 </script>
 

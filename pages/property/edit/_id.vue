@@ -102,9 +102,22 @@
           <div class="clearfix"></div>
         </div>
 
+        <b-form-group label="" v-if="user.level == 2">
+            <b-form-radio-group
+              id="btn-radios-1"
+              v-model="item.state"
+              :options="stateOptions"
+              buttons
+              name="radios-btn-default"
+              button-variant="outline-primary"
+            ></b-form-radio-group>
+          </b-form-group>
+
         <b-spinner v-if="saveLoading" label="Loading..."></b-spinner>
 
-        <b-button v-else type="submit" variant="primary">Submit</b-button>
+        <b-button v-else type="submit" variant="primary">
+            {{item.id ? 'Cập nhật dự án' : 'Tạo dự án'}}
+        </b-button>
       </b-form>
     </div>
   </div>
@@ -114,7 +127,7 @@
 import Editor from '@tinymce/tinymce-vue'
 import location from '~/static/local.json'
 export default {
-  middleware: ['checkRightProperty'],
+  middleware: ['checkRightProperty', 'authenticated'],
   components: {
     'editor': Editor
   },
@@ -123,10 +136,12 @@ export default {
     if (this.$route.params.id > 0) {
       this.getDetail()
     }
+    this.user = this.$store.state.user
 
   },
   data () {
     return {
+      user: {},
       saveLoading: false,
       imageLoading: false,
       thumbnailLoading: false,
@@ -176,6 +191,16 @@ export default {
     }
   },
   methods: {
+    toast(title, text, variant) {
+      console.log('ok')
+        this.$bvToast.toast(text, {
+          title: title,
+          toaster: 'b-toaster-bottom-right',
+          solid: true,
+          appendToast: true,
+          variant: variant
+        })
+      },
     getDetail () {
       this.$axios.get(`/api/property/${this.$route.params.id}`)
         .then(res => {
@@ -191,6 +216,7 @@ export default {
         this.$axios.put(`/api/property/${this.item.id}`, this.item)
         .then(res => {
           console.log(res)
+          this.toast('Thông báo', 'Cập nhật dự án thành công', 'success')
           this.saveLoading = false
         })
         .catch(err => {
@@ -201,7 +227,16 @@ export default {
         .then(res => {
           console.log(res)
           this.saveLoading = false
-          this.$router.push({path: `/property/edit/${res.data.id}`})
+          if (this.user.level == 1) {
+            this.toast('Thông báo', 'Tạo dự án thành công. Dự án sẽ được admin kiểm duyệt trong 48 giờ.', 'success')
+          } else {
+            this.toast('Thông báo', 'Tạo dự thành công', 'success')
+          }
+
+
+          setTimeout(() => { // we simulate the async request with timeout.
+            this.$router.push({path: `/property/edit/${res.data.id}`})
+          }, 4000)
         })
         .catch(err => {
           console.log(err.response)

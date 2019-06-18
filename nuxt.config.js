@@ -69,7 +69,7 @@ module.exports = {
   */
   axios: {
     // See https://github.com/nuxt-community/axios-module#options
-    baseURL: 'http://homenland.vn/'
+    baseURL: process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'http://homenland.vn'
   },
 
   /*

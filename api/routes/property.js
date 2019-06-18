@@ -26,7 +26,7 @@ router
     var type = req.query.type ? parseInt(req.query.type) : 0
     var price = req.query.price ? parseInt(req.query.price) : 0
     var oderBy = req.query.sortBy ? req.query.sortBy : 'id'
-
+    var verify = req.query.verify ? req.query.verify : ''
     var title = req.query.title ? req.query.title : ''
 
     let where = {}
@@ -46,6 +46,11 @@ router
       where.title = {
          $like: '%'+title+'%'
       }
+    }
+    if (verify) {
+      where.state = -1
+    } else {
+      where.state = 1
     }
 
     model.findAndCountAll({
@@ -125,6 +130,7 @@ router
 
             var final = []
             if (parents) {
+              if (parents[0] && parents[0].length > 0) {
               parents[0].forEach(item => {
               final.push(items[item])
               if (parents[item]) {
@@ -132,7 +138,8 @@ router
                   final.push(items[item])
                 })
               }
-            })
+              })
+              }
             }
 
 
@@ -169,7 +176,7 @@ router
   .post('/', checkUserLogged, (req, res) => {
     req.body.slug = slug(req.body.title)
     req.body.createdBy = req.decoded.data.id
-    req.body.state = req.decoded.data.level > 1 ? 1 : -1
+    // req.body.state = req.decoded.data.level > 1 ? 1 : -1
     req.body.hits = 0
     req.body.saved = 0
     req.body.totalImages = 0
