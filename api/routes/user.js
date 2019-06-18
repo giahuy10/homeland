@@ -4,9 +4,10 @@ var model = require('../models').User
 var passwordHash = require('password-hash')
 var multer   =  require( 'multer' )
 var jwt = require('jsonwebtoken')
-var checkUserLogged = require('../utils/checkUserLogged')
+//var checkUserLogged = require('../utils/checkUserLogged')
+var sequelize = require('../models').sequelize
 var moment = require('moment')
-var activity = require('../models').Activity
+//var activity = require('../models').Activity
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
     // console.log(req.params)
@@ -43,7 +44,13 @@ router
       })
       .catch(err => res.json(err))
   })
-
+  .get('/top', (req, res) => {
+    sequelize.query("SELECT u.*, count(a.`createdBy`) as activities FROM `activities` as a INNER JOIN `users` as u ON u.id = a.createdBy group by a.`createdBy` order by activities desc limit 0, 9", { type: sequelize.QueryTypes.SELECT})
+      .then(users => {
+        res.json(users)
+      })
+      .catch(err => res.json(err))
+  })
   // Get detail News by ID
   .get('/:id', (req, res) => {
     model.findByPk(req.params.id).then(data => res.json(data)).catch(err => res.json(err))
@@ -158,5 +165,6 @@ router
     .catch(err => res.json(err))
 
   })
+
 
 module.exports = router;

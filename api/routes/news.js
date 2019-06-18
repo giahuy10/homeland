@@ -46,6 +46,7 @@ router
           .then((news) => {
             res.status(200).json({'result': news, oderBy, 'count': data.count, 'pages': totalPages, 'currentPage': currentPage});
           })
+          .catch(err => res.json(err))
       })
       .catch(err => res.json(err))
   })
@@ -106,6 +107,7 @@ router
 
             res.status(200).json({'result': final, 'count': data.count, 'pages': totalPages, 'currentPage': currentPage});
           })
+          .catch(err => res.json(err))
       })
       .catch(err => res.json(err))
   })

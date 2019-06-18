@@ -86,6 +86,7 @@ router
           .then((news) => {
             res.status(200).json({'result': news, 'count': data.count, 'pages': totalPages, 'currentPage': currentPage});
           })
+          .catch(err => res.json(err))
       })
       .catch(err => res.json(err))
   })
@@ -99,6 +100,7 @@ router
           // We don't need spread here, since only the results will be returned for select queries
           res.status(200).json({'result': pros });
         })
+        .catch(err => res.json(err))
   })
 
   // Check property right
