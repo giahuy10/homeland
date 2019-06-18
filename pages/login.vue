@@ -67,6 +67,10 @@ export default {
           Cookie.set('user', res.data.user) // saving token in cookie for server rendering
           this.$router.push('/')
         })
+        .catch(err => {
+          console.log(err.response)
+          this.toast('Thông báo', err.response.data.msg, 'warning')
+        })
     },
     loginByFacebook () {
       firebase.auth().signInWithPopup(facebookProvider)
@@ -89,6 +93,16 @@ export default {
           })
 
     },
+    toast(title, text, variant) {
+      console.log('ok')
+        this.$bvToast.toast(text, {
+          title: title,
+          toaster: 'b-toaster-bottom-right',
+          solid: true,
+          appendToast: true,
+          variant: variant
+        })
+      },
     checkEmail (user, provider) {
       console.log('checkemail')
       this.$axios.post(`/api/user/checkEmail`, user)

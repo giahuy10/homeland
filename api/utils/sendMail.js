@@ -1,17 +1,17 @@
 var nodemailer =  require('nodemailer'); // khai báo sử dụng module nodemailer
 var sendMail = (subject, text, html) => {
     var transporter =  nodemailer.createTransport({ // config mail server
-        service: 'Gmail',
-        // host: "smtp.ethereal.email",
-        // port: 587,
-        // secure: false, // true for 465, false for other ports
+        // service: 'Gmail',
+        host: "in-v3.mailjet.com",
+        port: 587,
+        secure: false,
         auth: {
-            user: 'vsqisoft@gmail.com',
-            pass: 'htecom.vn'
+            user: '3408304d4aaf8407c4aa1ed1598ccf62',
+            pass: '985a590344fad3534ba38aed6ab66e55'
         }
     })
     var mainOptions = { // thiết lập đối tượng, nội dung gửi mail
-        from: 'HomenLand Website',
+        from: 'Homenland Website',
         to: 'anjakahuy@gmail.com',
         subject: subject,
         text: text,

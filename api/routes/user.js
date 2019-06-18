@@ -90,10 +90,10 @@ router
             let token = jwt.sign( {data}, 'LOIKPOKLSK1029KJ')
             res.json( { token, user: data} )
           } else {
-            res.status(401).json({ 'msg' : 'Incorrect password' })
+            res.status(401).json({ 'msg' : 'Mật khẩu không chính xác' })
           }
         } else {
-          res.status(404).json({ 'msg' : 'Not found' })
+          res.status(404).json({ 'msg' : 'Không tìm thấy tài khoản' })
         }
       })
       .catch(err => res.status(500).json({err: err}))
