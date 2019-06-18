@@ -11,7 +11,7 @@
                 {{item.hits}} <i class="fa fa-eye" aria-hidden="true"></i>
             </div>
             <div class="float-right save-item" @click="save(item.id)">
-                <i class="fa fa-heart" aria-hidden="true"></i>
+                <i class="fa fa-heart" :class="item.like ? 'saved' : ''" aria-hidden="true"></i>
             </div>
             </div>
         </div>
@@ -24,7 +24,7 @@ export default {
   props: ['item'],
   methods: {
     save (itemId) {
-
+      if (this.$store.state.user) {
       this.$axios.post('/api/saved', {
         type: 2,
         itemId: itemId
@@ -38,15 +38,20 @@ export default {
           title = 'Thành công'
           text = 'Bạn đã lưu bài viết thành công'
           variant = 'success'
+          this.item.like = 1
         } else{
           // dislike
           title = 'Thành công'
           text = 'Bạn đã hủy lưu bài viết'
           variant = 'warning'
+          this.item.like = null
         }
         this.toast(title, text, variant)
       })
       .catch(err=> console.log(err.response))
+      } else {
+        this.toast('Thông báo', 'Vui lòng đăng nhập trước để lưu bài viết', 'warning')
+      }
     },
     toast(title, text, variant) {
       console.log('ok')
@@ -63,6 +68,9 @@ export default {
 </script>
 <style lang="scss">
 $pink : #ffa800;
+i.fa.saved {
+  color: #9c7048;
+}
 .save-item {
   &:hover {
     cursor: pointer;
@@ -70,8 +78,9 @@ $pink : #ffa800;
   }
 }
 .share {
-  color: #ae5e6c;
+  color: #8f8f8f;
 }
+
 .news-title {
   margin-bottom: 5px;
   margin-top: 5px;

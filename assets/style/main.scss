@@ -46,8 +46,12 @@ a {
         .reply {
           a {
             font-size: 12px;
-            color: #926034;
+            color: #717171;
             margin-left: 5px;
+            &.liked {
+              font-weight: bold;
+              color: #9c7048;
+            }
           }
         }
 

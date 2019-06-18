@@ -5,19 +5,16 @@ var modelComment = require('../models').Comment
 var modelMedia = require('../models').PropertyMedia
 var slug = require('slug')
 var checkUserLogged = require('../utils/checkUserLogged')
+var sendMail = require('../utils/sendMail')
 var activity = require('../models').Activity
-function buildList (parentId, items, parents, html) {
+var sequelize = require('../models').sequelize
 
-  if (parents[parentId]) {
-    parents[parentId].forEach(itemId => {
-      html.push(items[itemId])
-      buildList(itemId, items, parents, html)
-    })
-  }
-  return html
-}
 
 router
+  .post('/sendmail' , (req, res) => {
+    let data = sendMail('Có một dự án từ homeland', 'Nội dung text', '<h2>Nội dung HTML</h2>')
+    res.json(data)
+  })
   // Get all Properties
   .get('/', (req, res) => {
 
@@ -29,29 +26,42 @@ router
     var verify = req.query.verify ? req.query.verify : ''
     var title = req.query.title ? req.query.title : ''
 
+    var userId = req.query.userId ? parseInt(req.query.userId) : 0
+
     let where = {}
+    let whereRaw = "WHERE 1"
     if (city) {
       where.city = city
+      whereRaw += " and city = "+city
     }
     if (district) {
       where.district = district
+      whereRaw += " and district = "+district
     }
     if (type) {
       where.type = type
+      whereRaw += " and type = "+type
     }
     if (price) {
       where.price = price
+      whereRaw += " and price = "+price
     }
     if (title) {
       where.title = {
          $like: '%'+title+'%'
+
       }
+      whereRaw += " and title like '%"+title+"%'"
     }
     if (verify) {
       where.state = -1
+      whereRaw += " and state = -1"
     } else {
       where.state = 1
+      whereRaw += " and state = 1"
     }
+
+
 
     model.findAndCountAll({
       where: where
@@ -61,21 +71,36 @@ router
         var currentPage = req.query.currentPage ? parseInt(req.query.currentPage) : 1
         var totalPages = Math.ceil(data.count / limit)
         var offset = limit * (currentPage - 1)
-        model.findAll({
-          where: where,
-          include: ['comments'],
-          order: [
-            [oderBy, 'DESC'],
-          ],
-          limit: limit,
-          offset: offset,
-        })
+
+
+        // model.findAll({
+        //   where: where,
+        //   // include: ['comments'],
+        //   order: [
+        //     [oderBy, 'DESC'],
+        //   ],
+        //   limit: limit,
+        //   offset: offset,
+        // })
+        sequelize.query("SELECT p.*, s.id as `like` FROM `properties` as p LEFT JOIN `saveds` as s ON p.id = s.itemId and s.type = 3 and s.createdBy = "+userId+" "+whereRaw+ " GROUP by p.id ORDER BY "+oderBy+" DESC LIMIT "+offset+", "+limit, { type: sequelize.QueryTypes.SELECT})
           .then((news) => {
             res.status(200).json({'result': news, 'count': data.count, 'pages': totalPages, 'currentPage': currentPage});
           })
       })
       .catch(err => res.json(err))
   })
+
+  .get('/check-pro', (req, res) => {
+    let offset = 0
+    let limit = 10
+    let userId = req.decoded ? req.decoded.data.id : 0
+     sequelize.query("SELECT p.*, s.id as `like` FROM `properties` as p LEFT JOIN `saveds` as s ON p.id = s.itemId and s.type = 3 and s.createdBy = "+userId+" GROUP by p.id LIMIT "+offset+", "+limit, { type: sequelize.QueryTypes.SELECT})
+        .then(pros => {
+          // We don't need spread here, since only the results will be returned for select queries
+          res.status(200).json({'result': pros });
+        })
+  })
+
   // Check property right
   .post('/check/:id', checkUserLogged, (req, res) => {
 
@@ -91,6 +116,7 @@ router
   })
 
   .get('/comment/:id', (req, res) => {
+    var userId = req.query.userId ? parseInt(req.query.userId) : 0
     modelComment.findAndCountAll({
       where: {
         itemId: req.params.id,
@@ -102,19 +128,20 @@ router
         var currentPage = req.query.currentPage ? parseInt(req.query.currentPage) : 1
         var totalPages = Math.ceil(data.count / limit)
         var offset = limit * (currentPage - 1)
-        modelComment.findAll({
-          include: ['user'],
-          where: {
-            itemId: req.params.id,
-            type: 1
-          },
-          limit: limit,
-          offset: offset,
-          order: [
-            ['parent', 'ASC'],
-            ['createdAt', 'ASC']
-          ]
-        })
+        // modelComment.findAll({
+        //   include: ['user'],
+        //   where: {
+        //     itemId: req.params.id,
+        //     type: 1
+        //   },
+        //   limit: limit,
+        //   offset: offset,
+        //   order: [
+        //     ['parent', 'ASC'],
+        //     ['createdAt', 'ASC']
+        //   ]
+        // })
+        sequelize.query("SELECT c.*, s.id as `like`, u.id as userId, firstName, lastName, avatar FROM `comments` as c LEFT JOIN `saveds` as s ON c.id = s.itemId and s.type = 1 and s.createdBy = "+userId+" INNER JOIN `users` as u ON u.id = c.createdBy where c.type = 1 and c.itemId = "+req.params.id+" GROUP by c.id ORDER BY parent ASC, createdAt ASC LIMIT " + offset + ", "+limit, { type: sequelize.QueryTypes.SELECT})
           .then((comments) => {
             let items = {}
             let parents = {}
@@ -152,6 +179,7 @@ router
   // Get detail property by ID
   .get('/:id', (req, res) => {
     model.findOne({
+      include: ['images'],
       where: {
         $or: [
           {

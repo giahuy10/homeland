@@ -81,9 +81,15 @@ export default {
         this.getItems()
         this.getPopulars()
     },
+    computed: {
+    userDetail () {
+      return this.$store.state.user
+    }
+  },
     methods: {
         getItems () {
-            this.$axios.get(`/api/news?category=${this.$route.params.category}&currentPage=${this.currentPage}&perPage=${this.perPage}`)
+          let userId = this.userDetail ? this.userDetail.id : 0
+            this.$axios.get(`/api/news?category=${this.$route.params.category}&currentPage=${this.currentPage}&perPage=${this.perPage}&userId=${userId}`)
                 .then(res => {
                     console.log(res)
                     this.items = res.data.result

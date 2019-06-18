@@ -28,12 +28,18 @@ export default {
   },
   methods: {
     getItems () {
-      this.$axios.get('/api/property?perPage=5&currentPage=1')
+      let userId = this.userDetail ? this.userDetail.id : 0
+      this.$axios.get(`/api/property?perPage=5&currentPage=1&userId=${userId}`)
         .then(res => {
           console.log(res)
           this.items = res.data.result
         })
         .catch(err => console.log(err.response))
+    }
+  },
+  computed: {
+    userDetail () {
+      return this.$store.state.user
     }
   },
   data () {

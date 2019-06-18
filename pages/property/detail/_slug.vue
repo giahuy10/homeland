@@ -106,27 +106,28 @@
                     <ul class="list-unstyled">
 
                       <li class="media" :class="comment.parent ? 'child' : ''" v-for="(comment, index) in comments" :key="index">
-                        <img :src="comment.user.avatar" class="mr-3" alt="...">
+                        <img :src="comment.avatar" class="mr-3" alt="...">
                         <div class="media-body">
                           <div class="comment-text">
                             <b>
-                              <nuxt-link to="#">{{comment.user.firstName +' '+comment.user.lastName}}</nuxt-link>
+                              <nuxt-link to="#">{{comment.firstName +' '+comment.lastName}}</nuxt-link>
                             </b>
                             {{comment.text}}
                           </div>
-                          <div class="reply"><a href="#" @click.prevent="save(comment.id)">Thích</a> <a href="#comment-box" @click="commentParent = comment.parent, commentText = '@'+comment.user.lastName+' '">Thảo luận</a></div>
-
-
+                          <div class="reply"><a href="#" :class="comment.like ? 'liked' : ''" @click.prevent="saveCM(comment.id, index)">Thích</a> <a href="#comment-box" @click="commentParent = comment.parent, commentText = '@'+comment.user.lastName+' '">Thảo luận</a></div>
                         </div>
                       </li>
                     </ul>
                   </div>
                 </div>
-                <div class="input-group" id="comment-box">
+                <div class="input-group" id="comment-box" v-if="userDetail">
                   <input type="text" class="form-control" v-model="commentText" placeholder="Hãy cho mọi người biết suy nghĩ của bạn về dự án này" >
                   <div class="input-group-append">
                     <div class="input-group-text" @click="sendComment"><i class="fa fa-reply-all" aria-hidden="true"></i></div>
                   </div>
+                </div>
+                <div class="alert alert-warning" v-else>
+                  Vui lòng <nuxt-link to="/login">đăng nhập</nuxt-link> để gửi bình luận
                 </div>
 
             </div>
@@ -190,9 +191,9 @@
                 </table>
               </div>
               <div class="write-review">
-                <b-button block v-b-modal.modal-1 variant="info" v-if="item.state == 1"> <i class="fa fa-comment"></i> Viết bình luận</b-button>
-                <b-modal id="modal-1" title="Viết bình luận" size="xl">
-                  <div class="review">
+                <b-button block v-b-modal.modal-1 variant="info" v-if="item.state == 1"> <i class="fa fa-comment"></i> Gửi đánh giá</b-button>
+                <b-modal id="modal-1" title="Gửi đánh giá" size="xl">
+                  <div class="review" v-if="userDetail">
                   <b-row>
                     <b-col sm="2">
 
@@ -246,6 +247,9 @@
                     </b-col>
                   </b-row>
 
+                </div>
+                <div class="alert alert-warning" v-else>
+                  Vui lòng <nuxt-link to="/login">đăng nhập</nuxt-link> để gửi đánh giá
                 </div>
                 <!-- <br> <br>
                 <b-form-textarea
@@ -387,7 +391,8 @@ export default {
         .catch(err => console.log(err.response))
     },
     getComments () {
-      this.$axios.get(`/api/property/comment/${this.$route.params.slug}`)
+      let userId = this.userDetail ? this.userDetail.id : 0
+      this.$axios.get(`/api/property/comment/${this.$route.params.slug}?userId=${userId}`)
         .then(res => {
           console.log(res)
           this.comments = res.data.result
@@ -441,6 +446,32 @@ export default {
       })
       .catch(err => console.log(err.response))
 
+    },
+    saveCM (id, index) {
+      this.$axios.post('/api/saved', {
+        type: 1,
+        itemId: id
+      })
+      .then(res => {
+        let title = ''
+        let text = ''
+        let variant = ''
+        if(res.data.id) {
+          // Like
+          title = 'Thành công'
+          text = 'Bạn đã thích một bình luận'
+          variant = 'success'
+          this.comments[index].like = 1
+        } else{
+          // dislike
+          title = 'Thành công'
+          text = 'Bạn đã hủy thích một bình luận'
+          variant = 'warning'
+          this.comments[index].like = null
+        }
+        this.toast(title, text, variant)
+      })
+      .catch(err=> console.log(err.response))
     },
     toast(title, text, variant) {
       console.log('ok')

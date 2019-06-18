@@ -24,7 +24,7 @@
           </div>
           <div class="float-right">
             <i class="fa fa-share-alt" aria-hidden="true"></i>
-            <i class="fa fa-heart" aria-hidden="true" @click="save(item.id)"></i>
+            <i class="fa fa-heart" :class="item.like ? 'saved' : ''" aria-hidden="true" @click="save(item.id)"></i>
           </div>
           <div class="clearfix"></div>
         </div>
@@ -52,29 +52,35 @@ export default {
   },
   methods: {
     save (itemId) {
+      if (this.$store.state.user) {
+        this.$axios.post('/api/saved', {
+          type: 3,
+          itemId: itemId
+        })
+        .then(res => {
+          let title = ''
+          let text = ''
+          let variant = ''
+          if(res.data.id) {
+            // Like
+            title = 'Thành công'
+            text = 'Bạn đã lưu dự án thành công'
+            variant = 'success'
+            this.item.like = 1
+          } else{
+            // dislike
+            title = 'Thành công'
+            text = 'Bạn đã hủy lưu dự án'
+            variant = 'warning'
+            this.item.like = null
+          }
+          this.toast(title, text, variant)
+        })
+        .catch(err=> console.log(err.response))
+      } else {
+        this.toast('Thông báo', 'Vui lòng đăng nhập trước để lưu dự án', 'warning')
+      }
 
-      this.$axios.post('/api/saved', {
-        type: 3,
-        itemId: itemId
-      })
-      .then(res => {
-        let title = ''
-        let text = ''
-        let variant = ''
-        if(res.data.id) {
-          // Like
-          title = 'Thành công'
-          text = 'Bạn đã lưu dự án thành công'
-          variant = 'success'
-        } else{
-          // dislike
-          title = 'Thành công'
-          text = 'Bạn đã hủy lưu dự án'
-          variant = 'warning'
-        }
-        this.toast(title, text, variant)
-      })
-      .catch(err=> console.log(err.response))
     },
     toast(title, text, variant) {
       console.log('ok')
@@ -93,9 +99,14 @@ export default {
 <style lang="scss">
 $pink : #ffa800;
 i.fa {
+  &.saved {
+    color: #9c7048;
+  }
   &:hover {
     cursor: pointer;
+    color: $pink;
   }
+
 }
   .pro-title {
     font-size: 18px;
@@ -107,7 +118,7 @@ i.fa {
     font-size: 13px;
   }
   .property_listing_details {
-    color: #ae5e6c;
+    color: #8f8f8f;
     font-size: 16px;
     .inforoom, .infobath, .infosize {
       background-image: url(/images/unit.png);
