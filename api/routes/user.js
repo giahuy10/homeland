@@ -52,7 +52,7 @@ router
   .post('/checkEmail', (req, res) => {
     model.findOne({
       where: {
-        email: req.body.email
+        email: req.body.email ?  req.body.email : 'email'
       }
     })
       .then(data => {
