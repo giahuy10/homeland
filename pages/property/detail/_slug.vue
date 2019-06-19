@@ -406,7 +406,7 @@ export default {
           this.item = res.data
           this.getDistricts()
         })
-        .catch(err => this.$router.push({path: '/'}))
+        .catch(err => console.log(err))
     },
     calculateLoan () {
       let total = this.price
