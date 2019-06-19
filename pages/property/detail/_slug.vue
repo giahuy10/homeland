@@ -89,7 +89,7 @@
             </div>
             <div class="galleries">
               <h4 id="galleries">Ảnh dự án</h4>
-              <Gallery :items="item.images" :totalWidth="item.totalWidth" v-if="item.images && item.images.length > 0"/>
+              <Gallery :items="item.images.filter(item => item.type == 1)" :totalWidth="item.totalWidth" v-if="item.images && item.images.filter(item => item.type == 1).length > 0"/>
                 <h5>Sản phẩm</h5>
                 <div v-html="item.product"></div>
                 <h5>Tiện tích</h5>
@@ -97,6 +97,7 @@
             </div>
             <div class="p-progress">
               <h4 id="p-progress">Tiến độ</h4>
+              <Gallery :items="item.images.filter(item => item.type == 2)" :totalWidth="item.totalWidth2" v-if="item.images && item.images.filter(item => item.type == 2).length > 0"/>
               <div v-html="item.progress"></div>
             </div>
             <div class="comments" v-if="item.state == 1">
@@ -106,15 +107,20 @@
                     <ul class="list-unstyled">
 
                       <li class="media" :class="comment.parent ? 'child' : ''" v-for="(comment, index) in comments" :key="index">
-                        <img :src="comment.avatar" class="mr-3" alt="...">
+                        <img :src="comment.avatar" class="mr-3 avatar-chat" alt="...">
                         <div class="media-body">
                           <div class="comment-text">
-                            <b>
-                              <nuxt-link to="#">{{comment.firstName +' '+comment.lastName}}</nuxt-link>
+                            <b >
+                              <nuxt-link class="text-info" to="#">{{comment.firstName +' '+comment.lastName}}</nuxt-link>
                             </b> <small>{{comment.createdAt | moment("DD/MM/YYYY, h:mm:ss a")}}</small>
                             <div v-html="comment.text"></div>
+                          <GalleryComment :items="JSON.parse(comment.images)" v-if="comment.images && JSON.parse(comment.images).length > 0" />
+
                           </div>
-                          <div class="reply"><a href="#" :class="comment.like ? 'liked' : ''" @click.prevent="saveCM(comment.id, index)">Thích</a> <a href="#comment-box" @click="commentParent = comment.parent, commentText = '@'+comment.user.lastName+' '">Thảo luận</a></div>
+                          <div class="reply">
+                            <a href="#" :class="comment.like ? 'liked' : ''" @click.prevent="saveCM(comment.id, index)">Thích</a> <a href="#comment-box" @click="commentParent = comment.parent, commentText = '@'+comment.user.lastName+' '">Thảo luận</a>
+                            <a href="#" @click.prevent="removeComment(comment.id)" v-if="userDetail && userDetail.id == comment.createdBy || userDetail.level == 2">Xóa</a>
+                            </div>
                         </div>
                       </li>
                     </ul>
@@ -133,7 +139,7 @@
             </div>
             <div class="map">
               <h4 id="map">Bản đồ</h4>
-              <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d59593.520278147014!2d105.93197290008044!3d21.00886500208229!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0xb760f3c179e923f!2zVsSDbiBwaMOybmcgYsOhbiBow6BuZyBk4buxIMOhbiBIYW5vaSBIb21lbGFuZCBOZ3V54buFbiBWxINuIEPhu6s!5e0!3m2!1svi!2s!4v1559171088529!5m2!1svi!2s" width="600" height="450" frameborder="0" style="border:0" allowfullscreen></iframe>
+              <div v-html="item.map"></div>
             </div>
           </div>
           <div class="col-12 col-md-3">
@@ -307,8 +313,9 @@
 <script>
 import Slider from '~/components/Slider.vue'
 import Gallery from '~/components/Gallery.vue';
+import GalleryComment from '~/components/GalleryComment.vue';
 export default {
-  components: {Gallery, Slider},
+  components: {Gallery, Slider, GalleryComment},
 
   data () {
 
@@ -428,7 +435,7 @@ export default {
       let userId = this.userDetail ? this.userDetail.id : 0
       this.$axios.get(`/api/property/comment/${this.$route.params.slug}?userId=${userId}`)
         .then(res => {
-          console.log(res)
+          console.log('comments', res)
           this.comments = res.data.result
         })
         .catch(err => console.log(err.response))
@@ -438,7 +445,7 @@ export default {
         .then(res => {
           console.log('detail', res)
           this.item = res.data
-          this.getDistricts()
+          // this.getDistricts()
         })
         .catch(err => console.log(err))
     },
@@ -517,6 +524,14 @@ export default {
           variant: variant
         })
       },
+    removeComment (id) {
+      this.$axios.delete(`/api/comments/${id}`)
+      .then(res=> {
+        this.toast('Thông báo', 'Xóa bình luận thành công', 'success')
+        this.getComments()
+      })
+      .catch(err=> console.log(err.response))
+    },
     approve () {
       this.$axios.put(`/api/property/${this.item.id}`, {
         state: 1
@@ -573,7 +588,11 @@ export default {
   computed: {
     userDetail () {
       return this.$store.state.user
-    }
+    },
+    // projectImages () {
+    //   return this.item.images.filter(item => item.type == 1)
+    // }
+
   },
 }
 </script>

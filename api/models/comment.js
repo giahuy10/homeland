@@ -4,7 +4,9 @@ module.exports = (sequelize, DataTypes) => {
     type: DataTypes.INTEGER,
     itemId: DataTypes.INTEGER,
     parent: DataTypes.INTEGER,
+    totalWidth: DataTypes.INTEGER,
     text: DataTypes.TEXT,
+    images: DataTypes.TEXT,
     createdBy: DataTypes.INTEGER,
     state: DataTypes.INTEGER
   }, {});

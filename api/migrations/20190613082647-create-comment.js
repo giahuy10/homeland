@@ -17,7 +17,13 @@ module.exports = {
       parent: {
         type: Sequelize.INTEGER
       },
+      totalWidth: {
+        type: Sequelize.INTEGER
+      },
       text: {
+        type: Sequelize.TEXT
+      },
+      images: {
         type: Sequelize.TEXT
       },
       createdBy: {

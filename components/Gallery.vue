@@ -141,7 +141,7 @@ export default {
       transition: all 0.5s;
       .scroller-item {
         display: inline;
-        border-right: 2px solid #fff;
+        // border-right: 2px solid #fff;
         &:hover {
           cursor: pointer;
         }

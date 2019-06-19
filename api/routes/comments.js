@@ -53,7 +53,9 @@ router
   .post('/', checkUserLogged, (req, res) => {
     req.body.createdBy = req.decoded.data.id
     req.body.state = 1
+    req.body.images = JSON.stringify(req.body.images)
     let images = req.body.images
+    let totalWidth = 0
     // save activity
     activity.create({
       createdBy: req.decoded.data.id,
@@ -86,9 +88,12 @@ router
               width: item.width,
               type: 3
             })
-
+            totalWidth += item.width
           })
-
+          data.update({
+            totalWidth: totalWidth
+          }).then(response => console.log(response))
+            .catch(err => console.log.json(err))
           modelMedia.bulkCreate(bulkData)
             .then(response => console.log(response))
             .catch(err => console.log(err))

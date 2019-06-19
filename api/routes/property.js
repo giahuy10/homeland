@@ -171,7 +171,24 @@ router
   // Get detail property by ID
   .get('/:id', (req, res) => {
     model.findOne({
-      include: ['images'],
+      include: ['images'
+        // {
+        //   model: modelMedia,
+        //   as: 'images',
+        //   where: {
+        //       type: 1,
+             
+        //   }
+        // },
+        // {
+        //   model: modelMedia,
+        //   as: 'images2',
+        //   where: {
+        //       type: 2,
+             
+        //   }
+        // }
+      ],
       where: {
         $or: [
           {
@@ -205,6 +222,9 @@ router
     req.body.hits = 0
     req.body.saved = 0
     req.body.totalImages = 0
+    req.body.totalComments = 0
+    req,body.totalWidth2 = 0
+    req.body.totalImages2 = 0
     req.body.totalComments = 0
     let images = req.body.images
 
