@@ -2,78 +2,81 @@
     <div class="container">
         <div class="login-page">
             <h1>Đăng ký tài khoản</h1>
-            <b-form @submit.prevent="onSubmit">
-            <b-form-group id="input-group-1" label="Địa chỉ email:" label-for="input-1">
-                <b-form-input
-                id="input-1"
-                v-model="register.email"
-                type="email"
-                required
-               
-                ></b-form-input>
-            </b-form-group>
+            <div class="alert alert-success" v-if="submited">
+              Đăng ký tài khoản thành công. Vui lòng kiếm tra email để kích hoạt tài khoản
+            </div>
+            <b-form @submit.prevent="onSubmit" v-else>
+              <b-form-group id="input-group-1" label="Địa chỉ email:" label-for="input-1">
+                  <b-form-input
+                  id="input-1"
+                  v-model="register.email"
+                  type="email"
+                  required
 
-            <b-form-group id="input-group-2" label="Họ:" label-for="input-2">
-                <b-form-input
-                id="input-2"
-                v-model="register.firstName"
-               
-          
-                ></b-form-input>
-            </b-form-group>
+                  ></b-form-input>
+              </b-form-group>
 
-            <b-form-group id="input-group-3" label="Tên:" label-for="input-2">
-                <b-form-input
-                id="input-3"
-                v-model="register.lastName"
-                required
-          
-                ></b-form-input>
-            </b-form-group>
+              <b-form-group id="input-group-2" label="Họ:" label-for="input-2">
+                  <b-form-input
+                  id="input-2"
+                  v-model="register.firstName"
 
-            <b-form-group id="input-group-4" label="Password:" label-for="input-2">
-                <b-form-input
-                id="input-4"
-                v-model="register.password"
-                required
-                type="password"
-                ></b-form-input>
-            </b-form-group>
-            <b-form-group id="input-group-5" label="Ngày sinh:" label-for="input-2">
-                <b-form-input
-                id="input-5"
-                v-model="register.dob"
-                required
-                type="date"
-          
-                ></b-form-input>
-            </b-form-group>
-            <b-form-group id="input-group-3" label="Giới tính:" label-for="input-3">
-                <b-form-select
-                id="input-6"
-                v-model="register.gender"
-                :options="genders"
-                required
-                ></b-form-select>
-            </b-form-group>
-            <b-form-group id="input-group-3" label="Tình trạng hôn nhân:" label-for="input-3">
-                <b-form-select
-                id="input-7"
-                v-model="register.status"
-                :options="status"
-                required
-                ></b-form-select>
-            </b-form-group>
-            <b-form-group id="input-group-3" label="Avatar:" label-for="input-3">
-                <input type="file" class="form-control" placeholder="" ref="thumbnail" v-on:change="handleThumbnailUpload()" >
-                <b-spinner v-if="thumbnailLoading" label="Loading..."></b-spinner>
-                <div v-if="register.avatar">
-                    <img :src="register.avatar" class="avatar" alt="">
-                </div>
-            </b-form-group>
 
-            <b-button type="submit" variant="primary">Submit</b-button>
-         
+                  ></b-form-input>
+              </b-form-group>
+
+              <b-form-group id="input-group-3" label="Tên:" label-for="input-2">
+                  <b-form-input
+                  id="input-3"
+                  v-model="register.lastName"
+                  required
+
+                  ></b-form-input>
+              </b-form-group>
+
+              <b-form-group id="input-group-4" label="Password:" label-for="input-2">
+                  <b-form-input
+                  id="input-4"
+                  v-model="register.password"
+                  required
+                  type="password"
+                  ></b-form-input>
+              </b-form-group>
+              <b-form-group id="input-group-5" label="Ngày sinh:" label-for="input-2">
+                  <b-form-input
+                  id="input-5"
+                  v-model="register.dob"
+                  required
+                  type="date"
+
+                  ></b-form-input>
+              </b-form-group>
+              <b-form-group id="input-group-3" label="Giới tính:" label-for="input-3">
+                  <b-form-select
+                  id="input-6"
+                  v-model="register.gender"
+                  :options="genders"
+                  required
+                  ></b-form-select>
+              </b-form-group>
+              <b-form-group id="input-group-3" label="Tình trạng hôn nhân:" label-for="input-3">
+                  <b-form-select
+                  id="input-7"
+                  v-model="register.status"
+                  :options="status"
+                  required
+                  ></b-form-select>
+              </b-form-group>
+              <b-form-group id="input-group-3" label="Avatar:" label-for="input-3">
+                  <input type="file" class="form-control" placeholder="" ref="thumbnail" v-on:change="handleThumbnailUpload()" >
+                  <b-spinner v-if="thumbnailLoading" label="Loading..."></b-spinner>
+                  <div v-if="register.avatar">
+                      <img :src="register.avatar" class="avatar" alt="">
+                  </div>
+              </b-form-group>
+
+              <b-button type="submit" variant="primary">Submit</b-button>
+
             </b-form>
         </div>
     </div>
@@ -82,6 +85,7 @@
 const Cookie = process.client ? require('js-cookie') : undefined
 
 export default {
+  middleware: 'notAuthenticated',
     mounted () {
         if( localStorage.getItem('googleUserData')) {
             let googleUserData = JSON.parse(localStorage.getItem('googleUserData'))
@@ -100,6 +104,7 @@ export default {
     },
     data () {
         return {
+          submited: false,
             thumbnailLoading: false,
             register: {
                 firstName: '',
@@ -107,8 +112,8 @@ export default {
                 password: '',
                 email: '',
                 dob: '',
-                gender: '',
-                status: '',
+                gender: '1',
+                status: '1',
                 avatar: '',
                 gender: 1
             },
@@ -125,17 +130,20 @@ export default {
     },
     methods: {
         onSubmit () {
+
             this.$axios.post('/api/user', this.register)
                 .then(res => {
+                  this.submited = true
                     console.log(res)
-                    const auth = {
-                        accessToken: res.data.token
-                    }
-                    this.$store.commit('setAuth', auth) // mutating to store for client rendering
-                    Cookie.set('auth', auth) // saving token in cookie for server rendering
-                    this.$store.commit('setUser', res.data.user) // mutating to store for client rendering
-                    Cookie.set('user', res.data.user) // saving token in cookie for server rendering
-                    this.$router.push('/account')
+                    // console.log(res)
+                    // const auth = {
+                    //     accessToken: res.data.token
+                    // }
+                    // this.$store.commit('setAuth', auth) // mutating to store for client rendering
+                    // Cookie.set('auth', auth) // saving token in cookie for server rendering
+                    // this.$store.commit('setUser', res.data.user) // mutating to store for client rendering
+                    // Cookie.set('user', res.data.user) // saving token in cookie for server rendering
+                    // this.$router.push('/account')
                 })
                 .catch(err => console.log(err))
         },
@@ -168,6 +176,6 @@ export default {
 .avatar {
     width:60px;
     height: 60px;
-    
+
 }
 </style>

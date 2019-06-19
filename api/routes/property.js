@@ -10,10 +10,12 @@ var activity = require('../models').Activity
 var sequelize = require('../models').sequelize
 
 
+
 router
   .post('/sendmail' , (req, res) => {
-    let data = sendMail('Có một dự án từ homeland', 'Nội dung text', '<h2>Nội dung HTML</h2>')
-    res.json(data)
+
+
+
   })
   // Get all Properties
   .get('/', (req, res) => {
@@ -194,10 +196,15 @@ router
       }
     })
       .then(data => {
-        data.update({
-          hits: data.hits + 1
-        }).then(update => console.log(update)).catch(err => res.json({err: err}))
-        res.json(data)
+        if (data) {
+          data.update({
+            hits: data.hits + 1
+          }).then(update => console.log(update)).catch(err => res.json({err: err}))
+          res.json(data)
+        } else {
+          res.status(404).json({msg: 'Không tìm thấy dự án'})
+        }
+
       })
       .catch(err => res.json(err))
   })
@@ -216,7 +223,12 @@ router
     delete req.body.images
     model.create(req.body)
       .then(data => {
-
+        if (req.decoded.data.level == 1) {
+          let htmlEmail = ''
+          htmlEmail += '<h4>Xin chào admin</h4>'
+          htmlEmail += `<p>Dự án <a href="http://homenland.vn/property/detail/${data.id}">"${data.title}"</a> vừa được gửi lên hệ thống. Vui lòng kiểm tra để phê duyệt dự án</p>`
+          sendMail('anjakahuy@gmail.com', 'Người dùng vừa gửi thông tin dự án mới', '', htmlEmail)
+        }
           // save activity
           activity.create({
             createdBy: req.decoded.data.id,
