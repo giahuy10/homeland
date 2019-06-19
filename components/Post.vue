@@ -68,9 +68,7 @@ export default {
 </script>
 <style lang="scss">
 $pink : #ffa800;
-i.fa.saved {
-  color: #9c7048;
-}
+
 .save-item {
   &:hover {
     cursor: pointer;

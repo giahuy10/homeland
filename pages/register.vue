@@ -6,15 +6,7 @@
               Đăng ký tài khoản thành công. Vui lòng kiếm tra email để kích hoạt tài khoản
             </div>
             <b-form @submit.prevent="onSubmit" v-else>
-              <b-form-group id="input-group-1" label="Địa chỉ email:" label-for="input-1">
-                  <b-form-input
-                  id="input-1"
-                  v-model="register.email"
-                  type="email"
-                  required
 
-                  ></b-form-input>
-              </b-form-group>
 
               <b-form-group id="input-group-2" label="Họ:" label-for="input-2">
                   <b-form-input
@@ -33,7 +25,15 @@
 
                   ></b-form-input>
               </b-form-group>
+<b-form-group id="input-group-1" label="Địa chỉ email:" label-for="input-1">
+                  <b-form-input
+                  id="input-1"
+                  v-model="register.email"
+                  type="email"
+                  required
 
+                  ></b-form-input>
+              </b-form-group>
               <b-form-group id="input-group-4" label="Password:" label-for="input-2">
                   <b-form-input
                   id="input-4"

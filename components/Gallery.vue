@@ -18,7 +18,7 @@
       <div class="d-block text-center img-modal">
 
 
-        <img :src="items[currentItem] ? items[currentItem].full : ''" alt="">
+        <img :src="items[currentItem] ? items[currentItem].source : ''" alt="">
 
 
         <a href="#" class="img-button next" @click.prevent="change(1)"><i class="fa fa-angle-double-right" aria-hidden="true"></i></a>

@@ -100,18 +100,18 @@ export default {
 $pink : #ffa800;
 i.fa {
   &.saved {
-    color: #9c7048;
+    color: #0c51b2;
   }
   &:hover {
     cursor: pointer;
-    color: $pink;
+    color: #2a5a7c;
   }
 
 }
   .pro-title {
     font-size: 18px;
     a {
-      color: $pink;
+      color: #2a5a7c;
     }
   }
   .pro-desc {

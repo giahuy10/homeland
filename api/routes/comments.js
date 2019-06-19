@@ -4,6 +4,7 @@ var model = require('../models').Comment
 var property = require('../models').Property
 var activity = require('../models').Activity
 var checkUserLogged = require('../utils/checkUserLogged')
+var modelMedia = require('../models').PropertyMedia
 
 router
   // Get all News
@@ -52,7 +53,7 @@ router
   .post('/', checkUserLogged, (req, res) => {
     req.body.createdBy = req.decoded.data.id
     req.body.state = 1
-
+    let images = req.body.images
     // save activity
     activity.create({
       createdBy: req.decoded.data.id,
@@ -71,7 +72,29 @@ router
             .catch(err => console.log(err))
       })
       .catch(err => console.log(err))
-    model.create(req.body).then(data => res.send(data)).catch(err => res.status(500).json(err))
+    model.create(req.body).then(data => {
+      let bulkData = []
+        if (images && images.length > 0) {
+
+          images.forEach(item => {
+            bulkData.push({
+              createdBy: req.decoded.data.id,
+              proId: data.id,
+              source: item.source,
+              thumbnail: item.thumbnail,
+              height: item.height,
+              width: item.width,
+              type: 3
+            })
+
+          })
+
+          modelMedia.bulkCreate(bulkData)
+            .then(response => console.log(response))
+            .catch(err => console.log(err))
+        }
+        res.json(data)
+    }).catch(err => res.status(500).json(err))
   })
 
   // Update News

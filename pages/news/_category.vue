@@ -14,23 +14,6 @@
                         </li>
 
                     </ul>
-                </div>
-                <div class="col-12 col-md-6">
-                    <div class="row">
-                    <div class="col-6 col-md-6" v-for="(item, index) in items" :key="index">
-                        <Post :item="item"/>
-                    </div>
-
-                </div>
-                <br><br>
-                <b-pagination
-                    v-model="currentPage"
-                    :total-rows="rows"
-                    :per-page="perPage"
-                    aria-controls="my-table"
-                    ></b-pagination>
-                </div>
-                <div class="col-12 col-md-3">
                     <div class="module popular">
                     <h4 class="module-title">Xem nhiều</h4>
                     <div class="inner-mod">
@@ -43,8 +26,8 @@
                         </ul>
                     </div>
                     </div>
-                </div>
-                <div class="module facebook">
+                    </div>
+                    <div class="module facebook">
                     <h4 class="module-title">Follow us</h4>
                     <div class="inner-mod">
                     <div class="mod-content">
@@ -53,6 +36,24 @@
                     </div>
                 </div>
                 </div>
+                <div class="col-12 col-md-9">
+                    <div class="row">
+                    <div class="col-6 col-md-4" v-for="(item, index) in items" :key="index">
+                        <Post :item="item"/>
+                    </div>
+
+                </div>
+                <br><br>
+                <b-pagination
+                    v-model="currentPage"
+                    :total-rows="rows"
+                    :per-page="perPage"
+                    aria-controls="my-table"
+                    ></b-pagination>
+                </div>
+
+
+
             </div>
         </div>
     </div>
@@ -128,8 +129,6 @@ $pink : #ffa800;
     padding: 10px;
     }
   ul {
-    list-style: none;
-    padding-left: 0px;
     li {
       border-bottom: 1px dotted #ccc;
       padding: 5px 0 5px 10px;

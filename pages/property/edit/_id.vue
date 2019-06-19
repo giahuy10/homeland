@@ -87,12 +87,30 @@
         </b-form-group>
 
         <b-form-group id="input-group-1" label="Ảnh dự án:" label-for="input-1">
-          <input type="file" class="form-control" placeholder="" ref="file" v-on:change="handleFileUpload()" :disabled="item.images && item.images.length >=5">
+          <input type="file" class="form-control" placeholder="" ref="file" v-on:change="handleFileUpload(1)" :disabled="item.images && item.images.length >=5">
           <b-spinner v-if="imageLoading" label="Loading..."></b-spinner>
         </b-form-group>
 
+
+
         <div class="images" v-if="item.images && item.images.length > 0">
           <div class="img" v-for="(image, index) in item.images" :key="index">
+            <div class="inner-img">
+              <img :src="image.thumbnail" alt="">
+              <i class="fa fa-trash" @click="removeImage(index)"></i>
+            </div>
+
+          </div>
+          <div class="clearfix"></div>
+        </div>
+
+         <b-form-group id="input-group-1" label="Ảnh tiến độ:" label-for="input-1">
+          <input type="file" class="form-control" placeholder="" ref="file2" v-on:change="handleFileUpload(2)" :disabled="item.images2 && item.images2.length >=5">
+          <b-spinner v-if="imageLoading2" label="Loading..."></b-spinner>
+        </b-form-group>
+
+        <div class="images" v-if="item.images2 && item.images2.length > 0">
+          <div class="img" v-for="(image, index) in item.images2" :key="index">
             <div class="inner-img">
               <img :src="image.thumbnail" alt="">
               <i class="fa fa-trash" @click="removeImage(index)"></i>
@@ -127,7 +145,7 @@
 import Editor from '@tinymce/tinymce-vue'
 import location from '~/static/local.json'
 export default {
-  middleware: ['checkRightProperty', 'authenticated'],
+  middleware: ['authenticated'],
   components: {
     'editor': Editor
   },
@@ -144,6 +162,7 @@ export default {
       user: {},
       saveLoading: false,
       imageLoading: false,
+      imageLoading2: false,
       thumbnailLoading: false,
       item: {
         title: '',
@@ -160,7 +179,8 @@ export default {
         map: '',
         state: 0,
         thumbnail: '',
-        images: []
+        images: [],
+        images2: []
       },
       cities: location,
       districts: [],
@@ -170,6 +190,10 @@ export default {
         { value: 2, text: 'Biệt thự, liền kề'},
         { value: 3, text: 'Shophouse'},
         { value: 4, text: 'Nghỉ dưỡng'},
+      ],
+      stateOptions: [
+        { text: 'Publish', value: 1 },
+        { text: 'Draft', value: -1 }
       ],
       optionsPrice: [
         { value: '', text: '-- Chọn khoảng giá --'},
@@ -251,12 +275,19 @@ export default {
     removeImage (index) {
       this.item.images.splice(index, 1)
     },
-    handleFileUpload () {
-      this.imageLoading = true
-      let file = this.$refs.file.files[0];
+    handleFileUpload (type) {
+      let file = ''
+      if (type == 1) {
+        this.imageLoading = true
+         file = this.$refs.file.files[0];
+      } else {
+        this.imageLoading2 = true
+         file = this.$refs.file2.files[0];
+      }
+
+
       let formData = new FormData();
       formData.append('file', file);
-      formData.append('type', 'poster')
       this.$axios.post( '/api/file/upload', formData,
         {
           headers: {
@@ -266,13 +297,25 @@ export default {
         }
         ).then(res => {
           console.log(res)
-          this.imageLoading = false
-          this.item.images.push({
-            source: res.data.location,
-            thumbnail: res.data.thumbnail,
-            height: res.data.heightThumb,
-            width: res.data.widthThumb
-          })
+
+          if (type == 1) {
+             this.imageLoading = false
+            this.item.images.push({
+              source: res.data.location,
+              thumbnail: res.data.thumbnail,
+              height: res.data.heightThumb,
+              width: res.data.widthThumb
+            })
+          } else {
+             this.imageLoading2 = false
+            this.item.images2.push({
+              source: res.data.location,
+              thumbnail: res.data.thumbnail,
+              height: res.data.heightThumb,
+              width: res.data.widthThumb
+            })
+          }
+
         })
         .catch(err => {
           console.log(err.response)

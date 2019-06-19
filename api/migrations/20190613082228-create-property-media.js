@@ -20,6 +20,9 @@ module.exports = {
       height: {
         type: Sequelize.INTEGER
       },
+      type: {
+        type: Sequelize.INTEGER
+      },
       width: {
         type: Sequelize.INTEGER
       },

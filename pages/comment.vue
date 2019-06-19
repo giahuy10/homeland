@@ -10,7 +10,7 @@
                       <div class="input-group-text" @click="searchProperty"><i class="fa fa-search" aria-hidden="true"></i></div>
                     </div>
                   </div>
-      
+
     <br>
       <p>Nếu bạn không tìm thấy, hãy sử dụng công cụ tìm kiếm thông minh hơn <a href="#" @click.prevent="showModal">tại đây</a></p>
     </div>
@@ -41,6 +41,7 @@
     </div>
     <br><br>
     <b-pagination
+    @change="changePage"
                     v-model="currentPage"
                     :total-rows="rows"
                     :per-page="perPage"
@@ -67,10 +68,14 @@ export default {
       currentPage: 1,
             rows: 0,
             perPage: 10,
-      
+
     }
   },
   methods: {
+    changePage (page) {
+      this.currentPage = page
+      this.getItems()
+    },
     searchProperty () {
       this.searched = true
       this.$axios.get(`/api/property?title=${this.protitle}`)
@@ -98,7 +103,7 @@ export default {
     openSearch () {
 
     },
-    getItem() {
+    getItems() {
 this.$axios.get(`/api/comments?currentPage=${this.currentPage}&perPage=${this.perPage}`)
                 .then(res => {
                     console.log(res)
@@ -115,7 +120,7 @@ this.$axios.get(`/api/comments?currentPage=${this.currentPage}&perPage=${this.pe
     },
   },
   mounted () {
-    this.getItem()
+    this.getItems()
   }
 }
 </script>

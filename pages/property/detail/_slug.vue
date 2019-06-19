@@ -111,8 +111,8 @@
                           <div class="comment-text">
                             <b>
                               <nuxt-link to="#">{{comment.firstName +' '+comment.lastName}}</nuxt-link>
-                            </b>
-                            {{comment.text}}
+                            </b> <small>{{comment.createdAt | moment("DD/MM/YYYY, h:mm:ss a")}}</small>
+                            <div v-html="comment.text"></div>
                           </div>
                           <div class="reply"><a href="#" :class="comment.like ? 'liked' : ''" @click.prevent="saveCM(comment.id, index)">Thích</a> <a href="#comment-box" @click="commentParent = comment.parent, commentText = '@'+comment.user.lastName+' '">Thảo luận</a></div>
                         </div>
@@ -191,8 +191,8 @@
                 </table>
               </div>
               <div class="write-review">
-                <b-button block v-b-modal.modal-1 variant="info" v-if="item.state == 1"> <i class="fa fa-comment"></i> Gửi đánh giá</b-button>
-                <b-modal id="modal-1" title="Gửi đánh giá" size="xl">
+                <b-button block v-b-modal.modal-1 variant="info" v-if="item.state == 1"> <i class="fa fa-comment"></i> Gửi bình luận</b-button>
+                <b-modal id="modal-1" title="Gửi bình luận" size="xl">
                   <div class="review" v-if="userDetail">
                   <b-row>
                     <b-col sm="2">
@@ -249,22 +249,37 @@
 
                 </div>
                 <div class="alert alert-warning" v-else>
-                  Vui lòng <nuxt-link to="/login">đăng nhập</nuxt-link> để gửi đánh giá
+                  Vui lòng <nuxt-link to="/login">đăng nhập</nuxt-link> để gửi bình luận
                 </div>
-                <!-- <br> <br>
+                <br> <br>
+                <b-form-input
+                  id="input-1"
+                  v-model="review.title"
+
+                  required
+                  placeholder="Tiêu đề"
+                ></b-form-input>
+                <br>
                 <b-form-textarea
                   id="textarea"
+                  v-model="review.text"
                   placeholder="Viết bình luận của bạn..."
                   rows="3"
                   max-rows="6"
                   style="margin-bottom: 10px;"
                 ></b-form-textarea>
-                <b-form-file
-                  v-model="file"
-                  multiple
-                  placeholder="Chọn ảnh..."
-                  drop-placeholder="Drop file here..."
-                ></b-form-file> -->
+                <input type="file" class="form-control" placeholder="" ref="file" v-on:change="handleFileUpload()" :disabled="review.images && review.images.length >=5">
+          <b-spinner v-if="imageLoading" label="Loading..."></b-spinner>
+          <div class="images" v-if="review.images && review.images.length > 0">
+          <div class="img" v-for="(image, index) in review.images" :key="index">
+            <div class="inner-img">
+              <img :src="image.thumbnail" alt="">
+              <i class="fa fa-trash" @click="removeImage(index)"></i>
+            </div>
+
+          </div>
+          <div class="clearfix"></div>
+        </div>
                 <br><br>
                <template slot="modal-footer" slot-scope="{ ok, cancel }">
 
@@ -272,7 +287,7 @@
 
                   <b-spinner v-if="reviewLoading" label="Loading..."></b-spinner>
                   <b-button v-else size="sm" variant="success" @click="submitReview()">
-                    Gửi nhận xét
+                    Gửi bình luận
                   </b-button>
                   <b-button size="sm" variant="danger" @click="cancel()">
                     Hủy
@@ -299,6 +314,7 @@ export default {
 
     return {
       reviewLoading: false,
+      imageLoading: false,
       commentParent: 0,
       commentText: '',
       optionsPrice: {
@@ -341,7 +357,11 @@ export default {
         progress: 5,
         quality: 5,
         design:5,
-        proId: 0
+        proId: 0,
+        title: '',
+        text: '',
+        file: '',
+        images: []
       },
       navClass: '',
       reviewResult: {
@@ -387,8 +407,22 @@ export default {
           this.reviewLoading = false
           this.$bvModal.hide('modal-1')
           this.getReview()
+          this.toast('Thông báo', 'Cảm ơn bạn đã gửi đánh giá cho dự án này', 'success')
         })
         .catch(err => console.log(err.response))
+
+      this.$axios.post('/api/comments', {
+        type: 1,
+        itemId: this.item.id,
+        parent: 0,
+        text: `<p><b>${this.review.title}</b> <br> ${this.review.text}</p>`,
+        images: this.review.images
+      })
+      .then(res => {
+        console.log(res)
+        this.getComments()
+      })
+      .catch(err => console.log(err.response))
     },
     getComments () {
       let userId = this.userDetail ? this.userDetail.id : 0
@@ -492,7 +526,33 @@ export default {
         this.getDetail()
       })
       .catch(err => console.log(err))
-    }
+    },
+    handleFileUpload () {
+      this.imageLoading = true
+      let file = this.$refs.file.files[0];
+      let formData = new FormData();
+      formData.append('file', file);
+      this.$axios.post( '/api/file/upload', formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            'folder': 'properties'
+          }
+        }
+        ).then(res => {
+          console.log(res)
+          this.imageLoading = false
+          this.review.images.push({
+            source: res.data.location,
+            thumbnail: res.data.thumbnail,
+            height: res.data.heightThumb,
+            width: res.data.widthThumb
+          })
+        })
+        .catch(err => {
+          console.log(err.response)
+        })
+    },
 
   },
   mounted () {

@@ -68,6 +68,12 @@ module.exports = {
       totalImages: {
         type: Sequelize.INTEGER
       },
+      totalWidth2: {
+        type: Sequelize.INTEGER
+      },
+      totalImages2: {
+        type: Sequelize.INTEGER
+      },
       totalComments: {
         type: Sequelize.INTEGER
       },
