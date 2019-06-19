@@ -126,10 +126,15 @@ router
       }
     })
       .then(data => {
-        data.update({
-          hits: data.hits + 1
-        })
-        res.json(data)
+        if (data) {
+          data.update({
+            hits: data.hits + 1
+          })
+          res.json(data)
+        } else {
+          res.status(404).json({msg: 'Không tìm thấy bài viết'})
+        }
+
       })
       .catch(err => res.json(err))
   })
@@ -143,6 +148,12 @@ router
     req.body.saved = 0
 
     model.create(req.body).then(data => {
+      if (req.decoded.data.level == 1) {
+        let htmlEmail = ''
+        htmlEmail += '<h4>Xin chào admin</h4>'
+        htmlEmail += `<p>Bài viết <a href="http://homenland.vn/news/detail/${data.slug}">"${data.title}"</a> vừa được gửi lên hệ thống. Vui lòng kiểm tra để phê duyệt dự án</p>`
+        sendMail('anjakahuy@gmail.com', 'Người dùng vừa gửi thông tin dự án mới', '', htmlEmail)
+      }
       // save activity
       activity.create({
         createdBy: req.decoded.data.id,

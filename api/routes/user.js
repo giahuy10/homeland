@@ -7,13 +7,10 @@ var jwt = require('jsonwebtoken')
 //var checkUserLogged = require('../utils/checkUserLogged')
 var sequelize = require('../models').sequelize
 var moment = require('moment')
-//var activity = require('../models').Activity
+var sendMail = require('../utils/sendMail')
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    // console.log(req.params)
-    // console.log(req.body)
-    // console.log(req.headers)
-    // console.log(req.query)
+
     cb(null, './static/images/' + req.headers.folder)
   },
   filename: function (req, file, cb) {
@@ -64,7 +61,7 @@ router
     })
       .then(data => {
         if (data) {
-          let token = jwt.sign( {data}, 'LOIKPOKLSK1029KJ')
+          let token = jwt.sign( {data}, 'LOIKPOKLSK1029KJ', { expiresIn: 60 * 60 })
           res.json( { token, user: data} )
         } else {
           res.status(404).json({ 'msg' : 'Not found '+req.params.email })
@@ -74,12 +71,18 @@ router
   // Insert new user
   .post('/', (req, res) => {
     req.body.password = passwordHash.generate(req.body.password)
-    req.body.state = 1
+    req.body.state = -1
     req.body.level = 1
     model.create(req.body)
       .then(data => {
-        let token = jwt.sign( {data}, 'LOIKPOKLSK1029KJ')
-        res.json( { token, user: data} )
+        let token = jwt.sign( {data}, 'LOIKPOKLSK1029KJ', { expiresIn: 60 * 30 })
+        let htmlEmail = ''
+        htmlEmail += `<h4>Xin chào ${req.body.firstName} ${req.body.lastName}</h4>`
+        htmlEmail += `<p>Bạn đã đăng ký tài khoản tại http://homenland.vn</p>`
+        htmlEmail += `<p>Để kích hoạt tài khoản bạn vui lòng click <a href="http://homenland.vn/verify/${token}"> vào đây</a> hoặc copy và paste đường link phía dưới vào trình duyệt</p>`
+        htmlEmail += `<p>http://homenland.vn/verify/${token}</p>`
+        sendMail(req.body.email, 'Kích hoạt tài khoản tại Homenland', '', htmlEmail)
+        res.json( { token } )
       })
       .catch(err => res.json(err))
   })
@@ -93,12 +96,17 @@ router
     })
       .then(data => {
         if (data) {
-          if (passwordHash.verify(req.body.password, data.password)) {
-            let token = jwt.sign( {data}, 'LOIKPOKLSK1029KJ')
-            res.json( { token, user: data} )
+          if (data.state == 1) {
+            if (passwordHash.verify(req.body.password, data.password)) {
+              let token = jwt.sign( {data}, 'LOIKPOKLSK1029KJ', { expiresIn: 60 * 60 })
+              res.json( { token, user: data} )
+            } else {
+              res.status(401).json({ 'msg' : 'Mật khẩu không chính xác' })
+            }
           } else {
-            res.status(401).json({ 'msg' : 'Mật khẩu không chính xác' })
+            res.status(401).json({ 'msg' : 'Tài khoản chưa được kích hoạt' })
           }
+
         } else {
           res.status(404).json({ 'msg' : 'Không tìm thấy tài khoản' })
         }
@@ -108,9 +116,47 @@ router
 
   // Verify account
   .post('/verify/:token', (req, res) => {
+    jwt.verify(req.params.token, 'LOIKPOKLSK1029KJ', (err, decoded) => {
+      if (err) {
+          res.status(403).json({ success: false, msg: 'Token không hợp lệ.', err });
+        } else {
+          model.update(
+            {
+              state: 1
+            },
+            { where: {id: decoded.data.id} }
+          ).then(() => {
+            console.log('ok')
+          }).catch(err => console.log(err))
 
+          let tokenData = decoded.data
+          let token = jwt.sign( {tokenData}, 'LOIKPOKLSK1029KJ', { expiresIn: 60 * 60 })
+          res.json( { token, user: decoded.data} )
+        }
+    })
   })
-
+  .post('/forgot/:email', (req, res) => {
+    model.findOne({
+      where: {
+        email: req.params.email ?  req.params.email : 'email'
+      }
+    })
+    .then(data => {
+      if (data) {
+        let token = jwt.sign( {data}, 'LOIKPOKLSK1029KJ', { expiresIn: 60 * 5 })
+        let htmlEmail = ''
+        htmlEmail += `<h4>Xin chào ${data.firstName} ${data.lastName}</h4>`
+        htmlEmail += `<p>Bạn đã yêu cầu tìm lại mật khẩu tài khoản tại http://homenland.vn</p>`
+        htmlEmail += `<p>Để đặt một khẩu mới bạn vui lòng click <a href="http://homenland.vn/reset/${token}"> vào đây</a> hoặc copy và paste đường link phía dưới vào trình duyệt</p>`
+        htmlEmail += `<p>http://homenland.vn/reset/${token}</p>`
+        sendMail(req.params.email, 'Yêu cầu đổi mật khẩu tại Homenland', '', htmlEmail)
+        res.json({token})
+      } else {
+        res.status(404).json({ success: false, msg: 'Không tìm thấy email trong hệ thống' });
+      }
+    })
+    .catch(err => res.json(err))
+  })
   // Update News
   .put('/:id', (req, res) => {
     if (req.body.updatePassword) {
