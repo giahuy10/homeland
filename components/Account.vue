@@ -128,7 +128,7 @@ export default {
             ).then(res => {
                 console.log(res)
                 this.thumbnailLoading = false
-                this.item.avatar = res.data.avatar
+                this.item.avatar = res.data.thumbnail
             })
             .catch(err => {
                 console.log(err.response)
