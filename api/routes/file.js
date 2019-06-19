@@ -45,7 +45,7 @@ router
     }
 
     let heightThumb = req.headers.folder == 'avatar'? 100 : 300
-    let widthThumb = Math.ceil(heightThumb * dimensions.width / dimensions.height)
+    let widthThumb = req.headers.folder == 'avatar'? 100 : Math.ceil(heightThumb * dimensions.width / dimensions.height)
     let thumbnail = req.file.destination + '/thumb/'+moment().format('YYYY-MM-DD') +"-"+req.file.originalname
     let folder = '/images/'+req.headers.folder+'/'
 
