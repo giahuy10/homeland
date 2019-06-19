@@ -253,7 +253,7 @@ export default {
           this.getUserDetail()
           this.getComments()
         })
-        .catch(err => this.$router.push({path: '/'}))
+        .catch(err => console.log(err))
     },
     getUserDetail () {
         this.$axios.get(`/api/user/stat/news/${this.item.createdBy}`)
