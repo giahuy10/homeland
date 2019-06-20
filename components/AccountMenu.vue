@@ -3,7 +3,7 @@
     <h4 class="text-center">Trang cá nhân</h4>
     <ul class="">
     <li>
-      <nuxt-link to="/account">Hoạt động cá nhân</nuxt-link>
+      <nuxt-link to="/account">Hoạt động</nuxt-link>
     </li>
     <li>
     <nuxt-link to="/account/saved">Lưu trữ</nuxt-link></li>

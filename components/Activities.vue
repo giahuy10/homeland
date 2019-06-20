@@ -13,6 +13,7 @@
             :total-rows="rows"
             :per-page="perPage"
             aria-controls="my-table"
+            @change="changePage"
             ></b-pagination>
     </b-list-group>
   </div>
@@ -34,6 +35,10 @@ export default {
   methods: {
     strigTags (note) {
       return note.replace(/(<([^>]+)>)/ig,"")
+    },
+    changePage (page) {
+      this.currentPage = page
+      this.getItems()
     },
     getItems () {
       this.$axios.get(`/api/activities?currentPage=${this.currentPage}&perPage=${this.perPage}`)

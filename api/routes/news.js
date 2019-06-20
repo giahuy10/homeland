@@ -152,7 +152,7 @@ router
         let htmlEmail = ''
         htmlEmail += '<h4>Xin chào admin</h4>'
         htmlEmail += `<p>Bài viết <a href="http://homenland.vn/news/detail/${data.slug}">"${data.title}"</a> vừa được gửi lên hệ thống. Vui lòng kiểm tra để phê duyệt dự án</p>`
-        sendMail('anjakahuy@gmail.com', 'Người dùng vừa gửi thông tin dự án mới', '', htmlEmail)
+        sendMail('info@homenland.vn', 'Người dùng vừa gửi thông tin dự án mới', '', htmlEmail)
       }
       // save activity
       activity.create({

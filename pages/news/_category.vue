@@ -49,6 +49,7 @@
                     :total-rows="rows"
                     :per-page="perPage"
                     aria-controls="my-table"
+                    @change="changePage"
                     ></b-pagination>
                 </div>
 
@@ -88,6 +89,10 @@ export default {
     }
   },
     methods: {
+      changePage (page) {
+          this.currentPage = page
+          this.getItems()
+        },
         getItems () {
           let userId = this.userDetail ? this.userDetail.id : 0
             this.$axios.get(`/api/news?category=${this.$route.params.category}&currentPage=${this.currentPage}&perPage=${this.perPage}&userId=${userId}`)

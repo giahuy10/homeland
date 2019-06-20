@@ -236,8 +236,8 @@ router
         if (req.decoded.data.level == 1) {
           let htmlEmail = ''
           htmlEmail += '<h4>Xin chào admin</h4>'
-          htmlEmail += `<p>Dự án <a href="http://homenland.vn/property/detail/${data.id}">"${data.title}"</a> vừa được gửi lên hệ thống. Vui lòng kiểm tra để phê duyệt dự án</p>`
-          sendMail('anjakahuy@gmail.com', 'Người dùng vừa gửi thông tin dự án mới', '', htmlEmail)
+          htmlEmail += `<p>Dự án <a href="http://homenland.vn/property/detail/${data.slug}">"${data.title}"</a> vừa được gửi lên hệ thống. Vui lòng kiểm tra để phê duyệt dự án</p>`
+          sendMail('info@homenland.vn', 'Người dùng vừa gửi thông tin dự án mới', '', htmlEmail)
         }
           // save activity
           activity.create({

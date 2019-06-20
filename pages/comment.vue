@@ -5,7 +5,7 @@
     <div class="call-to-action text-center">
       <h2>Kinh nghiệm và thông tin bạn biết là vô cùng hữu ích, hãy cùng chia sẻ !</h2>
       <div class="input-group" id="comment-box">
-                    <input type="text" class="form-control search-pro" v-model="protitle" placeholder="Nhập tên dự án bạn muốn viết bình luận" >
+                    <input type="text" class="form-control search-pro" v-model="protitle" placeholder="Nhập tên dự án bạn muốn viết bình luận..." >
                     <div class="input-group-append">
                       <div class="input-group-text" @click="searchProperty"><i class="fa fa-search" aria-hidden="true"></i></div>
                     </div>
