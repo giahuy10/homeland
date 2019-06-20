@@ -1,5 +1,8 @@
 <template>
   <div class="container login-page">
+    <div class="inner-login">
+
+
     <h1>Đăng nhập</h1>
     <div>
            <b-button block @click.prevent="loginByFacebook" variant="facebook"> <i class="fa fa-facebook"></i> Đăng nhập bằng Facebook</b-button>
@@ -38,10 +41,13 @@
       <p><a href="#" @click.prevent="$router.push({path: '/forgot'})">Quên mật khẩu?</a></p>
     </b-form>
     </div>
+    </div>
   </div>
 </template>
 
 <script>
+
+// const firebase = require('firebase/app');
 const Cookie = process.client ? require('js-cookie') : undefined
 import firebase from '@/plugins/firebase'
 
@@ -131,6 +137,11 @@ export default {
 </script>
 
 <style lang="scss">
+.inner-login {
+  width: 450px;
+  max-width: 100%;
+  margin: 0 auto;
+}
 .btn-google {
   background: #dd4b39;
   color:#fff;

@@ -52,6 +52,7 @@
           </div>
           <div v-if="userDetail && userDetail.level == 2">
               <b-button variant="info" @click="$router.push({path: `/property/edit/${detail.id}`})">Chỉnh sửa dự án</b-button>
+              <b-button variant="warning" @click="removeItem(detail.id)">Xóa dự án</b-button>
             </div>
 
         </div>
@@ -383,6 +384,15 @@ export default {
     }
   },
   methods: {
+    removeItem (id) {
+      if (confirm('Bạn chắc chắn muốn xóa dự án này?')) {
+        this.$axios.delete(`/api/property/${id}`)
+          .then(res => {
+            this.toast('Thông báo', 'Dự án đã được xóa', 'success')
+          })
+          .catch(err => console.log(err))
+      }
+    },
     save (itemId) {
 
       this.$axios.post('/api/saved', {

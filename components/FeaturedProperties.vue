@@ -121,6 +121,7 @@ export default {
       let userId = this.userDetail ? this.userDetail.id : 0
       this.$axios.get(`/api/property?${str}&userId=${userId}`)
         .then(res => {
+          console.log('items', res)
           this.items = res.data.result
         })
         .catch(err => console.log(err.response))

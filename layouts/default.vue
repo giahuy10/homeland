@@ -25,9 +25,10 @@
                     <img :src="userDetail ? userDetail.avatar : ''" alt="" class="menu-avatar">
                     <em>{{userDetail ? userDetail.lastName : ''}}</em>
                   </template>
+                  <b-dropdown-item to="/property/edit/0"><i class="fa fa-file" aria-hidden="true"></i> Tạo dự án</b-dropdown-item>
                   <b-dropdown-item to="/account"><i class="fa fa-plus-square" aria-hidden="true"></i> Hoạt động</b-dropdown-item>
                   <b-dropdown-item to="/account/saved"><i class="fa fa-heart" aria-hidden="true"></i> Lưu trữ</b-dropdown-item>
-                  <b-dropdown-item to="/account/update"><i class="fa fa-plus-square" aria-hidden="true"></i> Thông tin cá nhân</b-dropdown-item>
+                  <b-dropdown-item to="/account/update"><i class="fa fa-user" aria-hidden="true"></i> Thông tin cá nhân</b-dropdown-item>
                   <template v-if="userDetail && userDetail.level == 2">
                     <b-dropdown-item to="/account/verifypro"><i class="fa fa-check" aria-hidden="true"></i> Phê duyệt dự án</b-dropdown-item>
                     <b-dropdown-item to="/account/verifynews"><i class="fa fa-check" aria-hidden="true"></i> Phê duyệt tin tức</b-dropdown-item>
