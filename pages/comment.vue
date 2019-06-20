@@ -12,7 +12,7 @@
                   </div>
 
     <br>
-      <p>Nếu bạn không tìm thấy, hãy sử dụng công cụ tìm kiếm thông minh hơn <a href="#" @click.prevent="showModal">tại đây</a></p>
+      <p>Nếu bạn không tìm thấy, hãy sử dụng công cụ tìm kiếm thông minh hơn <a href="#" class="advanced" @click.prevent="showModal">tại đây</a></p>
     </div>
     <div class="search-result" v-if="properties && properties.length > 0">
       <div class="row">
@@ -34,7 +34,7 @@
           <!-- b-[Optional: add media children here for nesting] -->
         </b-media>
         <div class="comment-content" v-html="comment.text">
-          
+
         </div>
         <GalleryComment :items="JSON.parse(comment.images)" v-if="comment.images && JSON.parse(comment.images).length > 0" />
         </div>
@@ -129,6 +129,9 @@ this.$axios.get(`/api/comments?currentPage=${this.currentPage}&perPage=${this.pe
 </script>
 
 <style lang="scss">
+a.advanced {
+  text-decoration: underline;
+}
 $pink : #e7005a;
 .list-comments {
   .comment {
@@ -158,9 +161,9 @@ $pink : #e7005a;
 .search-pro {
   height: 70px;
 
-    
+
     border-color: #80bdff;
-  
+
     box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
 
 }
