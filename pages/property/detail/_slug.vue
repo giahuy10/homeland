@@ -11,7 +11,7 @@
           <h2>{{detail.title}}</h2>
 
           <p> {{detail.owner}} <br>
-          Căn hộ chung cư và dịch vụ
+          {{types[detail.type]}}
           </p>
 
           <table>
@@ -44,7 +44,7 @@
           </table>
           <ul>
             <li>{{detail.location}}</li>
-            <li><b class="text-pink">Đang xây dựng</b></li>
+            <!-- <li><b class="text-pink">Đang xây dựng</b></li> -->
             <li><b class="text-pink">{{optionsPrice[detail.price]}}</b></li>
           </ul>
           <div v-if="detail.state == -1 && userDetail && userDetail.level == 2">
@@ -339,7 +339,14 @@ export default {
         7: '20 tỷ - 30 tỷ',
         8: 'Trên 30 tỷ'
       },
+      types: {
 
+          1: 'Căn hộ',
+          2: 'Biệt thự/ liền kề/ shophouse (nhà đất)',
+          3: 'Căn hộ - Nhà đất',
+          4: 'Tổ hơp thương mại – căn hộ - nhà đất',
+          5: 'Khu đô thị',
+      },
       price: 0,
       comments: [],
       item: {},
