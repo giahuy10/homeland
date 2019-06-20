@@ -68,7 +68,7 @@ router
             type: 3,
             typeItem: req.body.type,
             itemId: data.id,
-            note: JSON.stringify(data)
+            note: req.body.title
           }).then(response => console.log(response)).catch(err => console.log(err))
           data.destroy().then(() => {
             res.json({msg: 'Removed'})
@@ -80,7 +80,7 @@ router
               type: 2,
               typeItem: req.body.type,
               itemId: data.id,
-              note: JSON.stringify(data)
+              note: req.body.title
             }).then(response => console.log(response)).catch(err => console.log(err))
             res.send(data)
           }).catch(err => res.status(500).json(err))

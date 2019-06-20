@@ -177,7 +177,7 @@ router
         //   as: 'images',
         //   where: {
         //       type: 1,
-             
+
         //   }
         // },
         // {
@@ -185,7 +185,7 @@ router
         //   as: 'images2',
         //   where: {
         //       type: 2,
-             
+
         //   }
         // }
       ],
@@ -245,7 +245,7 @@ router
             type: 1,
             typeItem: 3,
             itemId: data.id,
-            note: JSON.stringify(data)
+            note: data.title
           }).then(response => console.log(response)).catch(err => console.log(err))
 
         let totalWidth = 0

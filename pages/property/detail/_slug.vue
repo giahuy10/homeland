@@ -8,9 +8,9 @@
           <img src="/images/ha-noi-home-land/main.jpg" alt="">
         </div>
         <div class="short-desc col-12 col-md-6">
-          <h2>{{item.title}}</h2>
+          <h2>{{detail.title}}</h2>
 
-          <p> {{item.owner}} <br>
+          <p> {{detail.owner}} <br>
           Căn hộ chung cư và dịch vụ
           </p>
 
@@ -43,15 +43,15 @@
 
           </table>
           <ul>
-            <li>{{item.location}}</li>
+            <li>{{detail.location}}</li>
             <li><b class="text-pink">Đang xây dựng</b></li>
-            <li><b class="text-pink">{{optionsPrice[item.price]}}</b></li>
+            <li><b class="text-pink">{{optionsPrice[detail.price]}}</b></li>
           </ul>
-          <div v-if="item.state == -1 && userDetail && userDetail.level == 2">
+          <div v-if="detail.state == -1 && userDetail && userDetail.level == 2">
             <b-button variant="success" @click="approve">Phê duyệt bài viết</b-button>
           </div>
           <div v-if="userDetail && userDetail.level == 2">
-              <b-button variant="info" @click="$router.push({path: `/property/edit/${item.id}`})">Chỉnh sửa dự án</b-button>
+              <b-button variant="info" @click="$router.push({path: `/property/edit/${detail.id}`})">Chỉnh sửa dự án</b-button>
             </div>
 
         </div>
@@ -82,25 +82,25 @@
             <div class="overview">
               <h4 id="overview">Trang chủ</h4>
               <div class="inner-overview" :class="open ? 'open' : ''">
-                <div v-html="item.overview"></div>
+                <div v-html="detail.overview"></div>
               </div>
               <a href="#" @click.prevent="open=true" v-if="!open">Xem thêm</a>
               <a href="#" @click.prevent="open=false" v-else>Thu gọn</a>
             </div>
             <div class="galleries">
               <h4 id="galleries">Ảnh dự án</h4>
-              <Gallery :items="item.images.filter(item => item.type == 1)" :totalWidth="item.totalWidth" v-if="item.images && item.images.filter(item => item.type == 1).length > 0"/>
+              <Gallery :items="detail.images.filter(item => detail.type == 1)" :totalWidth="detail.totalWidth" v-if="detail.images && detail.images.filter(item => detail.type == 1).length > 0"/>
                 <h5>Sản phẩm</h5>
-                <div v-html="item.product"></div>
+                <div v-html="detail.product"></div>
                 <h5>Tiện tích</h5>
-                <div v-html="item.facilities"></div>
+                <div v-html="detail.facilities"></div>
             </div>
             <div class="p-progress">
               <h4 id="p-progress">Tiến độ</h4>
-              <Gallery :items="item.images.filter(item => item.type == 2)" :totalWidth="item.totalWidth2" v-if="item.images && item.images.filter(item => item.type == 2).length > 0"/>
-              <div v-html="item.progress"></div>
+              <Gallery :items="detail.images.filter(item => detail.type == 2)" :totalWidth="detail.totalWidth2" v-if="detail.images && detail.images.filter(item => detail.type == 2).length > 0"/>
+              <div v-html="detail.progress"></div>
             </div>
-            <div class="comments" v-if="item.state == 1">
+            <div class="comments" v-if="detail.state == 1">
               <h4 id="comments">Bình luận</h4>
                 <div class="list-chat">
                   <div class="chat">
@@ -118,7 +118,7 @@
 
                           </div>
                           <div class="reply">
-                            <a href="#" :class="comment.like ? 'liked' : ''" @click.prevent="saveCM(comment.id, index)">Thích</a> <a href="#comment-box" @click="commentParent = comment.parent, commentText = '@'+comment.user.lastName+' '">Thảo luận</a>
+                            <a href="#" :class="comment.like ? 'liked' : ''" @click.prevent="saveCM(comment, index)">Thích</a> <a href="#comment-box" @click="commentParent = comment.parent, commentText = '@'+comment.user.lastName+' '">Thảo luận</a>
                             <a href="#" @click.prevent="removeComment(comment.id)" v-if="userDetail && userDetail.id == comment.createdBy || userDetail.level == 2">Xóa</a>
                             </div>
                         </div>
@@ -139,7 +139,7 @@
             </div>
             <div class="map">
               <h4 id="map">Bản đồ</h4>
-              <div v-html="item.map"></div>
+              <div v-html="detail.map"></div>
             </div>
           </div>
           <div class="col-12 col-md-3">
@@ -197,7 +197,7 @@
                 </table>
               </div>
               <div class="write-review">
-                <b-button block v-b-modal.modal-1 variant="info" v-if="item.state == 1"> <i class="fa fa-comment"></i> Gửi bình luận</b-button>
+                <b-button block v-b-modal.modal-1 variant="info" v-if="detail.state == 1"> <i class="fa fa-comment"></i> Gửi bình luận</b-button>
                 <b-modal id="modal-1" title="Gửi bình luận" size="xl">
                   <div class="review" v-if="userDetail">
                   <b-row>
@@ -316,7 +316,9 @@ import Gallery from '~/components/Gallery.vue';
 import GalleryComment from '~/components/GalleryComment.vue';
 export default {
   components: {Gallery, Slider, GalleryComment},
-
+  async asyncData({ store, params }) {
+    await store.dispatch('property/getPropertyDetail', { slug: params.slug })
+  },
   data () {
 
     return {
@@ -400,7 +402,7 @@ export default {
     },
     submitReview () {
       this.reviewLoading = true
-      this.review.proId = this.item.id
+      this.review.proId = this.detail.id
       this.$axios.post(`/api/reviews`, this.review)
         .then(res => {
           this.review = {
@@ -420,7 +422,7 @@ export default {
 
       this.$axios.post('/api/comments', {
         type: 1,
-        itemId: this.item.id,
+        itemId: this.detail.id,
         parent: 0,
         text: `<p><b>${this.review.title}</b> <br> ${this.review.text}</p>`,
         images: this.review.images
@@ -476,7 +478,7 @@ export default {
     sendComment () {
       this.$axios.post('/api/comments', {
         type: 1,
-        itemId: this.item.id,
+        itemId: this.detail.id,
         parent: this.commentParent,
         text: this.commentText
       })
@@ -488,10 +490,11 @@ export default {
       .catch(err => console.log(err.response))
 
     },
-    saveCM (id, index) {
+    saveCM (item, index) {
       this.$axios.post('/api/saved', {
         type: 1,
-        itemId: id
+        itemId: item.id,
+        title: item.text
       })
       .then(res => {
         let title = ''
@@ -533,12 +536,12 @@ export default {
       .catch(err=> console.log(err.response))
     },
     approve () {
-      this.$axios.put(`/api/property/${this.item.id}`, {
+      this.$axios.put(`/api/property/${this.detail.id}`, {
         state: 1
       }).then(res => {
         console.log(res)
         this.toast('Thông báo', 'Phê duyệt dự án thành công', 'success')
-        this.getDetail()
+        location.reload()
       })
       .catch(err => console.log(err))
     },
@@ -568,13 +571,15 @@ export default {
           console.log(err.response)
         })
     },
-
+    strigTags (note) {
+      return note.replace(/(<([^>]+)>)/ig,"")
+    },
   },
   mounted () {
     if (process.browser) {
       window.addEventListener('scroll', this.handleScroll)
     }
-    this.getDetail()
+    // this.getDetail()
     this.getComments()
     this.getReview()
   },
@@ -589,11 +594,46 @@ export default {
     userDetail () {
       return this.$store.state.user
     },
-    // projectImages () {
-    //   return this.item.images.filter(item => item.type == 1)
-    // }
+    detail () {
+      return this.$store.state.property.propertyDetail
+    }
 
   },
+  head () {
+    return {
+      title: this.detail.title,
+      meta: [
+        { hid: 'description', name: 'description', content: this.strigTags(this.detail.overview) },
+
+        {
+          hid: 'og:title',
+          property: 'og:title',
+          content: this.detail.title
+        },
+        {
+          hid: 'og:type',
+          property: 'og:type',
+          content: 'article'
+        },
+        {
+          hid: 'og:url',
+          property: 'og:url',
+          content: 'http://homenland.vn/property/detail/'+this.detail.slug
+        },
+        {
+          hid: 'og:image',
+          property: 'og:image',
+          content: 'http://homenland.vn'+this.detail.thumbnail
+        },
+        {
+          hid: 'og:description',
+          property: 'og:description',
+          content: this.strigTags(this.detail.overview)
+        }
+      ]
+    }
+
+  }
 }
 </script>
 

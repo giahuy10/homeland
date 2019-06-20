@@ -12,7 +12,32 @@ module.exports = {
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: pkg.description }
+      { hid: 'description', name: 'description', content: pkg.description },
+      {
+          hid: 'og:title',
+          property: 'og:title',
+          content: 'Tổng hợp Dự án căn hộ nhà đất'
+        },
+        {
+          hid: 'og:type',
+          property: 'og:type',
+          content: 'article'
+        },
+        {
+          hid: 'og:url',
+          property: 'og:url',
+          content: 'http://homenland.vn/'
+        },
+        {
+          hid: 'og:image',
+          property: 'og:image',
+          content: 'http://homenland.vn/images/Banner 1.png'
+        },
+        {
+          hid: 'og:description',
+          property: 'og:description',
+          content: pkg.description
+        }
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
