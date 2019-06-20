@@ -20,7 +20,7 @@
         <div class="property_listing_details">
           <div class="float-left">
             <i class="fa fa-commenting-o" aria-hidden="true"></i> {{item.totalComments ? item.totalComments : 0}}
-            <i class="fa fa-camera-retro" aria-hidden="true"></i> {{item.totalImages ? item.totalImages : 0}}
+            <i class="fa fa-camera-retro" aria-hidden="true"></i> {{item.totalImages + item.totalImages2 > 0 ? item.totalImages + item.totalImages2 : 0}}
           </div>
           <div class="float-right">
             <i class="fa fa-share-alt" aria-hidden="true"></i>
