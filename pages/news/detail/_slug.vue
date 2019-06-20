@@ -43,7 +43,7 @@
                               {{comment.text}}
                             </div>
                             <div class="reply"><a href="#" :class="comment.like? 'liked' : ''" @click.prevent="saveCM(comment, index)">Thích</a> <a href="#comment-box" @click=" setParent(comment), commentText = '@'+comment.lastName+' '">Thảo luận</a></div>
-
+                            <a href="#" @click.prevent="removeComment(comment.id, index)" v-if="(userDetail && userDetail.id == comment.createdBy) || (userDetail && userDetail.level == 2)">Xóa</a>
 
                           </div>
                         </li>
@@ -288,6 +288,15 @@ export default {
         this.getDetail()
       })
       .catch(err => console.log(err))
+    },
+    removeComment (id, index) {
+      this.$axios.delete(`/api/comments/${id}`)
+      .then(res=> {
+        this.components.splice(index, 1)
+        this.toast('Thông báo', 'Xóa bình luận thành công', 'success')
+        this.getComments()
+      })
+      .catch(err=> console.log(err.response))
     }
   },
   computed: {

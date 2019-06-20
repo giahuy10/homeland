@@ -120,7 +120,7 @@
                           </div>
                           <div class="reply">
                             <a href="#" :class="comment.like ? 'liked' : ''" @click.prevent="saveCM(comment, index)">Thích</a> <a href="#comment-box" @click="commentParent = comment.parent, commentText = '@'+comment.user.lastName+' '">Thảo luận</a>
-                            <a href="#" @click.prevent="removeComment(comment.id)" v-if="userDetail && userDetail.id == comment.createdBy || userDetail.level == 2">Xóa</a>
+                            <a href="#" @click.prevent="removeComment(comment.id, index)" v-if="(userDetail && userDetail.id == comment.createdBy) || (userDetail && userDetail.level == 2)">Xóa</a>
                             </div>
                         </div>
                       </li>
@@ -537,9 +537,10 @@ export default {
           variant: variant
         })
       },
-    removeComment (id) {
+    removeComment (id, index) {
       this.$axios.delete(`/api/comments/${id}`)
       .then(res=> {
+        this.components.splice(index, 1)
         this.toast('Thông báo', 'Xóa bình luận thành công', 'success')
         this.getComments()
       })
@@ -794,6 +795,9 @@ $pink : #ffa800;
       }
     }
   }
+}
+iframe {
+    width: 100%;
 }
 </style>
 
