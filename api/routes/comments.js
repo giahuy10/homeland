@@ -75,29 +75,6 @@ router
       })
       .catch(err => console.log(err))
     model.create(req.body).then(data => {
-      let bulkData = []
-        if (images && images.length > 0) {
-
-          images.forEach(item => {
-            bulkData.push({
-              createdBy: req.decoded.data.id,
-              proId: data.id,
-              source: item.source,
-              thumbnail: item.thumbnail,
-              height: item.height,
-              width: item.width,
-              type: 3
-            })
-            totalWidth += item.width
-          })
-          data.update({
-            totalWidth: totalWidth
-          }).then(response => console.log(response))
-            .catch(err => console.log.json(err))
-          modelMedia.bulkCreate(bulkData)
-            .then(response => console.log(response))
-            .catch(err => console.log(err))
-        }
         res.json(data)
     }).catch(err => res.status(500).json(err))
   })
