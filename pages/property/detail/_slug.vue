@@ -435,7 +435,7 @@ export default {
     },
     getComments () {
       let userId = this.userDetail ? this.userDetail.id : 0
-      this.$axios.get(`/api/property/comment/${this.$route.params.slug}?userId=${userId}`)
+      this.$axios.get(`/api/property/comment/${this.detail.id}?userId=${userId}`)
         .then(res => {
           console.log('comments', res)
           this.comments = res.data.result
