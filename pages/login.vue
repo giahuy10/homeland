@@ -85,9 +85,11 @@ export default {
     loginByFacebook () {
       firebase.auth().signInWithPopup(facebookProvider)
           .then(data => {
+            console.log('face', data)
             this.checkEmail(data.user, 'facebook')
           })
           .catch(err => {
+            onsole.log('facee', err)
             this.checkEmail ({email: err.email}, 'facebook')
           })
     },
@@ -95,10 +97,12 @@ export default {
 
         firebase.auth().signInWithPopup(googleProvider)
           .then(data => {
+            console.log('ggg', data)
             this.checkEmail(data.user, 'google')
 
           })
           .catch(err => {
+            console.log('ggge', err)
             this.checkEmail ({email: err.email}, 'google')
           })
 
