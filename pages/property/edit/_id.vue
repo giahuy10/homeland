@@ -78,13 +78,13 @@
         <div class="row">
           <div class="col-12 col-md-6">
             <b-form-group id="input-group-2" label="Tổng quan" label-for="input-2">
-              <b-form-textarea v-if="user.level == 1" v-model="item.overview" rows="3" placeholder="diện tích đất dự án, diện tích xây dựng, mật độ xây dựng, vi trị đẹp ngay khu vực trung tậm thành phố,...."></b-form-textarea>
+              <b-form-textarea v-if="user.level == 1" v-model="item.overview" rows="3" placeholder="Vd: Diện tích đất dự án, diện tích xây dựng, mật độ xây dựng, vi trị đẹp ngay khu vực trung tậm thành phố,...."></b-form-textarea>
               <editor v-model="item.overview" v-else :toolbar="toolbar" api-key="lxzv6h8kur0syil9hllrjlm94wtumcz3fy6ea2jc0inlsmnb" :init="init"></editor>
             </b-form-group>
           </div>
           <div class="col-12 col-md-6">
             <b-form-group id="input-group-2" label="Sản phẩm" label-for="input-2">
-              <b-form-textarea v-if="user.level == 1" v-model="item.product" rows="3" placeholder="Mô tả chi tiết
+              <b-form-textarea v-if="user.level == 1" v-model="item.product" rows="3" placeholder="Vd: Mô tả chi tiết
 Vd: 2 tòa căn hộ ( 450 căn hộ ), 100 căn biệt thự, 1 tòa văn phòng (từ tầng 6 – tầng 25 và trung tâm thương mại (5 tầng khối đế)….."></b-form-textarea>
               <editor v-model="item.product" v-else :toolbar="toolbar" api-key="lxzv6h8kur0syil9hllrjlm94wtumcz3fy6ea2jc0inlsmnb" :init="init"></editor>
             </b-form-group>
@@ -100,7 +100,7 @@ Vd: 2 tòa căn hộ ( 450 căn hộ ), 100 căn biệt thự, 1 tòa văn phòn
           </div>
           <div class="col-12 col-md-6">
             <b-form-group id="input-group-2" label="Bàn giao" label-for="input-2">
-              <b-form-textarea v-if="user.level == 1" v-model="item.handover" rows="3" placeholder="bàn giao thô, nội thất cơ bản, đầy đủ nội thất...."></b-form-textarea>
+              <b-form-textarea v-if="user.level == 1" v-model="item.handover" rows="3" placeholder="Vd: Bàn giao thô, nội thất cơ bản, đầy đủ nội thất...."></b-form-textarea>
               <editor v-model="item.handover" v-else :toolbar="toolbar" api-key="lxzv6h8kur0syil9hllrjlm94wtumcz3fy6ea2jc0inlsmnb" :init="init"></editor>
             </b-form-group>
           </div>
@@ -109,7 +109,7 @@ Vd: 2 tòa căn hộ ( 450 căn hộ ), 100 căn biệt thự, 1 tòa văn phòn
         <div class="row">
           <div class="col-12 col-md-6">
             <b-form-group id="input-group-2" label="Tiến độ" label-for="input-2">
-              <b-form-textarea v-if="user.level == 1" v-model="item.progress" rows="3" placeholder="vd: ngày khởi công, dự kiến hoàn thành, đang xây tới tầng 16...."></b-form-textarea>
+              <b-form-textarea v-if="user.level == 1" v-model="item.progress" rows="3" placeholder="Vd: ngày khởi công, dự kiến hoàn thành, đang xây tới tầng 16...."></b-form-textarea>
               <editor v-model="item.progress" v-else :toolbar="toolbar" api-key="lxzv6h8kur0syil9hllrjlm94wtumcz3fy6ea2jc0inlsmnb" :init="init"></editor>
             </b-form-group>
           </div>
