@@ -5,7 +5,7 @@
         <h2>Top thành viên</h2>
         <div class="users">
           <div v-for="(item, index) in items" :key="index" class="user">
-            <img :src="item.avatar" alt="">
+            <img :src="item.avatar ? item.avatar : '/images/no-avatar-25359d55aa3c93ab3466622fd2ce712d1.jpg'" alt="">
             <span>{{item.lastName}}</span>
           </div>
         </div>
@@ -57,6 +57,8 @@ export default {
       }
       img {
         border-radius: 100%;
+        width: 100px;
+        height: 100px;
       }
     }
   }
