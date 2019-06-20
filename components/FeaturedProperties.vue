@@ -1,7 +1,7 @@
 <template>
   <div class="featured-properties">
     <div class="container">
-    
+
       <div class="mod-content">
         <div class="row">
           <div class="col-20 side">
@@ -41,7 +41,7 @@
                 <b-form-select v-model="filter.price" :options="optionsPrice" @change="getItems"></b-form-select>
               </div>
             </div>
-            
+
              <div class="row">
               <div v-for="(item, index) in items" :key="index" class="property col-6 col-sm-4 col-md-3">
                 <Property :item="item" />
@@ -176,15 +176,11 @@ $pink : #ffa800;
       a {
         display: block;
         padding: 10px 20px;
-        &:hover {
+
+        &.active, &:hover {
           text-decoration: none;
-          background: $pink;
-          color: #fff;
-        }
-        &.active {
-          text-decoration: none;
-          background: $pink;
-          color: #fff;
+          color: #b65800;
+        font-weight: bold
         }
       }
     }

@@ -202,6 +202,7 @@ $pink : #e7005a;
   }
   a {
     color:#fff;
+    font-size: 17px;
   }
 }
 
