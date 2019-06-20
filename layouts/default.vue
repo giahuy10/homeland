@@ -60,11 +60,11 @@
                 <nuxt-link to="/property/edit/0">Thêm dự án</nuxt-link>
               </li>
               <li>
-                <nuxt-link to="/help">Trợ giúp và câu hỏi thường gặp</nuxt-link>
+                <nuxt-link to="/news/detail/Tro-giup-va-cau-hoi-thuong-gap">Trợ giúp và câu hỏi thường gặp</nuxt-link>
 
               </li>
               <li>
-                <nuxt-link to="/toc">Quy định</nuxt-link>
+                <nuxt-link to="news/detail/Quy-dinh-su-dung">Quy định</nuxt-link>
 
               </li>
             </ul>
@@ -73,19 +73,19 @@
             <h3>Công ty</h3>
             <ul>
               <li>
-                <nuxt-link to="/about">Giới thiệu</nuxt-link>
+                <nuxt-link to="news/detail/Gioi-thieu-ve-Homenlandvn">Giới thiệu</nuxt-link>
 
               </li>
               <li>
 
-                <nuxt-link to="/policy">Quy chế hoạt động</nuxt-link>
+                <nuxt-link to="news/detail/Quy-che-hoat-dong">Quy chế hoạt động</nuxt-link>
               </li>
               <li>
-                <nuxt-link to="/privacy">Bảo mật thông tin</nuxt-link>
+                <nuxt-link to="news/detail/Bao-mat-thong-tin">Bảo mật thông tin</nuxt-link>
 
               </li>
               <li>
-                <nuxt-link to="/feedback">Góp ý</nuxt-link>
+                <nuxt-link to="news/detail/Gop-y-xay-dung-website">Góp ý</nuxt-link>
 
               </li>
             </ul>

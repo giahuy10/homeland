@@ -6,6 +6,7 @@ var slug = require('slug')
 var checkUserLogged = require('../utils/checkUserLogged')
 var activity = require('../models').Activity
 var sequelize = require('../models').sequelize
+var sendMail = require('../utils/sendMail')
 router
   // Get all News
   .get('/', (req, res) => {
