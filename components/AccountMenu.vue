@@ -12,6 +12,7 @@
     <template v-if="userDetail && userDetail.level == 2">
         <li><nuxt-link to="/account/verifypro">Phê duyệt dự án</nuxt-link></li>
         <li><nuxt-link to="/account/verifynews">Phê duyệt tin tức</nuxt-link></li>
+        <li><nuxt-link to="/account/banner">Quản lý banner</nuxt-link></li>
     </template>
     <li><a href="#" @click.prevent="logout">Đăng xuất</a></li>
   </ul>

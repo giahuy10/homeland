@@ -15,6 +15,7 @@ module.exports = (sequelize, DataTypes) => {
     overview: DataTypes.TEXT,
     product: DataTypes.TEXT,
     facilities: DataTypes.TEXT,
+    handover: DataTypes.TEXT,
     map: DataTypes.TEXT,
     createdBy: DataTypes.INTEGER,
     state: DataTypes.INTEGER,

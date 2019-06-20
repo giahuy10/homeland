@@ -95,6 +95,8 @@
                 <div v-html="detail.product"></div>
                 <h5>Tiện tích</h5>
                 <div v-html="detail.facilities"></div>
+                <h5>Bàn giao</h5>
+                <div v-html="detail.handover"></div>
             </div>
             <div class="p-progress">
               <h4 id="p-progress">Tiến độ</h4>
@@ -389,6 +391,7 @@ export default {
         this.$axios.delete(`/api/property/${id}`)
           .then(res => {
             this.toast('Thông báo', 'Dự án đã được xóa', 'success')
+            this.$router.push({path: '/property'})
           })
           .catch(err => console.log(err))
       }
