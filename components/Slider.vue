@@ -14,11 +14,8 @@
       @sliding-end="onSlideEnd"
     >
       <!-- Text slides with image -->
-      <b-carousel-slide img-src="/images/banner/1.jpg"></b-carousel-slide>
-      <b-carousel-slide img-src="/images/banner/2.jpg"></b-carousel-slide>
-      <b-carousel-slide img-src="/images/banner/3.jpg"></b-carousel-slide>
-      <b-carousel-slide img-src="/images/banner/4.jpg"></b-carousel-slide>
-      <b-carousel-slide img-src="/images/banner/5.jpg"></b-carousel-slide>
+      <b-carousel-slide v-for="(image, index) in images" :key="index" :img-src="image.source"></b-carousel-slide>
+
 
 
 
@@ -31,8 +28,12 @@
     data() {
       return {
         slide: 0,
-        sliding: null
+        sliding: null,
+        images: []
       }
+    },
+    mounted () {
+      this.getItems()
     },
     methods: {
       onSlideStart(slide) {
@@ -40,6 +41,11 @@
       },
       onSlideEnd(slide) {
         this.sliding = false
+      },
+      getItems() {
+        this.$axios.get('/api/media?type=1')
+          .then(res => this.images = res.data.result)
+          .catch(err => console.log(err.response))
       }
     }
   }

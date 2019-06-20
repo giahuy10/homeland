@@ -299,7 +299,7 @@ export default {
       .catch(err=> console.log(err.response))
     },
     removeItem (id) {
-      if (confirm('Bạn chắc chắn muốn xóa dự án này?')) {
+      if (confirm('Bạn chắc chắn muốn xóa bài viết này?')) {
         this.$axios.delete(`/api/news/${id}`)
           .then(res => {
             this.toast('Thông báo', 'Bài viết đã được xóa', 'success')

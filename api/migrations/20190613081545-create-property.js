@@ -47,6 +47,9 @@ module.exports = {
       overview: {
         type: Sequelize.TEXT
       },
+      handover: {
+        type: Sequelize.TEXT
+      },
       product: {
         type: Sequelize.TEXT
       },

@@ -3,7 +3,7 @@
     <div class="header">
       <div class="container">
         <div class="banner">
-          <img src="/images/foody-1170x60-gdn2-636854719078673787.jpg" alt="" style="width: 100%">
+          <img :src="image.source" alt="" style="width: 100%">
         </div>
         <div class="navigation">
           <b-navbar toggleable="lg" type="light" variant="light">
@@ -32,6 +32,7 @@
                   <template v-if="userDetail && userDetail.level == 2">
                     <b-dropdown-item to="/account/verifypro"><i class="fa fa-check" aria-hidden="true"></i> Phê duyệt dự án</b-dropdown-item>
                     <b-dropdown-item to="/account/verifynews"><i class="fa fa-check" aria-hidden="true"></i> Phê duyệt tin tức</b-dropdown-item>
+                    <b-dropdown-item to="/account/banner"><i class="fa fa-image" aria-hidden="true"></i> Quản lý banner</b-dropdown-item>
                   </template>
                   <b-dropdown-item href="#" @click.prevent="logOut"><i class="fa fa-sign-out" aria-hidden="true"></i> Đăng xuất</b-dropdown-item>
                 </b-nav-item-dropdown>
@@ -120,13 +121,16 @@ const Cookie = process.client ? require('js-cookie') : undefined
 export default {
   data() {
     return {
-
+      image: {}
     }
   },
   computed: {
     userDetail () {
       return this.$store.state.user
     }
+  },
+  mounted () {
+    this.getItems()
   },
   methods: {
     logOut() {
@@ -136,7 +140,12 @@ export default {
       this.$store.commit('setUser', null)
       this.$router.push({path: '/'})
       localStorage.clear()
-    }
+    },
+    getItems() {
+        this.$axios.get('/api/media?type=2&perPage=1&currentPage=1')
+          .then(res => this.image = res.data.result[0])
+          .catch(err => console.log(err.response))
+      }
   }
 }
 </script>

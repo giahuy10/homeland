@@ -1,141 +1,191 @@
 <template>
   <div class="edit-property">
     <div class="container">
+      <h3>Thêm dự án</h3>
+      <p>Những dự án tốt mà bạn biết chưa có trên homenland.vn, chia sẻ với cộng đồng ngay!</p>
       <b-form @submit.prevent="onSubmit">
-        <b-form-group id="input-group-1" label="Tên dự án:" label-for="input-1">
-          <b-form-input
-            id="input-1"
-            v-model="item.title"
-            type="text"
-            required
-          ></b-form-input>
-        </b-form-group>
-
-        <b-form-group id="input-group-1" label="Chủ đầu tư:" label-for="input-1">
-          <b-form-input
-            id="input-1"
-            v-model="item.owner"
-            type="text"
-            required
-          ></b-form-input>
-        </b-form-group>
-
-        <b-form-group id="input-group-2" label="Thành phố" label-for="input-2">
-          <b-form-select v-model="item.city" @change="getDistricts">
-            <option value="">Chọn thành phố</option>
-            <option v-for="(city, index) in cities" :key="index" :value="city.id"> {{city.name}}</option>
-          </b-form-select>
-        </b-form-group>
-
-        <b-form-group id="input-group-2" label="Quận/Huyện" label-for="input-2">
-          <b-form-select v-model="item.district">
-            <option value="">Chọn quận/huyện</option>
-            <option v-for="(district, index) in districts" :key="index" :value="district.id"> {{district.name}}</option>
-          </b-form-select>
-        </b-form-group>
-
-        <b-form-group id="input-group-2" label="Địa chỉ" label-for="input-2">
-          <b-form-input
-            id="input-2"
-            type="text"
-            v-model="item.location"
-            required
-          ></b-form-input>
-        </b-form-group>
-
-        <b-form-group id="input-group-2" label="Loại" label-for="input-2">
-          <b-form-select v-model="item.type">
-            <option v-for="(type, index) in types" :key="index" :value="type.value"> {{type.text}}</option>
-          </b-form-select>
-        </b-form-group>
-
-        <b-form-group id="input-group-2" label="Loại" label-for="input-2">
-          <b-form-select v-model="item.price">
-            <option v-for="(price, index) in optionsPrice" :key="index" :value="price.value"> {{price.text}}</option>
-          </b-form-select>
-        </b-form-group>
-
-        <b-form-group id="input-group-2" label="Trang chủ" label-for="input-2">
-          <editor v-model="item.overview" :toolbar="toolbar" api-key="lxzv6h8kur0syil9hllrjlm94wtumcz3fy6ea2jc0inlsmnb" :init="init"></editor>
-        </b-form-group>
-
-        <b-form-group id="input-group-2" label="Sản phẩm" label-for="input-2">
-          <editor v-model="item.product" :toolbar="toolbar" api-key="lxzv6h8kur0syil9hllrjlm94wtumcz3fy6ea2jc0inlsmnb" :init="init"></editor>
-        </b-form-group>
-
-        <b-form-group id="input-group-2" label="Tiện ích" label-for="input-2">
-          <editor v-model="item.facilities" :toolbar="toolbar" api-key="lxzv6h8kur0syil9hllrjlm94wtumcz3fy6ea2jc0inlsmnb" :init="init"></editor>
-        </b-form-group>
-
-        <b-form-group id="input-group-2" label="Tiến độ" label-for="input-2">
-          <editor v-model="item.progress" :toolbar="toolbar" api-key="lxzv6h8kur0syil9hllrjlm94wtumcz3fy6ea2jc0inlsmnb" :init="init"></editor>
-        </b-form-group>
-
-        <b-form-group id="input-group-1" label="Link google map:" label-for="input-1">
-          <b-form-textarea
-            id="textarea"
-            v-model="item.map"
-            rows="3"
-            max-rows="6"
-          ></b-form-textarea>
-        </b-form-group>
-
-        <b-form-group id="input-group-1" label="Ảnh đại diện:" label-for="input-1">
-          <input type="file" class="form-control" placeholder="" ref="thumbnail" v-on:change="handleThumbnailUpload()" >
-          <b-spinner v-if="thumbnailLoading" label="Loading..."></b-spinner>
-          <img class="thumbnail" v-if="item.thumbnail" :src="item.thumbnail" alt="">
-        </b-form-group>
-
-        <b-form-group id="input-group-1" label="Ảnh dự án:" label-for="input-1">
-          <input type="file" class="form-control" placeholder="" ref="file" v-on:change="handleFileUpload(1)" :disabled="item.images && item.images.length >=5">
-          <b-spinner v-if="imageLoading" label="Loading..."></b-spinner>
-        </b-form-group>
-
-
-
-        <div class="images" v-if="item.images && item.images.length > 0">
-          <div class="img" v-for="(image, index) in item.images" :key="index">
-            <div class="inner-img">
-              <img :src="image.thumbnail" alt="">
-              <i class="fa fa-trash" @click="removeImage(index)"></i>
-            </div>
+        <div class="row">
+          <div class="col-12 col-md-6">
+            <b-form-group id="input-group-1" label="" label-for="input-1">
+              <b-form-input
+                id="input-1"
+                v-model="item.title"
+                type="text"
+                required
+                placeholder="Nhập tên dự án"
+              ></b-form-input>
+            </b-form-group>
+          </div>
+          <div class="col-12 col-md-6">
+            <b-form-group id="input-group-1" label="" label-for="input-1">
+              <b-form-input
+                id="input-1"
+                v-model="item.owner"
+                type="text"
+                required
+                placeholder="Chủ đầu tư:"
+              ></b-form-input>
+            </b-form-group>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12 col-md-3">
+            <b-form-group id="input-group-2" label="" label-for="input-2">
+              <b-form-select v-model="item.city" @change="getDistricts">
+                <option value="">Chọn thành phố</option>
+                <option v-for="(city, index) in cities" :key="index" :value="city.id"> {{city.name}}</option>
+              </b-form-select>
+            </b-form-group>
+          </div>
+          <div class="col-12 col-md-3">
+            <b-form-group id="input-group-2" label="" label-for="input-2">
+              <b-form-select v-model="item.district">
+                <option value="">Chọn quận/huyện</option>
+                <option v-for="(district, index) in districts" :key="index" :value="district.id"> {{district.name}}</option>
+              </b-form-select>
+            </b-form-group>
 
           </div>
-          <div class="clearfix"></div>
-        </div>
-
-         <b-form-group id="input-group-1" label="Ảnh tiến độ:" label-for="input-1">
-          <input type="file" class="form-control" placeholder="" ref="file2" v-on:change="handleFileUpload(2)" :disabled="item.images2 && item.images2.length >=5">
-          <b-spinner v-if="imageLoading2" label="Loading..."></b-spinner>
-        </b-form-group>
-
-        <div class="images" v-if="item.images2 && item.images2.length > 0">
-          <div class="img" v-for="(image, index) in item.images2" :key="index">
-            <div class="inner-img">
-              <img :src="image.thumbnail" alt="">
-              <i class="fa fa-trash" @click="removeImage(index)"></i>
-            </div>
-
+          <div class="col-12 col-md-6">
+            <b-form-group id="input-group-2" label="" label-for="input-2">
+              <b-form-input
+                id="input-2"
+                type="text"
+                v-model="item.location"
+                required
+                placeholder="Địa chỉ chi tiết"
+              ></b-form-input>
+            </b-form-group>
           </div>
-          <div class="clearfix"></div>
+
+        </div>
+        <div class="row">
+          <div class="col-12 col-md-6">
+            <b-form-group id="input-group-2" label="" label-for="input-2">
+              <b-form-select v-model="item.type">
+                <option v-for="(type, index) in types" :key="index" :value="type.value"> {{type.text}}</option>
+              </b-form-select>
+            </b-form-group>
+          </div>
+          <div class="col-12 col-md-6">
+            <b-form-group id="input-group-2" label="" label-for="input-2">
+              <b-form-select v-model="item.price">
+                <option v-for="(price, index) in optionsPrice" :key="index" :value="price.value"> {{price.text}}</option>
+              </b-form-select>
+            </b-form-group>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12 col-md-6">
+            <b-form-group id="input-group-2" label="Tổng quan" label-for="input-2">
+              <b-form-textarea v-if="user.level == 1" v-model="item.overview" rows="3" placeholder="diện tích đất dự án, diện tích xây dựng, mật độ xây dựng, vi trị đẹp ngay khu vực trung tậm thành phố,...."></b-form-textarea>
+              <editor v-model="item.overview" v-else :toolbar="toolbar" api-key="lxzv6h8kur0syil9hllrjlm94wtumcz3fy6ea2jc0inlsmnb" :init="init"></editor>
+            </b-form-group>
+          </div>
+          <div class="col-12 col-md-6">
+            <b-form-group id="input-group-2" label="Sản phẩm" label-for="input-2">
+              <b-form-textarea v-if="user.level == 1" v-model="item.product" rows="3" placeholder="Mô tả chi tiết
+Vd: 2 tòa căn hộ ( 450 căn hộ ), 100 căn biệt thự, 1 tòa văn phòng (từ tầng 6 – tầng 25 và trung tâm thương mại (5 tầng khối đế)….."></b-form-textarea>
+              <editor v-model="item.product" v-else :toolbar="toolbar" api-key="lxzv6h8kur0syil9hllrjlm94wtumcz3fy6ea2jc0inlsmnb" :init="init"></editor>
+            </b-form-group>
+          </div>
         </div>
 
-        <b-form-group label="" v-if="user.level == 2">
-            <b-form-radio-group
-              id="btn-radios-1"
-              v-model="item.state"
-              :options="stateOptions"
-              buttons
-              name="radios-btn-default"
-              button-variant="outline-primary"
-            ></b-form-radio-group>
-          </b-form-group>
+        <div class="row">
+          <div class="col-12 col-md-6">
+            <b-form-group id="input-group-2" label="Tiện ích" label-for="input-2">
+              <b-form-textarea v-if="user.level == 1" v-model="item.facilities" rows="3"></b-form-textarea>
+              <editor v-model="item.facilities" v-else :toolbar="toolbar" api-key="lxzv6h8kur0syil9hllrjlm94wtumcz3fy6ea2jc0inlsmnb" :init="init"></editor>
+            </b-form-group>
+          </div>
+          <div class="col-12 col-md-6">
+            <b-form-group id="input-group-2" label="Bàn giao" label-for="input-2">
+              <b-form-textarea v-if="user.level == 1" v-model="item.handover" rows="3" placeholder="bàn giao thô, nội thất cơ bản, đầy đủ nội thất...."></b-form-textarea>
+              <editor v-model="item.handover" v-else :toolbar="toolbar" api-key="lxzv6h8kur0syil9hllrjlm94wtumcz3fy6ea2jc0inlsmnb" :init="init"></editor>
+            </b-form-group>
+          </div>
+        </div>
 
-        <b-spinner v-if="saveLoading" label="Loading..."></b-spinner>
+        <div class="row">
+          <div class="col-12 col-md-6">
+            <b-form-group id="input-group-2" label="Tiến độ" label-for="input-2">
+              <b-form-textarea v-if="user.level == 1" v-model="item.progress" rows="3" placeholder="vd: ngày khởi công, dự kiến hoàn thành, đang xây tới tầng 16...."></b-form-textarea>
+              <editor v-model="item.progress" v-else :toolbar="toolbar" api-key="lxzv6h8kur0syil9hllrjlm94wtumcz3fy6ea2jc0inlsmnb" :init="init"></editor>
+            </b-form-group>
+          </div>
+          <div class="col-12 col-md-6">
+            <b-form-group id="input-group-1" label="Link google map:" label-for="input-1">
+              <b-form-textarea id="textarea" v-model="item.map" rows="3"></b-form-textarea>
+            </b-form-group>
+          </div>
 
-        <b-button v-else type="submit" variant="primary">
-            {{item.id ? 'Cập nhật dự án' : 'Tạo dự án'}}
-        </b-button>
+        </div>
+
+        <div class="row">
+          <div class="col-12 col-md-4">
+            <b-form-group id="input-group-1" label="Ảnh phối cảnh:" label-for="input-1">
+              <input type="file" class="form-control" placeholder="" ref="thumbnail" v-on:change="handleThumbnailUpload()" >
+              <b-spinner v-if="thumbnailLoading" label="Loading..."></b-spinner>
+              <img class="thumbnail" v-if="item.thumbnail" :src="item.thumbnail" alt="">
+            </b-form-group>
+          </div>
+          <div class="col-12 col-md-4">
+            <b-form-group id="input-group-1" label="Ảnh dự án chi tiết:" label-for="input-1">
+              <input type="file" class="form-control" placeholder="" ref="file" v-on:change="handleFileUpload(1)" :disabled="item.images && item.images.length >=5">
+              <b-spinner v-if="imageLoading" label="Loading..."></b-spinner>
+            </b-form-group>
+            <div class="images" v-if="item.images && item.images.length > 0">
+              <div class="img" v-for="(image, index) in item.images" :key="index">
+                <div class="inner-img">
+                  <img :src="image.thumbnail" alt="">
+                  <i class="fa fa-trash" @click="removeImage(index)"></i>
+                </div>
+
+              </div>
+              <div class="clearfix"></div>
+            </div>
+          </div>
+          <div class="col-12 col-md-4">
+            <b-form-group id="input-group-1" label="Ảnh tiến độ:" label-for="input-1">
+              <input type="file" class="form-control" placeholder="" ref="file2" v-on:change="handleFileUpload(2)" :disabled="item.images2 && item.images2.length >=5">
+              <b-spinner v-if="imageLoading2" label="Loading..."></b-spinner>
+            </b-form-group>
+
+            <div class="images" v-if="item.images2 && item.images2.length > 0">
+              <div class="img" v-for="(image, index) in item.images2" :key="index">
+                <div class="inner-img">
+                  <img :src="image.thumbnail" alt="">
+                  <i class="fa fa-trash" @click="removeImage(index)"></i>
+                </div>
+
+              </div>
+              <div class="clearfix"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-12 col-md-6">
+            <b-form-group label="" v-if="user.level == 2">
+              <b-form-radio-group
+                id="btn-radios-1"
+                v-model="item.state"
+                :options="stateOptions"
+                buttons
+                name="radios-btn-default"
+                button-variant="outline-primary"
+              ></b-form-radio-group>
+            </b-form-group>
+          </div>
+          <div class="col-12 col-md-6">
+            <b-spinner v-if="saveLoading" label="Loading..."></b-spinner>
+
+            <b-button v-else type="submit" variant="primary">
+                {{item.id ? 'Cập nhật dự án' : 'Tạo dự án'}}
+            </b-button>
+          </div>
+        </div>
+
       </b-form>
     </div>
   </div>
@@ -180,7 +230,8 @@ export default {
         state: 0,
         thumbnail: '',
         images: [],
-        images2: []
+        images2: [],
+        state: -1
       },
       cities: location,
       districts: [],
