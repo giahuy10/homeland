@@ -389,6 +389,7 @@ export default {
         this.$axios.delete(`/api/property/${id}`)
           .then(res => {
             this.toast('Thông báo', 'Dự án đã được xóa', 'success')
+            this.$router.push({path: '/property'})
           })
           .catch(err => console.log(err))
       }
