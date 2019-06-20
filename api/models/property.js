@@ -20,6 +20,8 @@ module.exports = (sequelize, DataTypes) => {
     state: DataTypes.INTEGER,
     totalWidth: DataTypes.INTEGER,
     totalImages: DataTypes.INTEGER,
+    totalWidth2: DataTypes.INTEGER,
+    totalImages2: DataTypes.INTEGER,
     totalComments: DataTypes.INTEGER,
     thumbnail: DataTypes.STRING
 

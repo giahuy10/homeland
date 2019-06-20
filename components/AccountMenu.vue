@@ -1,5 +1,7 @@
 <template>
-  <ul class="news-menu">
+  <div class="account-menu">
+    <h4 class="text-center">Trang cá nhân</h4>
+    <ul class="">
     <li>
       <nuxt-link to="/account">Hoạt động cá nhân</nuxt-link>
     </li>
@@ -13,6 +15,8 @@
     </template>
     <li><a href="#" @click.prevent="logout">Đăng xuất</a></li>
   </ul>
+  </div>
+
 </template>
 
 <script>
@@ -34,3 +38,30 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+.account-menu {
+  border: 1px solid #ccc;
+  border-top: 0;
+  h4 {
+    background: #ffa800;
+    color: #fff;
+    padding: 7px 10px;
+  }
+  ul {
+    list-style: none;
+    padding-left: 10px;
+    li {
+      a {
+        display: block;
+        padding: 2px 10px;
+        &.nuxt-link-exact-active {
+          color: #914c0d;
+          font-weight: bold;
+        }
+      }
+    }
+  }
+}
+</style>
+

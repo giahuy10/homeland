@@ -6,7 +6,7 @@
           <h5 class="mb-1">Bạn đã {{item.type | typeText}} một {{item.typeItem | typeName}}</h5>
           <small>{{ item.createdAt | moment("DD/MM/YYYY, h:mm:ss a") }}</small>
         </div>
-        <small>Dự án này rất đẹp...</small>
+        <small>{{ strigTags(item.note) }}</small>
       </b-list-group-item>
       <b-pagination
             v-model="currentPage"
@@ -32,6 +32,9 @@ export default {
     this.getItems()
   },
   methods: {
+    strigTags (note) {
+      return note.replace(/(<([^>]+)>)/ig,"")
+    },
     getItems () {
       this.$axios.get(`/api/activities?currentPage=${this.currentPage}&perPage=${this.perPage}`)
       .then(res => {
@@ -40,6 +43,25 @@ export default {
           this.rows = res.data.count
       })
       .catch(err => console.log(err))
+    },
+    formatText (item) {
+      let note = JSON.parse(item.note)
+      switch(item.typeItem) {
+        case 1:
+          return note.text
+          break;
+        case 2:
+          return note.title
+          break;
+        case 3:
+          return note.title
+          break;
+        case 4:
+          return 'đánh giá'
+          break;
+        default:
+          return 'bình luận'
+      }
     }
   },
   filters: {
@@ -61,6 +83,7 @@ export default {
           return 'bình luận'
       }
     },
+
     typeText (value) {
       switch(value) {
         case 1:

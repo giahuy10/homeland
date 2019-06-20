@@ -8,9 +8,9 @@
           <img src="/images/ha-noi-home-land/main.jpg" alt="">
         </div>
         <div class="short-desc col-12 col-md-6">
-          <h2>{{item.title}}</h2>
+          <h2>{{detail.title}}</h2>
 
-          <p> {{item.owner}} <br>
+          <p> {{detail.owner}} <br>
           Căn hộ chung cư và dịch vụ
           </p>
 
@@ -43,15 +43,15 @@
 
           </table>
           <ul>
-            <li>{{item.location}}</li>
+            <li>{{detail.location}}</li>
             <li><b class="text-pink">Đang xây dựng</b></li>
-            <li><b class="text-pink">{{optionsPrice[item.price]}}</b></li>
+            <li><b class="text-pink">{{optionsPrice[detail.price]}}</b></li>
           </ul>
-          <div v-if="item.state == -1 && userDetail && userDetail.level == 2">
+          <div v-if="detail.state == -1 && userDetail && userDetail.level == 2">
             <b-button variant="success" @click="approve">Phê duyệt bài viết</b-button>
           </div>
           <div v-if="userDetail && userDetail.level == 2">
-              <b-button variant="info" @click="$router.push({path: `/property/edit/${item.id}`})">Chỉnh sửa dự án</b-button>
+              <b-button variant="info" @click="$router.push({path: `/property/edit/${detail.id}`})">Chỉnh sửa dự án</b-button>
             </div>
 
         </div>
@@ -82,39 +82,45 @@
             <div class="overview">
               <h4 id="overview">Trang chủ</h4>
               <div class="inner-overview" :class="open ? 'open' : ''">
-                <div v-html="item.overview"></div>
+                <div v-html="detail.overview"></div>
               </div>
               <a href="#" @click.prevent="open=true" v-if="!open">Xem thêm</a>
               <a href="#" @click.prevent="open=false" v-else>Thu gọn</a>
             </div>
             <div class="galleries">
               <h4 id="galleries">Ảnh dự án</h4>
-              <Gallery :items="item.images" :totalWidth="item.totalWidth" v-if="item.images && item.images.length > 0"/>
+              <Gallery :items="detail.images.filter(item => detail.type == 1)" :totalWidth="detail.totalWidth" v-if="detail.images && detail.images.filter(item => detail.type == 1).length > 0"/>
                 <h5>Sản phẩm</h5>
-                <div v-html="item.product"></div>
+                <div v-html="detail.product"></div>
                 <h5>Tiện tích</h5>
-                <div v-html="item.facilities"></div>
+                <div v-html="detail.facilities"></div>
             </div>
             <div class="p-progress">
               <h4 id="p-progress">Tiến độ</h4>
-              <div v-html="item.progress"></div>
+              <Gallery :items="detail.images.filter(item => detail.type == 2)" :totalWidth="detail.totalWidth2" v-if="detail.images && detail.images.filter(item => detail.type == 2).length > 0"/>
+              <div v-html="detail.progress"></div>
             </div>
-            <div class="comments" v-if="item.state == 1">
+            <div class="comments" v-if="detail.state == 1">
               <h4 id="comments">Bình luận</h4>
                 <div class="list-chat">
                   <div class="chat">
                     <ul class="list-unstyled">
 
                       <li class="media" :class="comment.parent ? 'child' : ''" v-for="(comment, index) in comments" :key="index">
-                        <img :src="comment.avatar" class="mr-3" alt="...">
+                        <img :src="comment.avatar" class="mr-3 avatar-chat" alt="...">
                         <div class="media-body">
                           <div class="comment-text">
-                            <b>
-                              <nuxt-link to="#">{{comment.firstName +' '+comment.lastName}}</nuxt-link>
-                            </b>
-                            {{comment.text}}
+                            <b >
+                              <nuxt-link class="text-info" to="#">{{comment.firstName +' '+comment.lastName}}</nuxt-link>
+                            </b> <small>{{comment.createdAt | moment("DD/MM/YYYY, h:mm:ss a")}}</small>
+                            <div v-html="comment.text"></div>
+                          <GalleryComment :items="JSON.parse(comment.images)" v-if="comment.images && JSON.parse(comment.images).length > 0" />
+
                           </div>
-                          <div class="reply"><a href="#" :class="comment.like ? 'liked' : ''" @click.prevent="saveCM(comment.id, index)">Thích</a> <a href="#comment-box" @click="commentParent = comment.parent, commentText = '@'+comment.user.lastName+' '">Thảo luận</a></div>
+                          <div class="reply">
+                            <a href="#" :class="comment.like ? 'liked' : ''" @click.prevent="saveCM(comment, index)">Thích</a> <a href="#comment-box" @click="commentParent = comment.parent, commentText = '@'+comment.user.lastName+' '">Thảo luận</a>
+                            <a href="#" @click.prevent="removeComment(comment.id)" v-if="userDetail && userDetail.id == comment.createdBy || userDetail.level == 2">Xóa</a>
+                            </div>
                         </div>
                       </li>
                     </ul>
@@ -133,7 +139,7 @@
             </div>
             <div class="map">
               <h4 id="map">Bản đồ</h4>
-              <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d59593.520278147014!2d105.93197290008044!3d21.00886500208229!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0xb760f3c179e923f!2zVsSDbiBwaMOybmcgYsOhbiBow6BuZyBk4buxIMOhbiBIYW5vaSBIb21lbGFuZCBOZ3V54buFbiBWxINuIEPhu6s!5e0!3m2!1svi!2s!4v1559171088529!5m2!1svi!2s" width="600" height="450" frameborder="0" style="border:0" allowfullscreen></iframe>
+              <div v-html="detail.map"></div>
             </div>
           </div>
           <div class="col-12 col-md-3">
@@ -191,8 +197,8 @@
                 </table>
               </div>
               <div class="write-review">
-                <b-button block v-b-modal.modal-1 variant="info" v-if="item.state == 1"> <i class="fa fa-comment"></i> Gửi đánh giá</b-button>
-                <b-modal id="modal-1" title="Gửi đánh giá" size="xl">
+                <b-button block v-b-modal.modal-1 variant="info" v-if="detail.state == 1"> <i class="fa fa-comment"></i> Gửi bình luận</b-button>
+                <b-modal id="modal-1" title="Gửi bình luận" size="xl">
                   <div class="review" v-if="userDetail">
                   <b-row>
                     <b-col sm="2">
@@ -249,22 +255,37 @@
 
                 </div>
                 <div class="alert alert-warning" v-else>
-                  Vui lòng <nuxt-link to="/login">đăng nhập</nuxt-link> để gửi đánh giá
+                  Vui lòng <nuxt-link to="/login">đăng nhập</nuxt-link> để gửi bình luận
                 </div>
-                <!-- <br> <br>
+                <br> <br>
+                <b-form-input
+                  id="input-1"
+                  v-model="review.title"
+
+                  required
+                  placeholder="Tiêu đề"
+                ></b-form-input>
+                <br>
                 <b-form-textarea
                   id="textarea"
+                  v-model="review.text"
                   placeholder="Viết bình luận của bạn..."
                   rows="3"
                   max-rows="6"
                   style="margin-bottom: 10px;"
                 ></b-form-textarea>
-                <b-form-file
-                  v-model="file"
-                  multiple
-                  placeholder="Chọn ảnh..."
-                  drop-placeholder="Drop file here..."
-                ></b-form-file> -->
+                <input type="file" class="form-control" placeholder="" ref="file" v-on:change="handleFileUpload()" :disabled="review.images && review.images.length >=5">
+          <b-spinner v-if="imageLoading" label="Loading..."></b-spinner>
+          <div class="images" v-if="review.images && review.images.length > 0">
+          <div class="img" v-for="(image, index) in review.images" :key="index">
+            <div class="inner-img">
+              <img :src="image.thumbnail" alt="">
+              <i class="fa fa-trash" @click="removeImage(index)"></i>
+            </div>
+
+          </div>
+          <div class="clearfix"></div>
+        </div>
                 <br><br>
                <template slot="modal-footer" slot-scope="{ ok, cancel }">
 
@@ -272,7 +293,7 @@
 
                   <b-spinner v-if="reviewLoading" label="Loading..."></b-spinner>
                   <b-button v-else size="sm" variant="success" @click="submitReview()">
-                    Gửi nhận xét
+                    Gửi bình luận
                   </b-button>
                   <b-button size="sm" variant="danger" @click="cancel()">
                     Hủy
@@ -292,13 +313,17 @@
 <script>
 import Slider from '~/components/Slider.vue'
 import Gallery from '~/components/Gallery.vue';
+import GalleryComment from '~/components/GalleryComment.vue';
 export default {
-  components: {Gallery, Slider},
-
+  components: {Gallery, Slider, GalleryComment},
+  async asyncData({ store, params }) {
+    await store.dispatch('property/getPropertyDetail', { slug: params.slug })
+  },
   data () {
 
     return {
       reviewLoading: false,
+      imageLoading: false,
       commentParent: 0,
       commentText: '',
       optionsPrice: {
@@ -341,7 +366,11 @@ export default {
         progress: 5,
         quality: 5,
         design:5,
-        proId: 0
+        proId: 0,
+        title: '',
+        text: '',
+        file: '',
+        images: []
       },
       navClass: '',
       reviewResult: {
@@ -373,7 +402,7 @@ export default {
     },
     submitReview () {
       this.reviewLoading = true
-      this.review.proId = this.item.id
+      this.review.proId = this.detail.id
       this.$axios.post(`/api/reviews`, this.review)
         .then(res => {
           this.review = {
@@ -387,14 +416,28 @@ export default {
           this.reviewLoading = false
           this.$bvModal.hide('modal-1')
           this.getReview()
+          this.toast('Thông báo', 'Cảm ơn bạn đã gửi đánh giá cho dự án này', 'success')
         })
         .catch(err => console.log(err.response))
+
+      this.$axios.post('/api/comments', {
+        type: 1,
+        itemId: this.detail.id,
+        parent: 0,
+        text: `<p><b>${this.review.title}</b> <br> ${this.review.text}</p>`,
+        images: this.review.images
+      })
+      .then(res => {
+        console.log(res)
+        this.getComments()
+      })
+      .catch(err => console.log(err.response))
     },
     getComments () {
       let userId = this.userDetail ? this.userDetail.id : 0
       this.$axios.get(`/api/property/comment/${this.$route.params.slug}?userId=${userId}`)
         .then(res => {
-          console.log(res)
+          console.log('comments', res)
           this.comments = res.data.result
         })
         .catch(err => console.log(err.response))
@@ -404,7 +447,7 @@ export default {
         .then(res => {
           console.log('detail', res)
           this.item = res.data
-          this.getDistricts()
+          // this.getDistricts()
         })
         .catch(err => console.log(err))
     },
@@ -435,7 +478,7 @@ export default {
     sendComment () {
       this.$axios.post('/api/comments', {
         type: 1,
-        itemId: this.item.id,
+        itemId: this.detail.id,
         parent: this.commentParent,
         text: this.commentText
       })
@@ -447,10 +490,11 @@ export default {
       .catch(err => console.log(err.response))
 
     },
-    saveCM (id, index) {
+    saveCM (item, index) {
       this.$axios.post('/api/saved', {
         type: 1,
-        itemId: id
+        itemId: item.id,
+        title: item.text
       })
       .then(res => {
         let title = ''
@@ -483,23 +527,59 @@ export default {
           variant: variant
         })
       },
+    removeComment (id) {
+      this.$axios.delete(`/api/comments/${id}`)
+      .then(res=> {
+        this.toast('Thông báo', 'Xóa bình luận thành công', 'success')
+        this.getComments()
+      })
+      .catch(err=> console.log(err.response))
+    },
     approve () {
-      this.$axios.put(`/api/property/${this.item.id}`, {
+      this.$axios.put(`/api/property/${this.detail.id}`, {
         state: 1
       }).then(res => {
         console.log(res)
         this.toast('Thông báo', 'Phê duyệt dự án thành công', 'success')
-        this.getDetail()
+        location.reload()
       })
       .catch(err => console.log(err))
-    }
-
+    },
+    handleFileUpload () {
+      this.imageLoading = true
+      let file = this.$refs.file.files[0];
+      let formData = new FormData();
+      formData.append('file', file);
+      this.$axios.post( '/api/file/upload', formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            'folder': 'properties'
+          }
+        }
+        ).then(res => {
+          console.log(res)
+          this.imageLoading = false
+          this.review.images.push({
+            source: res.data.location,
+            thumbnail: res.data.thumbnail,
+            height: res.data.heightThumb,
+            width: res.data.widthThumb
+          })
+        })
+        .catch(err => {
+          console.log(err.response)
+        })
+    },
+    strigTags (note) {
+      return note.replace(/(<([^>]+)>)/ig,"")
+    },
   },
   mounted () {
     if (process.browser) {
       window.addEventListener('scroll', this.handleScroll)
     }
-    this.getDetail()
+    // this.getDetail()
     this.getComments()
     this.getReview()
   },
@@ -513,8 +593,47 @@ export default {
   computed: {
     userDetail () {
       return this.$store.state.user
+    },
+    detail () {
+      return this.$store.state.property.propertyDetail
     }
+
   },
+  head () {
+    return {
+      title: this.detail.title,
+      meta: [
+        { hid: 'description', name: 'description', content: this.strigTags(this.detail.overview) },
+
+        {
+          hid: 'og:title',
+          property: 'og:title',
+          content: this.detail.title
+        },
+        {
+          hid: 'og:type',
+          property: 'og:type',
+          content: 'article'
+        },
+        {
+          hid: 'og:url',
+          property: 'og:url',
+          content: 'http://homenland.vn/property/detail/'+this.detail.slug
+        },
+        {
+          hid: 'og:image',
+          property: 'og:image',
+          content: 'http://homenland.vn'+this.detail.thumbnail
+        },
+        {
+          hid: 'og:description',
+          property: 'og:description',
+          content: this.strigTags(this.detail.overview)
+        }
+      ]
+    }
+
+  }
 }
 </script>
 

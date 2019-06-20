@@ -2,14 +2,14 @@
   <div class="property-in-list">
     <div class="pro-inner">
       <div class="pro-img">
-        <nuxt-link :to="`/property/detail/${item.id}`">
+        <nuxt-link :to="`/property/detail/${item.slug}`">
           <img :src="item.thumbnail" alt="">
         </nuxt-link>
         <div class="price">{{optionsPrice[item.price]}}</div>
       </div>
       <div class="pro-info">
         <div class="pro-title">
-          <nuxt-link :to="`/property/detail/${item.id}`" v-text="item.title"></nuxt-link>
+          <nuxt-link :to="`/property/detail/${item.slug}`" v-text="item.title"></nuxt-link>
         </div>
         <div class="pro-desc">
           <i class="fa fa-location-arrow" aria-hidden="true"></i> {{item.location}}
@@ -24,7 +24,7 @@
           </div>
           <div class="float-right">
             <i class="fa fa-share-alt" aria-hidden="true"></i>
-            <i class="fa fa-heart" :class="item.like ? 'saved' : ''" aria-hidden="true" @click="save(item.id)"></i>
+            <i class="fa fa-heart" :class="item.like ? 'saved' : ''" aria-hidden="true" @click="save(item)"></i>
           </div>
           <div class="clearfix"></div>
         </div>
@@ -51,11 +51,12 @@ export default {
     }
   },
   methods: {
-    save (itemId) {
+    save (item) {
       if (this.$store.state.user) {
         this.$axios.post('/api/saved', {
           type: 3,
-          itemId: itemId
+          itemId: item.id,
+          title: item.title
         })
         .then(res => {
           let title = ''
@@ -100,18 +101,18 @@ export default {
 $pink : #ffa800;
 i.fa {
   &.saved {
-    color: #9c7048;
+    color: #0c51b2;
   }
   &:hover {
     cursor: pointer;
-    color: $pink;
+    color: #2a5a7c;
   }
 
 }
   .pro-title {
     font-size: 18px;
     a {
-      color: $pink;
+      color: #2a5a7c;
     }
   }
   .pro-desc {

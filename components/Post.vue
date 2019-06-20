@@ -10,7 +10,7 @@
             <div class="float-left">
                 {{item.hits}} <i class="fa fa-eye" aria-hidden="true"></i>
             </div>
-            <div class="float-right save-item" @click="save(item.id)">
+            <div class="float-right save-item" @click="save(item)">
                 <i class="fa fa-heart" :class="item.like ? 'saved' : ''" aria-hidden="true"></i>
             </div>
             </div>
@@ -23,11 +23,12 @@
 export default {
   props: ['item'],
   methods: {
-    save (itemId) {
+    save (item) {
       if (this.$store.state.user) {
       this.$axios.post('/api/saved', {
         type: 2,
-        itemId: itemId
+        itemId: item.id,
+        title: item.title
       })
       .then(res => {
         let title = ''
@@ -68,9 +69,7 @@ export default {
 </script>
 <style lang="scss">
 $pink : #ffa800;
-i.fa.saved {
-  color: #9c7048;
-}
+
 .save-item {
   &:hover {
     cursor: pointer;

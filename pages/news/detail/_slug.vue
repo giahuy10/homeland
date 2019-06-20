@@ -1,31 +1,32 @@
 <template>
     <div class="news-detail">
       <Slider/>
+
         <div class="container">
 
         <div class="row">
             <div class="col-12 col-md-9">
                 <div class="detail-content">
-                    <h2>{{item.title}}</h2>
+                    <h2>{{detail.title}}</h2>
                     <div class="addthis_native_toolbox"></div>
                     <div class="created-date">
-                        {{item.createdAt | moment("DD/MM/YYYY")}} | {{item.hits}} lượt xem  <a class="saveItem" href="" @click.prevent="save" >Lưu bài viết</a>
+                        {{detail.createdAt | moment("DD/MM/YYYY")}} | {{detail.hits}} lượt xem  <a class="saveItem" href="" @click.prevent="save" >Lưu bài viết</a>
                     </div>
-                    <div class="description-news" v-html="item.description">
+                    <div class="description-news" v-html="detail.description">
 
                     </div>
                 </div>
                 <div class="addthis_native_toolbox"></div>
-                <div v-if="item.state == -1 && userDetail && userDetail.level == 2">
+                <div v-if="detail.state == -1 && userDetail && userDetail.level == 2">
                   <b-button variant="success" @click="approve">Phê duyệt bài viết</b-button>
                 </div>
 
                 <div v-if="userDetail && userDetail.level == 2">
-                  <b-button variant="info" @click="$router.push({path: `/news/edit/${item.id}`})">Chỉnh sửa bài viết</b-button>
+                  <b-button variant="info" @click="$router.push({path: `/news/edit/${detail.id}`})">Chỉnh sửa bài viết</b-button>
                 </div>
 
                 <!-- <div class="fb-comments" data-href="https://developers.facebook.com/docs/plugins/comments#configurator" data-width="" data-numposts="5"></div> -->
-                <div class="comments" v-if="item.state == 1">
+                <div class="comments" v-if="detail.state == 1">
                 <h4 id="comments">Bình luận</h4>
                   <div class="list-chat">
                     <div class="chat">
@@ -40,7 +41,7 @@
                               </b>
                               {{comment.text}}
                             </div>
-                            <div class="reply"><a href="#" :class="comment.like? 'liked' : ''" @click.prevent="saveCM(comment.id, index)">Thích</a> <a href="#comment-box" @click=" setParent(comment), commentText = '@'+comment.lastName+' '">Thảo luận</a></div>
+                            <div class="reply"><a href="#" :class="comment.like? 'liked' : ''" @click.prevent="saveCM(comment, index)">Thích</a> <a href="#comment-box" @click=" setParent(comment), commentText = '@'+comment.lastName+' '">Thảo luận</a></div>
 
 
                           </div>
@@ -99,6 +100,9 @@ export default {
   components: {
     AddThis, Slider
   },
+  async asyncData({ store, params }) {
+    await store.dispatch('news/getNewsDetail', { slug: params.slug })
+  },
   data () {
     return {
       commentParent: 0,
@@ -124,7 +128,7 @@ export default {
     }
   },
   mounted () {
-    this.getDetail()
+    // this.getDetail()
     this.getItems()
 
     // (function(d, s, id) {
@@ -162,7 +166,7 @@ export default {
     sendComment () {
       this.$axios.post('/api/comments', {
         type: 2,
-        itemId: this.item.id,
+        itemId: this.detail.id,
         parent: this.commentParent,
         text: this.commentText
       })
@@ -177,7 +181,7 @@ export default {
 
     getComments () {
       let userId = this.userDetail ? this.userDetail.id : 0
-      this.$axios.get(`/api/news/comment/${this.item.id}?userId=${userId}`)
+      this.$axios.get(`/api/news/comment/${this.detail.id}?userId=${userId}`)
         .then(res => {
           console.log('comments',res)
           this.comments = res.data.result
@@ -188,7 +192,8 @@ export default {
 
       this.$axios.post('/api/saved', {
         type: 2,
-        itemId: this.item.id
+        itemId: this.detail.id,
+        title: this.detail.title
       })
       .then(res => {
         let title = ''
@@ -209,10 +214,11 @@ export default {
       })
       .catch(err=> console.log(err.response))
     },
-    saveCM (id, index) {
+    saveCM (item, index) {
       this.$axios.post('/api/saved', {
         type: 1,
-        itemId: id
+        itemId: item.id,
+        title: item.text
       })
       .then(res => {
         let title = ''
@@ -256,7 +262,7 @@ export default {
         .catch(err => console.log(err))
     },
     getUserDetail () {
-        this.$axios.get(`/api/user/stat/news/${this.item.createdBy}`)
+        this.$axios.get(`/api/user/stat/news/${this.detail.createdBy}`)
         .then(res => {
             console.log(res)
             this.author = res.data
@@ -273,7 +279,7 @@ export default {
                 .catch(err => console.log(err))
         },
     approve () {
-      this.$axios.put(`/api/news/${this.item.id}`, {
+      this.$axios.put(`/api/news/${this.detail.id}`, {
         state: 1
       }).then(res => {
         console.log(res)
@@ -286,8 +292,46 @@ export default {
   computed: {
     userDetail () {
       return this.$store.state.user
+    },
+    detail () {
+      return this.$store.state.news.newsDetail
     }
   },
+  head () {
+    return {
+      title: this.detail.title,
+      meta: [
+        { hid: 'description', name: 'description', content: this.detail.description },
+
+        {
+          hid: 'og:title',
+          property: 'og:title',
+          content: this.detail.title
+        },
+        {
+          hid: 'og:type',
+          property: 'og:type',
+          content: 'article'
+        },
+        {
+          hid: 'og:url',
+          property: 'og:url',
+          content: 'http://homenland.vn/news/detail/'+this.detail.slug
+        },
+        {
+          hid: 'og:image',
+          property: 'og:image',
+          content: 'http://homenland.vn'+this.detail.thumbnail
+        },
+        {
+          hid: 'og:description',
+          property: 'og:description',
+          content: this.detail.description
+        }
+      ]
+    }
+
+  }
 }
 </script>
 

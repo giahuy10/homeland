@@ -2,6 +2,11 @@
   <div class="container login-page">
     <h1>Đăng nhập</h1>
     <div>
+           <b-button block @click.prevent="loginByFacebook" variant="facebook"> <i class="fa fa-facebook"></i> Đăng nhập bằng Facebook</b-button>
+
+      <b-button block @click.prevent="loginByGoogle" variant="google"> <i class="fa fa-google-plus"></i> Đăng nhập bằng Google</b-button>
+
+      <div class="text-center"> <br> <br>  Hoặc sử dụng email</div>
       <b-form @submit.prevent="postLogin" >
       <b-form-group
         id="input-group-1"
@@ -27,8 +32,7 @@
         ></b-form-input>
       </b-form-group>
       <b-button block type="submit" variant="primary">Đăng nhập</b-button>
-     <b-button block @click.prevent="loginByGoogle" variant="google"> <i class="fa fa-google-plus"></i> Đăng nhập bằng Google</b-button>
-     <b-button block @click.prevent="loginByFacebook" variant="facebook"> <i class="fa fa-facebook"></i> Đăng nhập bằng Facebook</b-button>
+
       <br>
       <p>Chưa có tài khoản? <a href="#" @click.prevent="$router.push({path: '/register'})">Đăng ký ngay</a></p>
       <p><a href="#" @click.prevent="$router.push({path: '/forgot'})">Quên mật khẩu?</a></p>

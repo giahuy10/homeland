@@ -32,7 +32,7 @@ a {
       &.child {
         margin-left: 40px;
       }
-      img {
+      img.avatar-chat {
         width: 44px;
         height: 44px;
         border-radius: 100%;
@@ -129,7 +129,11 @@ a {
   padding-right: 15px;
   padding-left: 15px;
 }
-
+.col-35 {
+  width: 35%;
+  padding-right: 15px;
+  padding-left: 15px;
+}
 .col-80 {
   width: 80%;
   padding-right: 15px;
@@ -138,7 +142,7 @@ a {
 
 .btn-brown {
   color: #fff;
-  background: #8f5c2e;
+  background: #f47933;
   padding: 5px 10px;
 }
 
@@ -151,7 +155,9 @@ a {
   color: #fff;
   background: #ffa800;
 }
-
+.row.filer-row {
+  margin-bottom: 15px;
+}
 .pro-inner {
       border: 1px solid #ccc;
       box-shadow: 0 0 1px 0px #e3e3e3;
@@ -170,7 +176,13 @@ a {
         padding: 10px 20px;
       }
     }
-
+    .filter-item {
+      //float: left;
+    }
+    .media-body {
+      /* flex: 1; */
+      max-width: 80%;
+  }
 @media (max-width: 767px) {
 
   .property.col-20 {

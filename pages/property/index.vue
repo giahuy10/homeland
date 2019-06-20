@@ -17,6 +17,29 @@
           </div>
         </div>
         <div class="col-12 col-md-10">
+          <div class="row filer-row">
+              <div class="col-20 filter-item">
+                <b-form-select v-model="filter.city" @change="getDistricts(), getItems()">
+                  <option value="">Chọn thành phố</option>
+                  <option v-for="(city, index) in cities" :key="index" :value="city.id"> {{city.name}}</option>
+                </b-form-select>
+              </div>
+              <div class="col-15 filter-item">
+                <b-form-select v-model="filter.type" @change="getItems" :options="optionsType"></b-form-select>
+              </div>
+              <div class="col-30 filter-item filter-title">
+                <b-form-input @change="getItems" v-model="filter.title" placeholder="Tên dự án, loại nhà, địa điểm..."></b-form-input>
+              </div>
+              <div class="col-20 filter-item">
+                <b-form-select v-model="filter.district" @change="getItems">
+                  <option value="">Quận/huyện</option>
+                  <option v-for="(district, index) in districts" :key="index" :value="district.id"> {{district.name}}</option>
+                </b-form-select>
+              </div>
+              <div class="col-15 filter-item">
+                <b-form-select v-model="filter.price" :options="optionsPrice" @change="getItems"></b-form-select>
+              </div>
+            </div>
           <div class="row">
             <div v-for="(item, index) in items" :key="index" class="property col-6 col-sm-4 col-md-3">
               <Property :item="item"/>
@@ -41,6 +64,7 @@
 <script>
 import Property from '~/components/Property.vue'
 import Slider from '~/components/Slider.vue'
+import location from '~/static/local.json'
 
 export default {
   mounted () {
@@ -49,14 +73,40 @@ export default {
   components: {Property, Slider},
   data () {
     return {
+      filter: {
+        city: '',
+        district:  '',
+        type: '',
+        price: '',
+        sortBy: 'id',
+        title: ''
+      },
+      cities: location,
+      districts: [],
+      optionsType: [
+        { value: '', text: '-- Loại --'},
+        { value: 1, text: 'Căn hộ chung cư'},
+        { value: 2, text: 'Biệt thự, liền kề'},
+        { value: 3, text: 'Shophouse'},
+        { value: 4, text: 'Nghỉ dưỡng'},
+      ],
+      optionsPrice: [
+        { value: '', text: '-- Giá --'},
+        { value: 1, text: '600tr - 1 tỷ'},
+        { value: 2, text: '1 tỷ - 3 tỷ'},
+        { value: 3, text: '3 tỷ - 5 tỷ'},
+        { value: 4, text: '5 tỷ - 7 tỷ'},
+        { value: 5, text: '7 tỷ - 10 tỷ'},
+        { value: 6, text: '10 tỷ - 20 tỷ'},
+        { value: 7, text: '20 tỷ - 30 tỷ'},
+        { value: 8, text: 'Trên 30 tỷ'},
+      ],
       items: [],
       currentPage: 1,
       perPage: 20,
       pageOptions: [ 5, 10, 20, 50, 100],
       rows: 0,
-      filter: {
-        sortBy: 'id'
-      }
+     
     }
   },
   computed: {

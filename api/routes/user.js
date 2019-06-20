@@ -98,7 +98,7 @@ router
         if (data) {
           if (data.state == 1) {
             if (passwordHash.verify(req.body.password, data.password)) {
-              let token = jwt.sign( {data}, 'LOIKPOKLSK1029KJ', { expiresIn: 60 * 60 })
+              let token = jwt.sign( {data}, 'LOIKPOKLSK1029KJ')
               res.json( { token, user: data} )
             } else {
               res.status(401).json({ 'msg' : 'Mật khẩu không chính xác' })

@@ -132,19 +132,7 @@ router
         var currentPage = req.query.currentPage ? parseInt(req.query.currentPage) : 1
         var totalPages = Math.ceil(data.count / limit)
         var offset = limit * (currentPage - 1)
-        // modelComment.findAll({
-        //   include: ['user'],
-        //   where: {
-        //     itemId: req.params.id,
-        //     type: 1
-        //   },
-        //   limit: limit,
-        //   offset: offset,
-        //   order: [
-        //     ['parent', 'ASC'],
-        //     ['createdAt', 'ASC']
-        //   ]
-        // })
+
         sequelize.query("SELECT c.*, s.id as `like`, u.id as userId, firstName, lastName, avatar FROM `comments` as c LEFT JOIN `saveds` as s ON c.id = s.itemId and s.type = 1 and s.createdBy = "+userId+" INNER JOIN `users` as u ON u.id = c.createdBy where c.type = 1 and c.itemId = "+req.params.id+" GROUP by c.id ORDER BY parent ASC, createdAt ASC LIMIT " + offset + ", "+limit, { type: sequelize.QueryTypes.SELECT})
           .then((comments) => {
             let items = {}
@@ -183,7 +171,24 @@ router
   // Get detail property by ID
   .get('/:id', (req, res) => {
     model.findOne({
-      include: ['images'],
+      include: ['images'
+        // {
+        //   model: modelMedia,
+        //   as: 'images',
+        //   where: {
+        //       type: 1,
+
+        //   }
+        // },
+        // {
+        //   model: modelMedia,
+        //   as: 'images2',
+        //   where: {
+        //       type: 2,
+
+        //   }
+        // }
+      ],
       where: {
         $or: [
           {
@@ -218,7 +223,12 @@ router
     req.body.saved = 0
     req.body.totalImages = 0
     req.body.totalComments = 0
+    req,body.totalWidth2 = 0
+    req.body.totalImages2 = 0
+    req.body.totalComments = 0
     let images = req.body.images
+
+    let images2 = req.body.images2
 
     delete req.body.images
     model.create(req.body)
@@ -235,21 +245,26 @@ router
             type: 1,
             typeItem: 3,
             itemId: data.id,
-            note: JSON.stringify(data)
+            note: data.title
           }).then(response => console.log(response)).catch(err => console.log(err))
 
         let totalWidth = 0
         let totalImages = 0
         let bulkData = []
+        let totalWidth2 = 0
+        let totalImages2 = 0
+        let bulkData2 = []
         if (images && images.length > 0) {
 
           images.forEach(item => {
             bulkData.push({
+              createdBy: req.decoded.data.id,
               proId: data.id,
               source: item.source,
               thumbnail: item.thumbnail,
               height: item.height,
-              width: item.width
+              width: item.width,
+              type: 1
             })
             totalWidth += item.width
             totalImages ++;
@@ -258,11 +273,37 @@ router
             totalWidth: totalWidth,
             totalImages: totalImages
           }).then(response => console.log(response))
-            .catch(err => res.status(500).json(err))
+            .catch(err => console.log.json(err))
           modelMedia.bulkCreate(bulkData)
             .then(response => console.log(response))
-            .catch(err => res.status(500).json(err))
+            .catch(err => console.log.json(err))
         }
+
+        if (images2 && images2.length > 0) {
+
+          images2.forEach(item => {
+            bulkData2.push({
+              createdBy: req.decoded.data.id,
+              proId: data.id,
+              source: item.source,
+              thumbnail: item.thumbnail,
+              height: item.height,
+              width: item.width,
+              type: 2
+            })
+            totalWidth2 += item.width
+            totalImages2 ++;
+          })
+          data.update({
+            totalWidth2: totalWidth2,
+            totalImages2: totalImages2
+          }).then(response => console.log(response))
+            .catch(err => console.log(err))
+          modelMedia.bulkCreate(bulkData2)
+            .then(response => console.log(response))
+            .catch(err => console.log.json(err))
+        }
+
         res.json(data)
       })
       .catch(err => res.status(500).json(err))

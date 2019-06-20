@@ -16,7 +16,7 @@
                 <b-nav-item to="/news/camera">Camera nhà đất</b-nav-item>
                 <b-button variant="brown" @click="$router.push({path: '/comment'})" style="margin-right: 10px; margin-left: 100px;"> <i class="fa fa-comment"></i> Viết bình luận</b-button>
 
-                <b-button v-if="!$store.state.auth" variant="orange" @click="$router.push({path: '/login'})"> <i class="fa fa-user"></i> Đăng nhập</b-button>
+                <b-button v-if="!$store.state.auth" variant="info" @click="$router.push({path: '/login'})"> <i class="fa fa-user"></i> Đăng nhập</b-button>
 
 
                 <b-nav-item-dropdown v-else right>

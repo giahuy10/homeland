@@ -4,6 +4,7 @@ var model = require('../models').Comment
 var property = require('../models').Property
 var activity = require('../models').Activity
 var checkUserLogged = require('../utils/checkUserLogged')
+var modelMedia = require('../models').PropertyMedia
 
 router
   // Get all News
@@ -52,14 +53,16 @@ router
   .post('/', checkUserLogged, (req, res) => {
     req.body.createdBy = req.decoded.data.id
     req.body.state = 1
-
+    req.body.images = JSON.stringify(req.body.images)
+    let images = req.body.images
+    let totalWidth = 0
     // save activity
     activity.create({
       createdBy: req.decoded.data.id,
       type: 1,
       typeItem: 1,
       itemId: req.body.itemId,
-      note: JSON.stringify(req.body)
+      note: req.body.text
     }).then(response => console.log(response)).catch(err => console.log(err))
 
     property.findByPk(req.body.itemId)
@@ -71,7 +74,32 @@ router
             .catch(err => console.log(err))
       })
       .catch(err => console.log(err))
-    model.create(req.body).then(data => res.send(data)).catch(err => res.status(500).json(err))
+    model.create(req.body).then(data => {
+      let bulkData = []
+        if (images && images.length > 0) {
+
+          images.forEach(item => {
+            bulkData.push({
+              createdBy: req.decoded.data.id,
+              proId: data.id,
+              source: item.source,
+              thumbnail: item.thumbnail,
+              height: item.height,
+              width: item.width,
+              type: 3
+            })
+            totalWidth += item.width
+          })
+          data.update({
+            totalWidth: totalWidth
+          }).then(response => console.log(response))
+            .catch(err => console.log.json(err))
+          modelMedia.bulkCreate(bulkData)
+            .then(response => console.log(response))
+            .catch(err => console.log(err))
+        }
+        res.json(data)
+    }).catch(err => res.status(500).json(err))
   })
 
   // Update News

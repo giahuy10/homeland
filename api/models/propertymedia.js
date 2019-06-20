@@ -5,6 +5,7 @@ module.exports = (sequelize, DataTypes) => {
     source: DataTypes.STRING,
     thumbnail: DataTypes.STRING,
     height: DataTypes.INTEGER,
+    type: DataTypes.INTEGER,
     createdBy: DataTypes.INTEGER,
     width: DataTypes.INTEGER
   }, {});

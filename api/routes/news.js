@@ -160,7 +160,7 @@ router
         type: 1,
         typeItem: 2,
         itemId: data.id,
-        note: JSON.stringify(data)
+        note: data.title
       }).then(response => console.log(response)).catch(err => console.log(err))
     res.send(data)
     }).catch(err => res.status(500).json(err))

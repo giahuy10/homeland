@@ -1,36 +1,15 @@
 <template>
   <div class="featured-properties">
     <div class="container">
-      <div class="row">
-        <div class="col-20 module-title">
-          <h2 class="mod-title">Tổng hợp dự án</h2>
-        </div>
-        <div class="col-20 filter-item">
-          <b-form-select v-model="filter.city" @change="getDistricts(), getItems()">
-            <option value="">Chọn thành phố</option>
-            <option v-for="(city, index) in cities" :key="index" :value="city.id"> {{city.name}}</option>
-          </b-form-select>
-        </div>
-        <div class="col-10 filter-item">
-          <b-form-select v-model="filter.type" @change="getItems" :options="optionsType"></b-form-select>
-        </div>
-        <div class="col-25 filter-item filter-title">
-          <b-form-input @change="getItems" v-model="filter.title" placeholder="Tên dự án, loại nhà, địa điểm..."></b-form-input>
-        </div>
-        <div class="col-15 filter-item">
-          <b-form-select v-model="filter.district" @change="getItems">
-            <option value="">Quận/huyện</option>
-            <option v-for="(district, index) in districts" :key="index" :value="district.id"> {{district.name}}</option>
-          </b-form-select>
-        </div>
-        <div class="col-10 filter-item">
-          <b-form-select v-model="filter.price" :options="optionsPrice" @change="getItems"></b-form-select>
-        </div>
-      </div>
+    
       <div class="mod-content">
         <div class="row">
           <div class="col-20 side">
+
             <div class="sidebar" :class="navClass">
+              <div class="module-title">
+                <h2 class="mod-title">Tổng hợp dự án</h2>
+            </div>
             <ul>
               <li><a href="#" :class="filter.sortBy == 'id' ? 'active' : ''" @click.prevent="filter.sortBy = 'id' , getItems()">Mua nhà ở đâu</a></li>
               <li><a href="#" :class="filter.sortBy == 'hits' ? 'active' : ''" @click.prevent="filter.sortBy = 'hits', getItems()">Dự án nào</a></li>
@@ -39,6 +18,30 @@
           </div>
           </div>
           <div class="col-80 main">
+            <div class="row filer-row">
+              <div class="col-20 filter-item">
+                <b-form-select v-model="filter.city" @change="getDistricts(), getItems()">
+                  <option value="">Chọn thành phố</option>
+                  <option v-for="(city, index) in cities" :key="index" :value="city.id"> {{city.name}}</option>
+                </b-form-select>
+              </div>
+              <div class="col-15 filter-item">
+                <b-form-select v-model="filter.type" @change="getItems" :options="optionsType"></b-form-select>
+              </div>
+              <div class="col-30 filter-item filter-title">
+                <b-form-input @change="getItems" v-model="filter.title" placeholder="Tên dự án, loại nhà, địa điểm..."></b-form-input>
+              </div>
+              <div class="col-20 filter-item">
+                <b-form-select v-model="filter.district" @change="getItems">
+                  <option value="">Quận/huyện</option>
+                  <option v-for="(district, index) in districts" :key="index" :value="district.id"> {{district.name}}</option>
+                </b-form-select>
+              </div>
+              <div class="col-15 filter-item">
+                <b-form-select v-model="filter.price" :options="optionsPrice" @change="getItems"></b-form-select>
+              </div>
+            </div>
+            
              <div class="row">
               <div v-for="(item, index) in items" :key="index" class="property col-6 col-sm-4 col-md-3">
                 <Property :item="item" />
@@ -141,7 +144,7 @@ export default {
 $pink : #ffa800;
 .featured-properties {
   .filter-item {
-    padding: 0 5px;
+    // padding: 0 5px;
   }
   .mod-content {
     padding-top: 20px;

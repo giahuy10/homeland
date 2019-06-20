@@ -18,7 +18,7 @@
       <div class="d-block text-center img-modal">
 
 
-        <img :src="items[currentItem] ? items[currentItem].full : ''" alt="">
+        <img :src="items[currentItem] ? items[currentItem].source : ''" alt="">
 
 
         <a href="#" class="img-button next" @click.prevent="change(1)"><i class="fa fa-angle-double-right" aria-hidden="true"></i></a>
@@ -141,7 +141,7 @@ export default {
       transition: all 0.5s;
       .scroller-item {
         display: inline;
-        border-right: 2px solid #fff;
+        // border-right: 2px solid #fff;
         &:hover {
           cursor: pointer;
         }
