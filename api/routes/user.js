@@ -79,8 +79,8 @@ router
         let htmlEmail = ''
         htmlEmail += `<h4>Xin chào ${req.body.firstName} ${req.body.lastName}</h4>`
         htmlEmail += `<p>Bạn đã đăng ký tài khoản tại http://homenland.vn</p>`
-        htmlEmail += `<p>Để kích hoạt tài khoản bạn vui lòng click <a href="http://homenland.vn/verify/${token}"> vào đây</a> hoặc copy và paste đường link phía dưới vào trình duyệt</p>`
-        htmlEmail += `<p>http://homenland.vn/verify/${token}</p>`
+        htmlEmail += `<p>Để kích hoạt tài khoản bạn vui lòng click <a href="http://homenland.vn/verify?token=${token}"> vào đây</a> hoặc copy và paste đường link phía dưới vào trình duyệt</p>`
+        htmlEmail += `<p>http://homenland.vn/verify?token=${token}</p>`
         sendMail(req.body.email, 'Kích hoạt tài khoản tại Homenland', '', htmlEmail)
         res.json( { token } )
       })
@@ -115,8 +115,8 @@ router
   })
 
   // Verify account
-  .post('/verify/:token', (req, res) => {
-    jwt.verify(req.params.token, 'LOIKPOKLSK1029KJ', (err, decoded) => {
+  .post('/verify', (req, res) => {
+    jwt.verify(req.query.token, 'LOIKPOKLSK1029KJ', (err, decoded) => {
       if (err) {
           res.status(403).json({ success: false, msg: 'Token không hợp lệ.', err });
         } else {
@@ -130,7 +130,7 @@ router
           }).catch(err => console.log(err))
 
           let tokenData = decoded.data
-          let token = jwt.sign( {tokenData}, 'LOIKPOKLSK1029KJ', { expiresIn: 60 * 60 })
+          let token = jwt.sign( {tokenData}, 'LOIKPOKLSK1029KJ')
           res.json( { token, user: decoded.data} )
         }
     })
