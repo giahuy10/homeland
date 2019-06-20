@@ -22,7 +22,7 @@
                 <b-nav-item-dropdown v-else right>
                   <!-- Using 'button-content' slot -->
                   <template slot="button-content">
-                    <img :src="userDetail ? userDetail.avatar : ''" alt="" class="menu-avatar">
+                    <img :src="userDetail ? userDetail.avatar : '/images/no-avatar-25359d55aa3c93ab3466622fd2ce712d1.jpg'" alt="" class="menu-avatar">
                     <em>{{userDetail ? userDetail.lastName : ''}}</em>
                   </template>
                   <b-dropdown-item to="/property/edit/0"><i class="fa fa-file" aria-hidden="true"></i> Tạo dự án</b-dropdown-item>
@@ -65,7 +65,7 @@
 
               </li>
               <li>
-                <nuxt-link to="news/detail/Quy-dinh-su-dung">Quy định</nuxt-link>
+                <nuxt-link to="/news/detail/Quy-dinh-su-dung">Quy định</nuxt-link>
 
               </li>
             </ul>
@@ -74,19 +74,19 @@
             <h3>Công ty</h3>
             <ul>
               <li>
-                <nuxt-link to="news/detail/Gioi-thieu-ve-Homenlandvn">Giới thiệu</nuxt-link>
+                <nuxt-link to="/news/detail/Gioi-thieu-ve-Homenlandvn">Giới thiệu</nuxt-link>
 
               </li>
               <li>
 
-                <nuxt-link to="news/detail/Quy-che-hoat-dong">Quy chế hoạt động</nuxt-link>
+                <nuxt-link to="/news/detail/Quy-che-hoat-dong">Quy chế hoạt động</nuxt-link>
               </li>
               <li>
-                <nuxt-link to="news/detail/Bao-mat-thong-tin">Bảo mật thông tin</nuxt-link>
+                <nuxt-link to="/news/detail/Bao-mat-thong-tin">Bảo mật thông tin</nuxt-link>
 
               </li>
               <li>
-                <nuxt-link to="news/detail/Gop-y-xay-dung-website">Góp ý</nuxt-link>
+                <nuxt-link to="/news/detail/Gop-y-xay-dung-website">Góp ý</nuxt-link>
 
               </li>
             </ul>

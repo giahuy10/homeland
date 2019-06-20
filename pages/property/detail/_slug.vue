@@ -110,7 +110,7 @@
                     <ul class="list-unstyled">
 
                       <li class="media" :class="comment.parent ? 'child' : ''" v-for="(comment, index) in comments" :key="index">
-                        <img :src="comment.avatar" class="mr-3 avatar-chat" alt="...">
+                        <img :src="comment.avatar ? comment.avatar : '/images/no-avatar-25359d55aa3c93ab3466622fd2ce712d1.jpg'" class="mr-3 avatar-chat" alt="...">
                         <div class="media-body">
                           <div class="comment-text">
                             <b >

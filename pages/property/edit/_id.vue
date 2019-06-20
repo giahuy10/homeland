@@ -237,10 +237,11 @@ export default {
       districts: [],
       types: [
         { value: '', text: '-- Chọn loại bất động sản --'},
-        { value: 1, text: 'Căn hộ chung cư'},
-        { value: 2, text: 'Biệt thự, liền kề'},
-        { value: 3, text: 'Shophouse'},
-        { value: 4, text: 'Nghỉ dưỡng'},
+        { value: 1, text: 'Căn hộ'},
+        { value: 2, text: 'Biệt thự/ liền kề/ shophouse (nhà đất)'},
+        { value: 3, text: 'Căn hộ - Nhà đất'},
+        { value: 4, text: 'Tổ hơp thương mại – căn hộ - nhà đất'},
+        { value: 5, text: 'Khu đô thị'},
       ],
       stateOptions: [
         { text: 'Publish', value: 1 },
