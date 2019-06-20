@@ -9,7 +9,7 @@
 
       <b-button block @click.prevent="loginByGoogle" variant="google"> <i class="fa fa-google-plus"></i> Đăng nhập bằng Google</b-button>
 
-      <div class="text-center"> <br> <br>  Hoặc sử dụng email</div>
+      <div class="text-center"> <br>  Hoặc sử dụng email</div>
       <b-form @submit.prevent="postLogin" >
       <b-form-group
         id="input-group-1"
@@ -89,7 +89,7 @@ export default {
             this.checkEmail(data.user, 'facebook')
           })
           .catch(err => {
-            onsole.log('facee', err)
+            console.log('facee', err)
             this.checkEmail ({email: err.email}, 'facebook')
           })
     },
