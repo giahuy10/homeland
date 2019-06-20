@@ -23,6 +23,7 @@
 
                 <div v-if="userDetail && userDetail.level == 2">
                   <b-button variant="info" @click="$router.push({path: `/news/edit/${detail.id}`})">Chỉnh sửa bài viết</b-button>
+                  <b-button variant="warning" @click="removeItem(detail.id)">Xóa bài viết</b-button>
                 </div>
 
                 <!-- <div class="fb-comments" data-href="https://developers.facebook.com/docs/plugins/comments#configurator" data-width="" data-numposts="5"></div> -->

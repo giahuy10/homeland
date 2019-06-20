@@ -42,7 +42,7 @@ router
     }
     if (type) {
       where.type = type
-      whereRaw += " and type = "+type
+      whereRaw += " and p.type = "+type
     }
     if (price) {
       where.price = price
