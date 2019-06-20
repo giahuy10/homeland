@@ -89,7 +89,7 @@
             </div>
             <div class="galleries">
               <h4 id="galleries">Ảnh dự án</h4>
-              <Gallery :items="detail.images.filter(item => detail.type == 1)" :totalWidth="detail.totalWidth" v-if="detail.images && detail.images.filter(item => detail.type == 1).length > 0"/>
+              <Gallery :items="detail.images.filter(item => item.type == 1)" :totalWidth="detail.totalWidth" v-if="detail.images && detail.images.filter(item => item.type == 1).length > 0"/>
                 <h5>Sản phẩm</h5>
                 <div v-html="detail.product"></div>
                 <h5>Tiện tích</h5>
@@ -97,7 +97,7 @@
             </div>
             <div class="p-progress">
               <h4 id="p-progress">Tiến độ</h4>
-              <Gallery :items="detail.images.filter(item => detail.type == 2)" :totalWidth="detail.totalWidth2" v-if="detail.images && detail.images.filter(item => detail.type == 2).length > 0"/>
+              <Gallery :items="detail.images.filter(item => item.type == 2)" :totalWidth="detail.totalWidth2" v-if="detail.images && detail.images.filter(item => item.type == 2).length > 0"/>
               <div v-html="detail.progress"></div>
             </div>
             <div class="comments" v-if="detail.state == 1">
@@ -595,6 +595,7 @@ export default {
       return this.$store.state.user
     },
     detail () {
+      console.log('detail', this.$store.state.property.propertyDetail)
       return this.$store.state.property.propertyDetail
     }
 
