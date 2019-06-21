@@ -162,7 +162,7 @@ router
         typeItem: 2,
         itemId: data.id,
         note: data.title
-      }).then(response => console.log(response)).catch(err => console.log(err))
+      }).then(response => console.log()).catch(err => console.log(err))
     res.send(data)
     }).catch(err => res.status(500).json(err))
   })

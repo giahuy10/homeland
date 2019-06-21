@@ -63,7 +63,7 @@ router
       typeItem: 1,
       itemId: req.body.itemId,
       note: req.body.text
-    }).then(response => console.log(response)).catch(err => console.log(err))
+    }).then(response => console.log()).catch(err => console.log(err))
 
     property.findByPk(req.body.itemId)
       .then(data => {
