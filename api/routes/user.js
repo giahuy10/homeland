@@ -147,8 +147,8 @@ router
         let htmlEmail = ''
         htmlEmail += `<h4>Xin chào ${data.firstName} ${data.lastName}</h4>`
         htmlEmail += `<p>Bạn đã yêu cầu tìm lại mật khẩu tài khoản tại http://homenland.vn</p>`
-        htmlEmail += `<p>Để đặt một khẩu mới bạn vui lòng click <a href="http://homenland.vn/reset/${token}"> vào đây</a> hoặc copy và paste đường link phía dưới vào trình duyệt</p>`
-        htmlEmail += `<p>http://homenland.vn/reset/${token}</p>`
+        htmlEmail += `<p>Để đặt một khẩu mới bạn vui lòng click <a href="http://homenland.vn/reset?token=${token}"> vào đây</a> hoặc copy và paste đường link phía dưới vào trình duyệt</p>`
+        htmlEmail += `<p>http://homenland.vn/reset?token=${token}</p>`
         sendMail(req.params.email, 'Yêu cầu đổi mật khẩu tại Homenland', '', htmlEmail)
         res.json({token})
       } else {
