@@ -131,7 +131,7 @@ Vd: 2 tòa căn hộ ( 450 căn hộ ), 100 căn biệt thự, 1 tòa văn phòn
           </div>
           <div class="col-12 col-md-4">
             <b-form-group id="input-group-1" label="Ảnh dự án chi tiết:" label-for="input-1">
-              <input type="file" class="form-control" placeholder="" ref="file" v-on:change="handleFileUpload(1)" :disabled="item.images && item.images.length >=5">
+              <input type="file" class="form-control" placeholder="" ref="file" v-on:change="handleFileUpload(1)" >
               <b-spinner v-if="imageLoading" label="Loading..."></b-spinner>
             </b-form-group>
             <div class="images" v-if="item.images && item.images.length > 0">
@@ -147,7 +147,7 @@ Vd: 2 tòa căn hộ ( 450 căn hộ ), 100 căn biệt thự, 1 tòa văn phòn
           </div>
           <div class="col-12 col-md-4">
             <b-form-group id="input-group-1" label="Ảnh tiến độ:" label-for="input-1">
-              <input type="file" class="form-control" placeholder="" ref="file2" v-on:change="handleFileUpload(2)" :disabled="item.images2 && item.images2.length >=5">
+              <input type="file" class="form-control" placeholder="" ref="file2" v-on:change="handleFileUpload(2)" >
               <b-spinner v-if="imageLoading2" label="Loading..."></b-spinner>
             </b-form-group>
 

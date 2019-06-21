@@ -174,19 +174,7 @@ router
       include: [
         {
           model: modelMedia,
-          as: 'images',
-          where: {
-              type: 1,
-
-          }
-        },
-        {
-          model: modelMedia,
-          as: 'images2',
-          where: {
-              type: 2,
-
-          }
+          as: 'images'
         }
       ],
       where: {
