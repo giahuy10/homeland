@@ -135,10 +135,10 @@ Vd: 2 tòa căn hộ ( 450 căn hộ ), 100 căn biệt thự, 1 tòa văn phòn
               <b-spinner v-if="imageLoading" label="Loading..."></b-spinner>
             </b-form-group>
             <div class="images" v-if="item.images && item.images.length > 0">
-              <div class="img" v-for="(image, index) in item.images" :key="index">
+              <div class="img" v-for="(image, index) in item.images.filter(item => item.type == 1)" :key="index">
                 <div class="inner-img">
                   <img :src="image.thumbnail" alt="">
-                  <i class="fa fa-trash" @click="removeImage(index)"></i>
+                  <i class="fa fa-trash" @click="removeImage(image, index, 1)"></i>
                 </div>
 
               </div>
@@ -151,11 +151,11 @@ Vd: 2 tòa căn hộ ( 450 căn hộ ), 100 căn biệt thự, 1 tòa văn phòn
               <b-spinner v-if="imageLoading2" label="Loading..."></b-spinner>
             </b-form-group>
 
-            <div class="images" v-if="item.images2 && item.images2.length > 0">
-              <div class="img" v-for="(image, index) in item.images2" :key="index">
+            <div class="images" v-if="item.images && item.images.length > 0">
+              <div class="img" v-for="(image, index) in item.images.filter(item => item.type == 2)" :key="index">
                 <div class="inner-img">
                   <img :src="image.thumbnail" alt="">
-                  <i class="fa fa-trash" @click="removeImage(index)"></i>
+                  <i class="fa fa-trash" @click="removeImage(image, index, 2)"></i>
                 </div>
 
               </div>
@@ -231,7 +231,14 @@ export default {
         thumbnail: '',
         images: [],
         images2: [],
-        state: -1
+        state: -1,
+        hits: 0,
+        saved: 0,
+        totalComments: 0,
+        totalWidth: 0,
+        totalWidth2: 0,
+        totalImages: 0,
+        totalImages2: 0
       },
       cities: location,
       districts: [],
@@ -287,6 +294,7 @@ export default {
         .catch(err => console.log(err.response))
     },
     onSubmit () {
+      console.log(this.item)
       this.saveLoading = true
       if (this.item.id) {
         this.$axios.put(`/api/property/${this.item.id}`, this.item)
@@ -308,13 +316,12 @@ export default {
           } else {
             this.toast('Thông báo', 'Tạo dự thành công', 'success')
           }
-
-
           setTimeout(() => { // we simulate the async request with timeout.
             this.$router.push({path: `/property/edit/${res.data.id}`})
           }, 4000)
         })
         .catch(err => {
+          this.saveLoading = false
           console.log(err.response)
         })
       }
@@ -324,8 +331,22 @@ export default {
     getDistricts () {
       this.districts = location[this.item.city - 1].districts
     },
-    removeImage (index) {
-      this.item.images.splice(index, 1)
+    removeImage (image, index, type) {
+      console.log('image', image)
+      for (var i = 0; i < this.item.images.length; i++) {
+          var obj = this.item.images[i];
+          if (obj.thumbnail == image.thumbnail && obj.type == image.type) {
+            this.item.images.splice(i, 1)
+          }
+      }
+      if (type == 1) {
+        this.item.totalImages--
+        this.item.totalWidth -= image.width
+      } else {
+        this.item.totalImages2--
+        this.item.totalWidth2 -= image.width
+      }
+
     },
     handleFileUpload (type) {
       let file = ''
@@ -352,21 +373,23 @@ export default {
 
           if (type == 1) {
              this.imageLoading = false
-            this.item.images.push({
-              source: res.data.location,
-              thumbnail: res.data.thumbnail,
-              height: res.data.heightThumb,
-              width: res.data.widthThumb
-            })
+             this.item.totalWidth += res.data.widthThumb
+             this.item.totalImages++
+
           } else {
              this.imageLoading2 = false
-            this.item.images2.push({
+             this.item.totalWidth2 += res.data.widthThumb
+             this.item.totalImages2++
+
+          }
+          this.item.images.push({
               source: res.data.location,
               thumbnail: res.data.thumbnail,
               height: res.data.heightThumb,
-              width: res.data.widthThumb
+              width: res.data.widthThumb,
+              type: type
             })
-          }
+
 
         })
         .catch(err => {
@@ -403,7 +426,7 @@ export default {
 .images {
   .img {
 
-    width: 20%;
+    width: 25%;
     float: left;
     padding: 10px;
     box-sizing: border-box;

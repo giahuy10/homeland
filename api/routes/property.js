@@ -171,23 +171,23 @@ router
   // Get detail property by ID
   .get('/:id', (req, res) => {
     model.findOne({
-      include: ['images'
-        // {
-        //   model: modelMedia,
-        //   as: 'images',
-        //   where: {
-        //       type: 1,
+      include: [
+        {
+          model: modelMedia,
+          as: 'images',
+          where: {
+              type: 1,
 
-        //   }
-        // },
-        // {
-        //   model: modelMedia,
-        //   as: 'images2',
-        //   where: {
-        //       type: 2,
+          }
+        },
+        {
+          model: modelMedia,
+          as: 'images2',
+          where: {
+              type: 2,
 
-        //   }
-        // }
+          }
+        }
       ],
       where: {
         $or: [
@@ -218,19 +218,7 @@ router
   .post('/', checkUserLogged, (req, res) => {
     req.body.slug = slug(req.body.title)
     req.body.createdBy = req.decoded.data.id
-    // req.body.state = req.decoded.data.level > 1 ? 1 : -1
-    req.body.hits = 0
-    req.body.saved = 0
-    req.body.totalImages = 0
-    req.body.totalComments = 0
-    req,body.totalWidth2 = 0
-    req.body.totalImages2 = 0
-    req.body.totalComments = 0
-    let images = req.body.images
 
-    let images2 = req.body.images2
-
-    delete req.body.images
     model.create(req.body)
       .then(data => {
         if (req.decoded.data.level == 1) {
@@ -246,64 +234,27 @@ router
             typeItem: 3,
             itemId: data.id,
             note: data.title
-          }).then(response => console.log(response)).catch(err => console.log(err))
+          }).then(response => console.log('Done')).catch(err => console.log(err))
+          let bulkData = []
+          if (req.body.images && req.body.images.length > 0) {
 
-        let totalWidth = 0
-        let totalImages = 0
-        let bulkData = []
-        let totalWidth2 = 0
-        let totalImages2 = 0
-        let bulkData2 = []
-        if (images && images.length > 0) {
+            req.body.images.forEach(item => {
+              bulkData.push({
+                createdBy: req.decoded.data.id,
+                proId: data.id,
+                source: item.source,
+                thumbnail: item.thumbnail,
+                height: item.height,
+                width: item.width,
+                type: item.type
+              })
 
-          images.forEach(item => {
-            bulkData.push({
-              createdBy: req.decoded.data.id,
-              proId: data.id,
-              source: item.source,
-              thumbnail: item.thumbnail,
-              height: item.height,
-              width: item.width,
-              type: 1
             })
-            totalWidth += item.width
-            totalImages ++;
-          })
-          data.update({
-            totalWidth: totalWidth,
-            totalImages: totalImages
-          }).then(response => console.log(response))
-            .catch(err => console.log.json(err))
-          modelMedia.bulkCreate(bulkData)
-            .then(response => console.log(response))
-            .catch(err => console.log.json(err))
-        }
 
-        if (images2 && images2.length > 0) {
-
-          images2.forEach(item => {
-            bulkData2.push({
-              createdBy: req.decoded.data.id,
-              proId: data.id,
-              source: item.source,
-              thumbnail: item.thumbnail,
-              height: item.height,
-              width: item.width,
-              type: 2
-            })
-            totalWidth2 += item.width
-            totalImages2 ++;
-          })
-          data.update({
-            totalWidth2: totalWidth2,
-            totalImages2: totalImages2
-          }).then(response => console.log(response))
-            .catch(err => console.log(err))
-          modelMedia.bulkCreate(bulkData2)
-            .then(response => console.log(response))
-            .catch(err => console.log.json(err))
-        }
-
+            modelMedia.bulkCreate(bulkData)
+              .then(response => console.log(response))
+              .catch(err => console.log.json(err))
+          }
         res.json(data)
       })
       .catch(err => res.status(500).json(err))
