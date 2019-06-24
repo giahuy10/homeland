@@ -13,9 +13,9 @@ var sequelize = require('../models').sequelize
 
 router
   .post('/sendmail' , (req, res) => {
-
-
-
+    let htmlEmail = "<h3>Huy day nay</h3>"
+    let email = sendMail('anjakahuy@gmail.com', 'Người dùng vừa gửi thông tin dự án mới nhes Huy', '', htmlEmail)
+    res.json(email)
   })
   // Get all Properties
   .get('/', (req, res) => {
