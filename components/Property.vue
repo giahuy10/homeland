@@ -2,14 +2,14 @@
   <div class="property-in-list">
     <div class="pro-inner">
       <div class="pro-img">
-        <nuxt-link :to="`/property/detail/${item.slug}`">
+        <nuxt-link :to="`/property/detail/${item.id}`">
           <img :src="item.thumbnail" alt="">
         </nuxt-link>
         <div class="price">{{optionsPrice[item.price]}}</div>
       </div>
       <div class="pro-info">
         <div class="pro-title">
-          <nuxt-link :to="`/property/detail/${item.slug}`" v-text="item.title"></nuxt-link>
+          <nuxt-link :to="`/property/detail/${item.id}`" v-text="item.title"></nuxt-link>
         </div>
         <div class="pro-desc">
           <i class="fa fa-location-arrow" aria-hidden="true"></i> {{item.location}}
@@ -56,7 +56,8 @@ export default {
         this.$axios.post('/api/saved', {
           type: 3,
           itemId: item.id,
-          title: item.title
+          title: item.title,
+          url: `/property/detail/${item.id}`
         })
         .then(res => {
           let title = ''
@@ -111,12 +112,16 @@ i.fa {
 }
   .pro-title {
     font-size: 18px;
+    height: 30px;
+    overflow: hidden;
     a {
       color: #2a5a7c;
     }
   }
   .pro-desc {
     font-size: 13px;
+        height: 40px;
+    overflow: hidden
   }
   .property_listing_details {
     color: #8f8f8f;

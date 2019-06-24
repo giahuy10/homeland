@@ -56,9 +56,14 @@ export default {
         width: 33%;
       }
       img {
-        border-radius: 100%;
-        width: 100px;
-        height: 100px;
+       
+            border-radius: 100%;
+          width: 100px;
+          height: 100px;
+          display: block;
+          /* margin-bottom: 9px; */
+          margin: 0 auto;
+          margin-bottom: 5px;
       }
     }
   }

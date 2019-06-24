@@ -11,6 +11,9 @@ module.exports = {
       createdBy: {
         type: Sequelize.INTEGER
       },
+      url: {
+        type: Sequelize.STRING
+      },
       type: {
         type: Sequelize.INTEGER
       },

@@ -146,7 +146,6 @@ router
                 parents[item.parent].push(item.id)
               })
             }
-
             var final = []
             if (parents) {
               if (parents[0] && parents[0].length > 0) {
@@ -160,8 +159,6 @@ router
               })
               }
             }
-
-
             res.status(200).json({'result': final, 'count': data.count, 'pages': totalPages, 'currentPage': currentPage});
           })
       })
@@ -183,7 +180,9 @@ router
             id: req.params.id
           },
           {
-            slug: req.params.id
+            slug: {
+              $like: '%'+req.params.id+'%'
+            }
           },
         ]
       }
@@ -193,7 +192,60 @@ router
           data.update({
             hits: data.hits + 1
           }).then(update => console.log(update)).catch(err => res.json({err: err}))
-          res.json(data)
+          // comments
+          var userId = req.query.userId ? parseInt(req.query.userId) : 0
+          modelComment.findAndCountAll({
+            where: {
+              itemId: data.id,
+              type: 1
+            }
+          })
+            .then(commentData => {
+              var limit = req.query.perPage ? parseInt(req.query.perPage) : 100
+              var currentPage = req.query.currentPage ? parseInt(req.query.currentPage) : 1
+              var totalPages = Math.ceil(commentData.count / limit)
+              var offset = limit * (currentPage - 1)
+
+              sequelize.query("SELECT c.*, s.id as `like`, u.id as userId, firstName, lastName, avatar FROM `comments` as c LEFT JOIN `saveds` as s ON c.id = s.itemId and s.type = 1 and s.createdBy = "+userId+" INNER JOIN `users` as u ON u.id = c.createdBy where c.type = 1 and c.itemId = "+req.params.id+" GROUP by c.id ORDER BY parent ASC, createdAt ASC LIMIT " + offset + ", "+limit, { type: sequelize.QueryTypes.SELECT})
+                .then((comments) => {
+                  let items = {}
+                  let parents = {}
+                  if (comments && comments.length > 0) {
+                    comments.forEach(item => {
+                      items[item.id] = item
+                      if (!parents[item.parent]) {
+                        parents[item.parent] = []
+                      }
+                      parents[item.parent].push(item.id)
+                    })
+                  }
+                  var final = []
+                  if (parents) {
+                    if (parents[0] && parents[0].length > 0) {
+                    parents[0].forEach(item => {
+                    final.push(items[item])
+                    if (parents[item]) {
+                      parents[item].forEach(item => {
+                        final.push(items[item])
+                      })
+                    }
+                    })
+                    }
+                  }
+                  
+                  res.json({
+                    data,
+                    comments: {'result': final, 'count': commentData.count, 'pages': totalPages, 'currentPage': currentPage}
+                  })
+                 
+                })
+            })
+            .catch(err => console.log(err))
+
+            // comments
+            
+          
+          
         } else {
           res.status(404).json({msg: 'Không tìm thấy dự án'})
         }
@@ -221,7 +273,8 @@ router
             type: 1,
             typeItem: 3,
             itemId: data.id,
-            note: data.title
+            note: data.title,
+            url: `/property/detai/${data.id}`
           }).then(response => console.log('Done')).catch(err => console.log(err))
           let bulkData = []
           if (req.body.images && req.body.images.length > 0) {

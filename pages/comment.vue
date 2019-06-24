@@ -36,6 +36,7 @@
         <div class="comment-content" v-html="comment.text">
 
         </div>
+        <nuxt-link :to="`/property/detail/${comment.itemId}#comment${comment.id}`">Xem thêm</nuxt-link>
         <GalleryComment :items="JSON.parse(comment.images)" v-if="comment.images && JSON.parse(comment.images).length > 0" />
         </div>
       </div>
@@ -142,11 +143,20 @@ $pink : #e7005a;
     border: 1px solid #ccc;
     margin-top: 30px;
     border-radius: 5px;
+    .comment-content {
+            max-height: 72px;
+    overflow: hidden;
+    
+    p {
+      margin-bottom: 0;
+    }
+      }
     .media {
       img {
         width: 70px;
         height: 70px;
       }
+      
     }
     }
   }

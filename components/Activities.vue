@@ -1,12 +1,14 @@
 <template>
   <div class="activities">
+
     <b-list-group>
       <b-list-group-item href="#" v-for="(item, index) in items" :key="index"  class="flex-column align-items-start">
         <div class="d-flex w-100 justify-content-between">
           <h5 class="mb-1">Bạn đã {{item.type | typeText}} một {{item.typeItem | typeName}}</h5>
           <small>{{ item.createdAt | moment("DD/MM/YYYY, h:mm:ss a") }}</small>
         </div>
-        <small>{{ strigTags(item.note) }}</small>
+        <small class="activitiy-content">{{ strigTags(item.note) }}</small>
+        <nuxt-link :to="item.url">Xem thêm</nuxt-link>
       </b-list-group-item>
       <b-pagination
             v-model="currentPage"
@@ -107,3 +109,12 @@ export default {
   }
 }
 </script>
+
+
+<style lang="scss">
+small.activitiy-content {
+    max-height: 38px;
+    overflow: hidden;
+    display: block;
+}
+</style>

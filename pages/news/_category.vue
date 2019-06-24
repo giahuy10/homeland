@@ -45,12 +45,16 @@
                 </div>
                 <br><br>
                 <b-pagination
+                    v-if="rows > 0"
                     v-model="currentPage"
                     :total-rows="rows"
                     :per-page="perPage"
                     aria-controls="my-table"
                     @change="changePage"
                     ></b-pagination>
+                <div class="alert alert-warning" v-else>
+                    Dữ liệu đang cập nhật
+                </div>
                 </div>
 
 

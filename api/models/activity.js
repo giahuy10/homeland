@@ -5,6 +5,7 @@ module.exports = (sequelize, DataTypes) => {
     type: DataTypes.INTEGER,
     typeItem: DataTypes.INTEGER,
     itemId: DataTypes.INTEGER,
+    url: DataTypes.STRING,
     note: DataTypes.TEXT
   }, {});
   Activity.associate = function(models) {

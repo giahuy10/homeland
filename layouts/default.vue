@@ -3,7 +3,7 @@
     <div class="header">
       <div class="container">
         <div class="banner">
-          <img :src="image.source" alt="" style="width: 100%">
+          <img :src="image && image.source" alt="" style="width: 100%">
         </div>
         <div class="navigation">
           <b-navbar toggleable="lg" type="light" variant="light">

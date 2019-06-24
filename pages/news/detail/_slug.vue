@@ -5,18 +5,22 @@
         <div class="container">
 
         <div class="row">
-            <div class="col-12 col-md-9">
+            <div class="col-12 col-md-9" :class="detail.category != 'static' ? 'col-md-9' : 'col-md-12'">
                 <div class="detail-content">
                     <h2>{{detail.title}}</h2>
-                    <div class="addthis_native_toolbox"></div>
+                    <div v-if="detail.category != 'static'">
+                      <div class="addthis_native_toolbox"></div>
+                    </div>
                     <div class="created-date">
-                        {{detail.createdAt | moment("DD/MM/YYYY")}} | {{detail.hits}} lượt xem  <a class="saveItem" href="" @click.prevent="save" >Lưu bài viết</a>
+                        {{detail.createdAt | moment("DD/MM/YYYY")}} | {{detail.hits}} lượt xem  <a v-if="detail.category != 'static'" class="saveItem" href="" @click.prevent="save" >Lưu bài viết</a>
                     </div>
                     <div class="description-news" v-html="detail.description">
 
                     </div>
                 </div>
-                <div class="addthis_native_toolbox"></div>
+                <div v-if="detail.category != 'static'">
+                  <div class="addthis_native_toolbox"></div>
+                </div>
                 <div v-if="detail.state == -1 && userDetail && userDetail.level == 2">
                   <b-button variant="success" @click="approve">Phê duyệt bài viết</b-button>
                 </div>
@@ -27,7 +31,7 @@
                 </div>
 
                 <!-- <div class="fb-comments" data-href="https://developers.facebook.com/docs/plugins/comments#configurator" data-width="" data-numposts="5"></div> -->
-                <div class="comments" v-if="detail.state == 1">
+                <div class="comments" v-if="detail.state == 1 && detail.category != 'static'">
                 <h4 id="comments">Bình luận</h4>
                   <div class="list-chat">
                     <div class="chat">
@@ -62,7 +66,7 @@
 
               </div>
             </div>
-            <div class="col-12 col-md-3">
+            <div class="col-12 col-md-3" v-if="detail.category != 'static'">
                 <div class="side-bar-right">
                     <div class="author">
                         <h3 class="text-center">Tác giả</h3>
@@ -131,7 +135,7 @@ export default {
   mounted () {
     // this.getDetail()
     this.getItems()
-
+    this.getUserDetail()
     // (function(d, s, id) {
     //       var js, fjs = d.getElementsByTagName(s)[0];
     //       if (d.getElementById(id)) return;
@@ -169,7 +173,8 @@ export default {
         type: 2,
         itemId: this.detail.id,
         parent: this.commentParent,
-        text: this.commentText
+        text: this.commentText,
+        url: `/news/detail/${this.detail.slug}`
       })
       .then(res => {
         console.log(res)
@@ -194,7 +199,8 @@ export default {
       this.$axios.post('/api/saved', {
         type: 2,
         itemId: this.detail.id,
-        title: this.detail.title
+        title: this.detail.title,
+        url: `/news/detail/${this.detail.slug}`
       })
       .then(res => {
         let title = ''

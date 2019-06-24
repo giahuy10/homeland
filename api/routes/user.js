@@ -98,7 +98,7 @@ router
         if (data) {
           if (data.state == 1) {
             if (passwordHash.verify(req.body.password, data.password)) {
-              let token = jwt.sign( {data}, 'LOIKPOKLSK1029KJ')
+              let token = jwt.sign( {data}, 'LOIKPOKLSK1029KJ', { expiresIn: 60 * 60 * 24 * 30 })
               res.json( { token, user: data} )
             } else {
               res.status(401).json({ 'msg' : 'Mật khẩu không chính xác' })
@@ -130,7 +130,7 @@ router
           }).catch(err => console.log(err))
 
           let tokenData = decoded.data
-          let token = jwt.sign( {tokenData}, 'LOIKPOKLSK1029KJ')
+          let token = jwt.sign( {tokenData}, 'LOIKPOKLSK1029KJ',  { expiresIn: 60 * 60 * 24 * 30 })
           res.json( { token, user: decoded.data} )
         }
     })

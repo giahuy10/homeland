@@ -57,13 +57,17 @@ router
     let images = req.body.images
     let totalWidth = 0
     // save activity
-    activity.create({
-      createdBy: req.decoded.data.id,
-      type: 1,
-      typeItem: 1,
-      itemId: req.body.itemId,
-      note: req.body.text
-    }).then(response => console.log()).catch(err => console.log(err))
+    if (!req.body.noLog) {
+      activity.create({
+        createdBy: req.decoded.data.id,
+        type: 1,
+        typeItem: 1,
+        itemId: req.body.itemId,
+        note: req.body.text,
+        url: req.body.url
+      }).then(response => console.log()).catch(err => console.log(err))
+    }
+    
 
     property.findByPk(req.body.itemId)
       .then(data => {

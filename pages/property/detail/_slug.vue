@@ -5,7 +5,7 @@
 
       <div class="top row">
         <div class="col-12 col-md-6">
-          <img src="/images/ha-noi-home-land/main.jpg" alt="">
+          <img :src="detail.thumbnail" alt="">
         </div>
         <div class="short-desc col-12 col-md-6">
           <h2>{{detail.title}}</h2>
@@ -109,7 +109,7 @@
                   <div class="chat">
                     <ul class="list-unstyled">
 
-                      <li class="media" :class="comment.parent ? 'child' : ''" v-for="(comment, index) in comments" :key="index">
+                      <li class="media"  :class="comment.parent ? 'child' : ''" v-for="(comment, index) in detail.comments.result" :key="index" :id="'comment'+comment.id">
                         <img :src="comment.avatar ? comment.avatar : '/images/no-avatar-25359d55aa3c93ab3466622fd2ce712d1.jpg'" class="mr-3 avatar-chat" alt="...">
                         <div class="media-body">
                           <div class="comment-text">
@@ -129,7 +129,7 @@
                     </ul>
                   </div>
                 </div>
-                <div class="input-group" id="comment-box" v-if="userDetail">
+                <!-- <div class="input-group" id="comment-box" v-if="userDetail">
                   <input type="text" class="form-control" v-model="commentText" placeholder="Hãy cho mọi người biết suy nghĩ của bạn về dự án này" >
                   <div class="input-group-append">
                     <div class="input-group-text" @click="sendComment"><i class="fa fa-reply-all" aria-hidden="true"></i></div>
@@ -137,7 +137,7 @@
                 </div>
                 <div class="alert alert-warning" v-else>
                   Vui lòng <nuxt-link to="/login">đăng nhập</nuxt-link> để gửi bình luận
-                </div>
+                </div> -->
 
             </div>
             <div class="map">
@@ -200,7 +200,7 @@
                 </table>
               </div>
               <div class="write-review">
-                <b-button block v-b-modal.modal-1 variant="info" v-if="detail.state == 1"> <i class="fa fa-comment"></i> Gửi bình luận</b-button>
+                <b-button block v-b-modal.modal-1 variant="info" v-if="detail.state == 1"> <i class="fa fa-comment"></i> Viết bình luận</b-button>
                 <b-modal id="modal-1" title="Gửi bình luận" size="xl">
                   <div class="review" v-if="userDetail">
                   <b-row>
@@ -320,7 +320,8 @@ import GalleryComment from '~/components/GalleryComment.vue';
 export default {
   components: {Gallery, Slider, GalleryComment},
   async asyncData({ store, params }) {
-    await store.dispatch('property/getPropertyDetail', { slug: params.slug })
+    let userId = store.state.user ? store.state.user.id : 0
+    await store.dispatch('property/getPropertyDetail', { slug: params.slug, userId })
   },
   data () {
 
@@ -413,7 +414,7 @@ export default {
       .catch(err=> console.log(err.response))
     },
     getReview () {
-      this.$axios.get(`/api/reviews/${this.$route.params.slug}`)
+      this.$axios.get(`/api/reviews/${this.detail.id}`)
         .then(res => {
           console.log('review', res)
           this.reviewResult = res.data
@@ -421,6 +422,7 @@ export default {
         .catch(err => console.log(err.response))
     },
     submitReview () {
+      let userId = this.$store.state.user ? this.$store.state.user.id : 0
       this.reviewLoading = true
       this.review.proId = this.detail.id
       this.$axios.post(`/api/reviews`, this.review)
@@ -436,6 +438,7 @@ export default {
           this.reviewLoading = false
           this.$bvModal.hide('modal-1')
           this.getReview()
+          this.$store.dispatch('property/getPropertyDetail', { slug: this.detail.id, userId })
           this.toast('Thông báo', 'Cảm ơn bạn đã gửi đánh giá cho dự án này', 'success')
         })
         .catch(err => console.log(err.response))
@@ -444,6 +447,7 @@ export default {
         type: 1,
         itemId: this.detail.id,
         parent: 0,
+        noLog: 1,
         text: `<p><b>${this.review.title}</b> <br> ${this.review.text}</p>`,
         images: this.review.images
       })
@@ -500,7 +504,8 @@ export default {
         type: 1,
         itemId: this.detail.id,
         parent: this.commentParent,
-        text: this.commentText
+        text: this.commentText,
+        url: `/property/detail/${this.detail.id}`
       })
       .then(res => {
         console.log(res)
@@ -511,6 +516,7 @@ export default {
 
     },
     saveCM (item, index) {
+      let userId = this.$store.state.user ? this.$store.state.user.id : 0
       this.$axios.post('/api/saved', {
         type: 1,
         itemId: item.id,
@@ -525,17 +531,17 @@ export default {
           title = 'Thành công'
           text = 'Bạn đã thích một bình luận'
           variant = 'success'
-          this.comments[index].like = 1
+          this.$store.dispatch('property/getPropertyDetail', { slug: this.detail.id, userId })
         } else{
           // dislike
           title = 'Thành công'
           text = 'Bạn đã hủy thích một bình luận'
           variant = 'warning'
-          this.comments[index].like = null
+          this.$store.dispatch('property/getPropertyDetail', { slug: this.detail.id, userId })
         }
         this.toast(title, text, variant)
       })
-      .catch(err=> console.log(err.response))
+      .catch(err=> console.log(err))
     },
     toast(title, text, variant) {
       console.log('ok')
@@ -601,7 +607,7 @@ export default {
       window.addEventListener('scroll', this.handleScroll)
     }
     // this.getDetail()
-    this.getComments()
+    // this.getComments()
     this.getReview()
   },
   watch: {
@@ -807,7 +813,7 @@ $pink : #ffa800;
   }
 }
 iframe {
-    width: 100%;
+    width: 100% !important;
 }
 </style>
 

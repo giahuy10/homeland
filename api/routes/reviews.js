@@ -57,7 +57,8 @@ router
         type: 1,
         typeItem: 4,
         itemId: data.id,
-        note: req.body.title
+        note: req.body.title,
+        url: `/property/detail/${req.body.proId}`
       }).then(response => console.log()).catch(err => console.log(err))
       res.send(data)
     }).catch(err => res.status(500).json(err))

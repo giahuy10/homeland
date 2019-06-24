@@ -12,9 +12,13 @@ router
   .get('/', (req, res) => {
     var category = req.query.category ? req.query.category : ''
     var verify = req.query.verify ? req.query.verify : ''
-    let where = {}
+    let where = {
+      category: {
+        $notLike : '%static%'
+      }
+    }
     let whereRaw = "WHERE 1"
-    if (category) {
+    if (category && category!= 'camera') {
       where.category = category
       whereRaw += " and category ='"+category+"'"
     }
@@ -161,7 +165,8 @@ router
         type: 1,
         typeItem: 2,
         itemId: data.id,
-        note: data.title
+        note: data.title,
+        url: `/news/detai/${data.slug}`
       }).then(response => console.log()).catch(err => console.log(err))
     res.send(data)
     }).catch(err => res.status(500).json(err))
