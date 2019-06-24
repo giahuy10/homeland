@@ -84,7 +84,7 @@ router
         //   limit: limit,
         //   offset: offset,
         // })
-        sequelize.query("SELECT p.*, s.id as `like` FROM `properties` as p LEFT JOIN `saveds` as s ON p.id = s.itemId and s.type = 3 and s.createdBy = "+userId+" "+whereRaw+ " GROUP by p.id ORDER BY "+oderBy+" DESC LIMIT "+offset+", "+limit, { type: sequelize.QueryTypes.SELECT})
+        sequelize.query("SELECT p.*, s.id as `like` FROM `Properties` as p LEFT JOIN `Saveds` as s ON p.id = s.itemId and s.type = 3 and s.createdBy = "+userId+" "+whereRaw+ " GROUP by p.id ORDER BY "+oderBy+" DESC LIMIT "+offset+", "+limit, { type: sequelize.QueryTypes.SELECT})
           .then((news) => {
             res.status(200).json({'result': news, 'count': data.count, 'pages': totalPages, 'currentPage': currentPage});
           })
@@ -97,7 +97,7 @@ router
     let offset = 0
     let limit = 10
     let userId = req.decoded ? req.decoded.data.id : 0
-     sequelize.query("SELECT p.*, s.id as `like` FROM `properties` as p LEFT JOIN `saveds` as s ON p.id = s.itemId and s.type = 3 and s.createdBy = "+userId+" GROUP by p.id LIMIT "+offset+", "+limit, { type: sequelize.QueryTypes.SELECT})
+     sequelize.query("SELECT p.*, s.id as `like` FROM `Properties` as p LEFT JOIN `Saveds` as s ON p.id = s.itemId and s.type = 3 and s.createdBy = "+userId+" GROUP by p.id LIMIT "+offset+", "+limit, { type: sequelize.QueryTypes.SELECT})
         .then(pros => {
           // We don't need spread here, since only the results will be returned for select queries
           res.status(200).json({'result': pros });
@@ -133,7 +133,7 @@ router
         var totalPages = Math.ceil(data.count / limit)
         var offset = limit * (currentPage - 1)
 
-        sequelize.query("SELECT c.*, s.id as `like`, u.id as userId, firstName, lastName, avatar FROM `comments` as c LEFT JOIN `saveds` as s ON c.id = s.itemId and s.type = 1 and s.createdBy = "+userId+" INNER JOIN `users` as u ON u.id = c.createdBy where c.type = 1 and c.itemId = "+req.params.id+" GROUP by c.id ORDER BY parent ASC, createdAt ASC LIMIT " + offset + ", "+limit, { type: sequelize.QueryTypes.SELECT})
+        sequelize.query("SELECT c.*, s.id as `like`, u.id as userId, firstName, lastName, avatar FROM `Comments` as c LEFT JOIN `Saveds` as s ON c.id = s.itemId and s.type = 1 and s.createdBy = "+userId+" INNER JOIN `Users` as u ON u.id = c.createdBy where c.type = 1 and c.itemId = "+req.params.id+" GROUP by c.id ORDER BY parent ASC, createdAt ASC LIMIT " + offset + ", "+limit, { type: sequelize.QueryTypes.SELECT})
           .then((comments) => {
             let items = {}
             let parents = {}
@@ -206,7 +206,7 @@ router
               var totalPages = Math.ceil(commentData.count / limit)
               var offset = limit * (currentPage - 1)
 
-              sequelize.query("SELECT c.*, s.id as `like`, u.id as userId, firstName, lastName, avatar FROM `comments` as c LEFT JOIN `saveds` as s ON c.id = s.itemId and s.type = 1 and s.createdBy = "+userId+" INNER JOIN `users` as u ON u.id = c.createdBy where c.type = 1 and c.itemId = "+req.params.id+" GROUP by c.id ORDER BY parent ASC, createdAt ASC LIMIT " + offset + ", "+limit, { type: sequelize.QueryTypes.SELECT})
+              sequelize.query("SELECT c.*, s.id as `like`, u.id as userId, firstName, lastName, avatar FROM `Comments` as c LEFT JOIN `Saveds` as s ON c.id = s.itemId and s.type = 1 and s.createdBy = "+userId+" INNER JOIN `Users` as u ON u.id = c.createdBy where c.type = 1 and c.itemId = "+req.params.id+" GROUP by c.id ORDER BY parent ASC, createdAt ASC LIMIT " + offset + ", "+limit, { type: sequelize.QueryTypes.SELECT})
                 .then((comments) => {
                   let items = {}
                   let parents = {}

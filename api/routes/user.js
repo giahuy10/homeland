@@ -42,7 +42,7 @@ router
       .catch(err => res.json(err))
   })
   .get('/top', (req, res) => {
-    sequelize.query("SELECT u.*, count(a.`createdBy`) as activities FROM `activities` as a INNER JOIN `users` as u ON u.id = a.createdBy group by a.`createdBy` order by activities desc limit 0, 9", { type: sequelize.QueryTypes.SELECT})
+    sequelize.query("SELECT u.*, count(a.`createdBy`) as activities FROM `Activities` as a INNER JOIN `Users` as u ON u.id = a.createdBy group by a.`createdBy` order by activities desc limit 0, 9", { type: sequelize.QueryTypes.SELECT})
       .then(users => {
         res.json(users)
       })

@@ -37,15 +37,15 @@ router
     //     res.json(data)
     //   })
     //   .catch(err => res.json(err))
-    let table = 'comments'
+    let table = 'Comments'
     if (req.params.type == 3) {
-      table = 'properties'
+      table = 'Properties'
     }
     if (req.params.type == 2) {
-      table = 'news'
+      table = 'News'
     }
     sequelize
-    .query(`SELECT t.* FROM saveds as s INNER JOIN ${table} as t ON s.itemId = t.id where s.type = ${req.params.type} and s.createdBy = ${req.decoded.data.id}`, { raw: true })
+    .query(`SELECT t.* FROM Saveds as s INNER JOIN ${table} as t ON s.itemId = t.id where s.type = ${req.params.type} and s.createdBy = ${req.decoded.data.id}`, { raw: true })
     .then(data => {
       res.json(data[0])
     })
