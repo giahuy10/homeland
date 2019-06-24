@@ -15,7 +15,9 @@ module.exports = (sequelize, DataTypes) => {
     level: DataTypes.INTEGER,
     avatar: DataTypes.STRING,
     token: DataTypes.STRING
-  }, {});
+  }, {
+    tableName: 'Users'
+  });
   User.associate = function(models) {
     User.hasMany(models.News, {
       as: 'news',

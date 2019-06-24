@@ -13,7 +13,9 @@ module.exports = (sequelize, DataTypes) => {
     createdBy: DataTypes.INTEGER,
     hits: DataTypes.INTEGER,
     saved: DataTypes.INTEGER
-  }, {});
+  }, {
+    tableName: 'News'
+  });
   News.associate = function(models) {
     // associations can be defined here
   };

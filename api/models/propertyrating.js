@@ -8,7 +8,9 @@ module.exports = (sequelize, DataTypes) => {
     progress: DataTypes.INTEGER,
     quality: DataTypes.INTEGER,
     design: DataTypes.INTEGER
-  }, {});
+  }, {
+    tableName: 'PropertyRatings'
+  });
   PropertyRating.associate = function(models) {
     // associations can be defined here
   };

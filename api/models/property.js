@@ -26,7 +26,9 @@ module.exports = (sequelize, DataTypes) => {
     totalComments: DataTypes.INTEGER,
     thumbnail: DataTypes.STRING
 
-  }, {});
+  }, {
+    tableName: 'Properties'
+  });
   Property.associate = function(models) {
     // associations can be defined here
     Property.hasMany(models.PropertyMedia, {

@@ -4,7 +4,9 @@ module.exports = (sequelize, DataTypes) => {
     type: DataTypes.INTEGER, // 1: comment 2: news 3:property
     itemId: DataTypes.INTEGER,
     createdBy: DataTypes.INTEGER
-  }, {});
+  }, {
+    tableName: 'Saveds'
+  });
   Saved.associate = function(models) {
     // associations can be defined here
   };

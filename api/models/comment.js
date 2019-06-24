@@ -9,7 +9,9 @@ module.exports = (sequelize, DataTypes) => {
     images: DataTypes.TEXT,
     createdBy: DataTypes.INTEGER,
     state: DataTypes.INTEGER
-  }, {});
+  }, {
+    tableName: 'Comments'
+  });
   Comment.associate = function(models) {
     // associations can be defined here
     Comment.belongsTo(models.User, {

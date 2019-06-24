@@ -8,7 +8,9 @@ module.exports = (sequelize, DataTypes) => {
     type: DataTypes.INTEGER,
     createdBy: DataTypes.INTEGER,
     width: DataTypes.INTEGER
-  }, {});
+  }, {
+    tableName: 'PropertyMedia'
+  });
   PropertyMedia.associate = function(models) {
     // associations can be defined here
   };

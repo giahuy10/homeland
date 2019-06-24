@@ -7,7 +7,9 @@ module.exports = (sequelize, DataTypes) => {
     itemId: DataTypes.INTEGER,
     url: DataTypes.STRING,
     note: DataTypes.TEXT
-  }, {});
+  }, {
+    tableName: 'Activities'
+  });
   Activity.associate = function(models) {
     // associations can be defined here
   };
