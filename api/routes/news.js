@@ -12,12 +12,13 @@ router
   .get('/', (req, res) => {
     var category = req.query.category ? req.query.category : ''
     var verify = req.query.verify ? req.query.verify : ''
+    let whereRaw = "WHERE category != 'static'"
     let where = {
       category: {
         $notLike : '%static%'
       }
     }
-    let whereRaw = "WHERE 1"
+    
     if (category && category!= 'camera') {
       where.category = category
       whereRaw += " and category ='"+category+"'"
