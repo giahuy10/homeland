@@ -162,7 +162,7 @@ export default {
             ).then(res => {
                 console.log(res)
                 this.thumbnailLoading = false
-                this.item.avatar = res.data.avatar
+                this.register.avatar = res.data.avatar
             })
             .catch(err => {
                 console.log(err.response)

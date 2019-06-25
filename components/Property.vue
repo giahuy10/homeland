@@ -100,6 +100,10 @@ export default {
 
 <style lang="scss">
 $pink : #ffa800;
+.pro-img img {
+    height: 150px;
+    width: 100%;
+}
 i.fa {
   &.saved {
     color: #0c51b2;
