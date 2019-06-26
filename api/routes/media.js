@@ -23,6 +23,9 @@ router
             proId: 1,
             type: req.query.type
           },
+          order: [
+            ['id', 'DESC'],
+          ],
           limit: limit,
           offset: offset,
         })

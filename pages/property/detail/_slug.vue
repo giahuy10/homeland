@@ -11,7 +11,7 @@
           <h2>{{detail.title}}</h2>
 
           <p> {{detail.owner}} <br>
-          {{types[detail.type]}}
+          {{detail.type == 9 ? detail.typeOther : types[detail.type]}}
           </p>
 
           <table>
@@ -45,7 +45,7 @@
           <ul>
             <li>{{detail.location}}</li>
             <!-- <li><b class="text-pink">Đang xây dựng</b></li> -->
-            <li><b class="text-pink">{{optionsPrice[detail.price]}}</b></li>
+            <li><b class="text-pink">{{detail.price == 9 ? detail.priceOther : optionsPrice[detail.price]}}</b></li>
           </ul>
           <div v-if="detail.state == -1 && userDetail && userDetail.level == 2">
             <b-button variant="success" @click="approve">Phê duyệt bài viết</b-button>
@@ -109,7 +109,7 @@
                   <div class="chat">
                     <ul class="list-unstyled">
 
-                      <li class="media"  :class="comment.parent ? 'child' : ''" v-for="(comment, index) in detail.comments.result" :key="index" :id="'comment'+comment.id">
+                      <li class="media" :class="comment.parent ? 'child' : ''" v-for="(comment, index) in detail.comments.result" :key="index" :id="'comment'+comment.id">
                         <img :src="comment.avatar ? comment.avatar : '/images/no-avatar-25359d55aa3c93ab3466622fd2ce712d1.jpg'" class="mr-3 avatar-chat" alt="...">
                         <div class="media-body">
                           <div class="comment-text">
@@ -121,7 +121,7 @@
 
                           </div>
                           <div class="reply">
-                            <a href="#" :class="comment.like ? 'liked' : ''" @click.prevent="saveCM(comment, index)">Thích</a> <a href="#comment-box" @click="commentParent = comment.parent, commentText = '@'+comment.user.lastName+' '">Thảo luận</a>
+                            <a href="#" :class="comment.like ? 'liked' : ''" @click.prevent="saveCM(comment, index)">Thích</a> <a href="#comment-box" @click="commentParent = comment.parent ? comment.parent : comment.id">Thảo luận</a>
                             <a href="#" @click.prevent="removeComment(comment.id, index)" v-if="(userDetail && userDetail.id == comment.createdBy) || (userDetail && userDetail.level == 2)">Xóa</a>
                             </div>
                         </div>
@@ -129,15 +129,13 @@
                     </ul>
                   </div>
                 </div>
-                <!-- <div class="input-group" id="comment-box" v-if="userDetail">
-                  <input type="text" class="form-control" v-model="commentText" placeholder="Hãy cho mọi người biết suy nghĩ của bạn về dự án này" >
+                <div class="input-group" id="comment-box" v-if="userDetail && commentParent">
+                  <input type="text" class="form-control" v-model="commentText" placeholder="Hãy cùng bình luận nhé" >
                   <div class="input-group-append">
-                    <div class="input-group-text" @click="sendComment"><i class="fa fa-reply-all" aria-hidden="true"></i></div>
+                    <div class="input-group-text"> <a :href="'#comment'+commentParent" @click="sendComment"><i class="fa fa-reply-all" aria-hidden="true"></i></a></div>
                   </div>
                 </div>
-                <div class="alert alert-warning" v-else>
-                  Vui lòng <nuxt-link to="/login">đăng nhập</nuxt-link> để gửi bình luận
-                </div> -->
+            
 
             </div>
             <div class="map">
@@ -500,6 +498,7 @@ export default {
       return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
     },
     sendComment () {
+      let userId = this.$store.state.user ? this.$store.state.user.id : 0
       this.$axios.post('/api/comments', {
         type: 1,
         itemId: this.detail.id,
@@ -511,6 +510,8 @@ export default {
         console.log(res)
         this.getComments()
         this.commentText = ''
+        this.commentParent = 0
+        this.$store.dispatch('property/getPropertyDetail', { slug: this.detail.id, userId })
       })
       .catch(err => console.log(err.response))
 

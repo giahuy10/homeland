@@ -65,13 +65,28 @@
               <b-form-select v-model="item.type">
                 <option v-for="(type, index) in types" :key="index" :value="type.value"> {{type.text}}</option>
               </b-form-select>
+              <b-form-input
+                v-if="item.type == 9"
+                type="text"
+                v-model="item.typeOther"
+                
+                placeholder="Nhập tên loại hình"
+              ></b-form-input>
             </b-form-group>
+          
           </div>
           <div class="col-12 col-md-6">
             <b-form-group id="input-group-2" label="" label-for="input-2">
               <b-form-select v-model="item.price">
                 <option v-for="(price, index) in optionsPrice" :key="index" :value="price.value"> {{price.text}}</option>
               </b-form-select>
+              <b-form-input
+                v-if="item.price == 9"
+                type="text"
+                v-model="item.priceOther"
+                
+                placeholder="Nhập khoảng giá"
+              ></b-form-input>
             </b-form-group>
           </div>
         </div>
@@ -215,13 +230,16 @@ export default {
       imageLoading2: false,
       thumbnailLoading: false,
       item: {
+        search: '',
         title: '',
         location: '',
         city: '',
         district: '',
         type: '',
+        typeOther: '',
         owner: '',
         price: '',
+        priceOther: '',
         progress: '',
         overview: '',
         product: '',
@@ -244,11 +262,16 @@ export default {
       districts: [],
       types: [
         { value: '', text: '-- Chọn loại bất động sản --'},
-        { value: 1, text: 'Căn hộ'},
+        { value: 1, text: 'Căn hộ chung cư'},
+        { value: 6, text: 'Căn hộ cao cấp'},
+        { value: 7, text: 'Căn hộ cao cấp và căn hộ dịch vụ'},
+        { value: 8, text: 'Căn hộ - văn phòng - dịch vụ'},
+       
         { value: 2, text: 'Biệt thự/ liền kề/ shophouse (nhà đất)'},
         { value: 3, text: 'Căn hộ - Nhà đất'},
         { value: 4, text: 'Tổ hơp thương mại – căn hộ - nhà đất'},
         { value: 5, text: 'Khu đô thị'},
+        { value: 9, text: 'Khác'},
       ],
       stateOptions: [
         { text: 'Publish', value: 1 },
@@ -264,6 +287,7 @@ export default {
         { value: 6, text: '10 tỷ - 20 tỷ'},
         { value: 7, text: '20 tỷ - 30 tỷ'},
         { value: 8, text: 'Trên 30 tỷ'},
+        { value: 9, text: 'Khác'},
       ],
       init: {
         plugins: 'print preview fullpage searchreplace autolink directionality visualblocks visualchars fullscreen image link media template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists wordcount imagetools textpattern help',
@@ -287,15 +311,26 @@ export default {
     getDetail () {
       this.$axios.get(`/api/property/${this.$route.params.id}`)
         .then(res => {
-          console.log(res)
-          this.item = res.data
+          console.log('detail',res)
+          this.item = res.data.data
           this.getDistricts()
         })
         .catch(err => console.log(err.response))
     },
+    strigTags (note) {
+      return note.replace(/(<([^>]+)>)/ig,"")
+    },
     onSubmit () {
       console.log(this.item)
+      let type = ''
+      if (parseInt(this.item.type) != 9) {
+        type = this.types.find(item => item.value == this.item.type).text
+      } else {
+        type = this.item.typeOther
+      }
+      this.item.search = this.strigTags(this.item.title +" "+this.item.location+" "+this.item.owner+" "+this.item.progress+" "+this.item.overview+" "+this.item.product+" "+this.item.facilities+" "+this.item.handover+" "+type)
       this.saveLoading = true
+      console.log('saving', this.item)
       if (this.item.id) {
         this.$axios.put(`/api/property/${this.item.id}`, this.item)
         .then(res => {

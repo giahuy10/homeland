@@ -12,12 +12,12 @@
             </b-form-group>
 
             <b-form-group id="input-group-3" label="Chuyên mục:" label-for="input-3">
-                <b-form-select
-                id="input-3"
-                v-model="item.category"
-                :options="categories"
-                required
-                ></b-form-select>
+            
+              <b-form-select v-model="item.category" required>
+                <option value="">Chọn danh mục</option>
+                <option v-for="(item, index) in categories" :key="index" :value="item.value"> {{item.text}}</option>
+                <option value="static" v-if="user.level == 2">Chân trang</option>
+              </b-form-select>
             </b-form-group>
 
             <b-form-group id="input-group-2" label="Nội dung" label-for="input-2">
@@ -80,7 +80,7 @@ export default {
             thumbnailLoading: false,
             item: {
                 title: '',
-                category: 'blog',
+                category: '',
                 description: '',
                 thumbnail: '',
                 state: -1

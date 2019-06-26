@@ -49,11 +49,11 @@ router
       whereRaw += " and price = "+price
     }
     if (title) {
-      where.title = {
+      where.search = {
          $like: '%'+title+'%'
 
       }
-      whereRaw += " and title like '%"+title+"%'"
+      whereRaw += " and search like '%"+title+"%'"
     }
     if (verify) {
       where.state = -1

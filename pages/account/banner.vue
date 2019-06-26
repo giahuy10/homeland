@@ -40,7 +40,7 @@
             <table class="table list-thumb">
               <tr v-for="(img, index) in slider" :key="index">
                 <td><img class="" :src="img.thumbnail" alt=""></td>
-                <td><a href="#" @click.prevent="remove(img.id)">Xóa</a></td>
+                <td><a href="#" @click.prevent="remove(img)">Xóa</a></td>
               </tr>
             </table>
 
@@ -51,7 +51,7 @@
             <table class="table list-thumb">
               <tr v-for="(img, index) in banner" :key="index">
                 <td><img class="" :src="img.thumbnail" alt=""></td>
-                <td><a href="#" @click.prevent="remove(img.id)">Xóa</a></td>
+                <td><a href="#" @click.prevent="remove(img)">Xóa</a></td>
               </tr>
             </table>
           </b-card>
@@ -110,7 +110,7 @@ export default {
         }
         ).then(res => {
           console.log(res)
-
+          this.toast('Thông báo', 'Tải hình ảnh thành công. Vui lòng chọn Slideshow hoặc Banner để lưu hình ảnh', 'success')
              this.imageLoading = false
               this.item.source = res.data.location,
               this.item.thumbnail = res.data.thumbnail,
@@ -133,12 +133,17 @@ export default {
         .then(res => this.slider = res.data.result)
         .catch(err => console.log(err.response))
     },
-  remove (id) {
+  remove (img) {
     if (confirm('Bạn chắc chắn muốn xóa hình ảnh này?')) {
-    this.$axios.delete(`/api/media/${id}`)
+    this.$axios.delete(`/api/media/${img.id}`)
       .then(res => {
-        this.getSliders()
-        this.getBanners()
+        if (img.type == 1) {
+          this.getSliders()
+        } else {
+          this.getBanners()
+        }
+        
+        
         this.toast('Thông báo', 'Đã xóa thành công', 'warning')
       })
       .catch(err=> console.log(err.response))
@@ -160,7 +165,14 @@ export default {
       .then(res => {
         console.log(res)
         this.saveLoading = false
-        this.toast('Thông báo', 'Lưu thành công', 'success')
+        if (this.item.type == 1) {
+          this.getSliders()
+          this.toast('Thông báo', 'Lưu slideshow thành công', 'success')
+        } else {
+          this.getBanners()
+          this.toast('Thông báo', 'Lưu banner thành công. Vui lòng tải lại trang để xem banner', 'success')
+        }
+        
       })
       .catch(err=> console.log(err.response))
   }

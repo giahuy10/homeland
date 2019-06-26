@@ -23,6 +23,9 @@ module.exports = {
       location: {
         type: Sequelize.STRING
       },
+      search: {
+        type: Sequelize.STRING
+      },
       city: {
         type: Sequelize.INTEGER
       },
@@ -32,6 +35,9 @@ module.exports = {
       type: {
         type: Sequelize.INTEGER
       },
+      typeOther: {
+        type: Sequelize.STRING
+      },
       owner: {
         type: Sequelize.STRING
       },
@@ -40,6 +46,9 @@ module.exports = {
       },
       price: {
         type: Sequelize.INTEGER
+      },
+      priceOther: {
+        type: Sequelize.STRING
       },
       progress: {
         type: Sequelize.TEXT

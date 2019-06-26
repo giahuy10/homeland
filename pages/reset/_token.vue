@@ -21,7 +21,7 @@
 
 <script>
 export default {
-  middleware: 'notAuthenticated',
+  // middleware: 'notAuthenticated',
   data () {
     return {
       password: '',

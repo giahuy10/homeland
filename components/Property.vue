@@ -5,7 +5,7 @@
         <nuxt-link :to="`/property/detail/${item.id}`">
           <img :src="item.thumbnail" alt="">
         </nuxt-link>
-        <div class="price">{{optionsPrice[item.price]}}</div>
+        <div class="price">{{item.price == 9 ? item.priceOther : optionsPrice[item.price]}}</div>
       </div>
       <div class="pro-info">
         <div class="pro-title">
