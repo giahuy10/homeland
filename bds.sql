@@ -27,7 +27,7 @@ SET time_zone = "+00:00";
 --
 -- Table structure for table `activities`
 --
-DROP `Activities` IF EXISTS 
+DROP TABLE IF EXISTS `Activities` 
 CREATE TABLE `Activities` (
   `id` int(11) NOT NULL,
   `createdBy` int(11) DEFAULT NULL,
@@ -45,7 +45,7 @@ CREATE TABLE `Activities` (
 --
 -- Table structure for table `comments`
 --
-DROP `Comments` IF EXISTS 
+DROP TABLE IF EXISTS `Comments`  
 CREATE TABLE `Comments` (
   `id` int(11) NOT NULL,
   `type` int(11) DEFAULT NULL,
@@ -76,7 +76,7 @@ INSERT INTO `Comments` (`id`, `type`, `itemId`, `parent`, `text`, `createdBy`, `
 --
 -- Table structure for table `news`
 --
-DROP `News` IF EXISTS 
+DROP TABLE IF EXISTS `News` 
 CREATE TABLE `News` (
   `id` int(11) NOT NULL,
   `title` varchar(255) DEFAULT NULL,
@@ -118,7 +118,7 @@ INSERT INTO `news` (`id`, `title`, `slug`, `description`, `thumbnail`, `category
 --
 -- Table structure for table `properties`
 --
-DROP `Properties` IF EXISTS 
+DROP TABLE IF EXISTS `Properties`
 CREATE TABLE `Properties` (
   `id` int(11) NOT NULL,
   `title` varchar(255) DEFAULT NULL,
@@ -170,7 +170,7 @@ INSERT INTO `properties` (`id`, `title`, `slug`, `hits`, `saved`, `location`, `c
 --
 -- Table structure for table `propertymedia`
 --
-DROP `Propertymedia` IF EXISTS 
+DROP TABLE IF EXISTS `Propertymedia` 
 CREATE TABLE `Propertymedia` (
   `id` int(11) NOT NULL,
   `proId` int(11) DEFAULT NULL,
@@ -207,7 +207,7 @@ INSERT INTO `Propertymedia` (`id`, `proId`, `source`, `thumbnail`, `height`, `wi
 --
 -- Table structure for table `propertyratings`
 --
-DROP `Propertyratings` IF EXISTS 
+DROP TABLE IF EXISTS `Propertyratings`  
 CREATE TABLE `Propertyratings` (
   `id` int(11) NOT NULL,
   `proId` int(11) DEFAULT NULL,
@@ -240,7 +240,7 @@ INSERT INTO `Propertyratings` (`id`, `proId`, `createdBy`, `location`, `price`, 
 --
 -- Table structure for table `saveds`
 --
-DROP `Saveds` IF EXISTS
+DROP TABLE IF EXISTS `Saveds`
 CREATE TABLE `Saveds` (
   `id` int(11) NOT NULL,
   `type` int(11) DEFAULT NULL,
@@ -265,7 +265,7 @@ INSERT INTO `Saveds` (`id`, `type`, `itemId`, `createdBy`, `createdAt`, `updated
 --
 -- Table structure for table `sequelizemeta`
 --
-
+DROP TABLE IF EXISTS `sequelizemeta`
 CREATE TABLE `sequelizemeta` (
   `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -289,7 +289,7 @@ INSERT INTO `sequelizemeta` (`name`) VALUES
 --
 -- Table structure for table `users`
 --
-DROP `Users` IF EXISTS
+DROP TABLE IF EXISTS `Users` 
 
 CREATE TABLE `Users` (
   `id` int(11) NOT NULL,
