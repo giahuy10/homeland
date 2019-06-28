@@ -330,6 +330,16 @@ router
         req.body,
         { where: {id: req.params.id} }
       ).then(() => {
+        cache.del('listOtherProperty', (err, number) => {
+          console.log('delete')
+          console.log(err)
+          console.log(number)
+        })
+        cache.del('listFeaturedProperty', (err, number) => {
+          console.log('delete')
+          console.log(err)
+          console.log(number)
+        })
 
         res.status(200).send("updated successfully with id = " + req.params.id);
       }).catch(err => res.json(err))
@@ -340,6 +350,16 @@ router
     model.destroy({
       where: { id: req.params.id }
     }).then(() => {
+      cache.del('listOtherProperty', (err, number) => {
+        console.log('delete')
+        console.log(err)
+        console.log(number)
+      })
+      cache.del('listFeaturedProperty', (err, number) => {
+        console.log('delete')
+        console.log(err)
+        console.log(number)
+      })
       res.status(200).send('deleted successfully with id = ' + id);
     }).catch(err => res.json(err))
   })
