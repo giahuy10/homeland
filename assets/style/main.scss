@@ -199,6 +199,10 @@ a {
     max-width: 100%;
     flex: 0 0 50%;
     margin-bottom: 5px;
+    &.filter-title{
+      width: 100%;
+      flex: 0 0 100%;
+    }
   }
   .col-25.filter-item.filter-title {
     width: 100%;

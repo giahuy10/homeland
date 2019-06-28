@@ -6,7 +6,7 @@
       <div class="row">
         <div class="col-12 col-md-2">
           <div class="sidebar">
-            <ul>
+            <ul clas="d-none d-md-block">
 
               <li><a href="#" :class="filter.sortBy == 'id' ? 'active' : ''" @click.prevent="filter.sortBy = 'id' , getItems()">Mua nhà ở đâu</a></li>
               <li><a href="#" :class="filter.sortBy == 'hits' ? 'active' : ''" @click.prevent="filter.sortBy = 'hits', getItems()">Dự án nào</a></li>
@@ -117,6 +117,14 @@ export default {
     }
   },
   methods: {
+    getDistricts () {
+      if (this.filter.city >= 1) {
+        this.districts = location[this.filter.city - 1].districts
+      } else{
+        this.districts = []
+      }
+      
+    },
     getItems () {
        var str = "";
       for (var key in this.filter) {
@@ -151,6 +159,9 @@ $pink : #ffa800;
     ul {
       list-style: none;
       padding-left: 0;
+      @media screen and (max-width: 767px){
+        display: none;
+      }
       li {
         background: #f8f9fa;
         border-bottom: 1px solid #e5e5e5;

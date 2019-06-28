@@ -10,7 +10,7 @@
               <div class="module-title">
                 <h2 class="mod-title">Tổng hợp dự án</h2>
             </div>
-            <ul>
+            <ul class="d-none d-md-block">
               <li><a href="#" :class="filter.sortBy == 'id' ? 'active' : ''" @click.prevent="filter.sortBy = 'id' , getItems()">Mua nhà ở đâu</a></li>
               <li><a href="#" :class="filter.sortBy == 'hits' ? 'active' : ''" @click.prevent="filter.sortBy = 'hits', getItems()">Dự án nào</a></li>
               <li><a href="#">Nhà đất TV</a></li>
@@ -109,7 +109,12 @@ export default {
       }
     },
     getDistricts () {
-      this.districts = location[this.filter.city - 1].districts
+      if (this.filter.city >= 1) {
+        this.districts = location[this.filter.city - 1].districts
+      } else{
+        this.districts = []
+      }
+      
     },
     getItems () {
       var str = "";

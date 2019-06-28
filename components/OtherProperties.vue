@@ -29,7 +29,7 @@ export default {
   methods: {
     getItems () {
       let userId = this.userDetail ? this.userDetail.id : 0
-      this.$axios.get(`/api/property?perPage=5&currentPage=1&userId=${userId}`)
+      this.$axios.get(`/api/property?perPage=5&currentPage=1&userId=${userId}&proType=1`)
         .then(res => {
           console.log(res)
           this.items = res.data.result

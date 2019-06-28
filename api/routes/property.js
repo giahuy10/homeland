@@ -8,7 +8,7 @@ var checkUserLogged = require('../utils/checkUserLogged')
 var sendMail = require('../utils/sendMail')
 var activity = require('../models').Activity
 var sequelize = require('../models').sequelize
-
+var cache = require('express-redis-cache')()
 
 
 router
@@ -21,6 +21,7 @@ router
   .get('/', (req, res) => {
 
     var city = req.query.city ? parseInt(req.query.city) : 0
+    var proType = req.query.proType ? parseInt(req.query.proType) : 0
     var district = req.query.district ? parseInt(req.query.district) : 0
     var type = req.query.type ? parseInt(req.query.type) : 0
     var price = req.query.price ? parseInt(req.query.price) : 0
@@ -29,7 +30,7 @@ router
     var title = req.query.title ? req.query.title : ''
 
     var userId = req.query.userId ? parseInt(req.query.userId) : 0
-
+    let cacheName = proType ? 'Other' : 'Featured'
     let where = {}
     let whereRaw = "WHERE 1"
     if (city) {
@@ -55,6 +56,10 @@ router
       }
       whereRaw += " and search like '%"+title+"%'"
     }
+    let cacheable = false
+    if (Object.keys(where).length === 0 && where.constructor === Object) {
+      cacheable = true
+    }
     if (verify) {
       where.state = -1
       whereRaw += " and state = -1"
@@ -63,34 +68,42 @@ router
       whereRaw += " and state = 1"
     }
 
-
-
-    model.findAndCountAll({
-      where: where
-    })
-      .then(data => {
-        var limit = req.query.perPage ? parseInt(req.query.perPage) : 18
-        var currentPage = req.query.currentPage ? parseInt(req.query.currentPage) : 1
-        var totalPages = Math.ceil(data.count / limit)
-        var offset = limit * (currentPage - 1)
-
-
-        // model.findAll({
-        //   where: where,
-        //   // include: ['comments'],
-        //   order: [
-        //     [oderBy, 'DESC'],
-        //   ],
-        //   limit: limit,
-        //   offset: offset,
-        // })
-        sequelize.query("SELECT p.*, s.id as `like` FROM `Properties` as p LEFT JOIN `Saveds` as s ON p.id = s.itemId and s.type = 3 and s.createdBy = "+userId+" "+whereRaw+ " GROUP by p.id ORDER BY "+oderBy+" DESC LIMIT "+offset+", "+limit, { type: sequelize.QueryTypes.SELECT})
-          .then((news) => {
-            res.status(200).json({'result': news, 'count': data.count, 'pages': totalPages, 'currentPage': currentPage});
+    cache.get(`list${cacheName}Property`, (err, data) => {
+      if (data.length > 0 && cacheable) {
+        res.json(JSON.parse(data[0].body))
+      } else {
+        model.findAndCountAll({
+          where: where
+        })
+          .then(data => {
+            var limit = req.query.perPage ? parseInt(req.query.perPage) : 18
+            var currentPage = req.query.currentPage ? parseInt(req.query.currentPage) : 1
+            var totalPages = Math.ceil(data.count / limit)
+            var offset = limit * (currentPage - 1)
+    
+            sequelize.query("SELECT p.*, s.id as `like` FROM `Properties` as p LEFT JOIN `Saveds` as s ON p.id = s.itemId and s.type = 3 and s.createdBy = "+userId+" "+whereRaw+ " GROUP by p.id ORDER BY "+oderBy+" DESC LIMIT "+offset+", "+limit, { type: sequelize.QueryTypes.SELECT})
+              .then((news) => {
+                let response = {'result': news, 'count': data.count, 'pages': totalPages, 'currentPage': currentPage}
+                if (cacheable) {
+                  cache.add(`list${cacheName}Property`, JSON.stringify(response), { expire: 60 * 60 , type: 'json' },
+                  function (error, added) {
+                    console.log('added')
+                    console.log(added),
+                    console.log(error)
+                  })
+                }
+                
+                res.status(200).json(response);
+              })
+              .catch(err => res.json(err))
           })
           .catch(err => res.json(err))
-      })
-      .catch(err => res.json(err))
+      }
+      
+    })
+
+
+    
   })
 
   .get('/check-pro', (req, res) => {
@@ -296,6 +309,16 @@ router
               .then(response => console.log(response))
               .catch(err => console.log.json(err))
           }
+          cache.del('listOtherProperty', (err, number) => {
+            console.log('delete')
+            console.log(err)
+            console.log(number)
+          })
+          cache.del('listFeaturedProperty', (err, number) => {
+            console.log('delete')
+            console.log(err)
+            console.log(number)
+          })
         res.json(data)
       })
       .catch(err => res.status(500).json(err))

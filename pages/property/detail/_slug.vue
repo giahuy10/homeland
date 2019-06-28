@@ -253,12 +253,7 @@
                       <b-form-input v-model="review.design" min="1" max="10" type="range"></b-form-input>
                     </b-col>
                   </b-row>
-
-                </div>
-                <div class="alert alert-warning" v-else>
-                  Vui lòng <nuxt-link to="/login">đăng nhập</nuxt-link> để gửi bình luận
-                </div>
-                <br> <br>
+                  <br> <br>
                 <b-form-input
                   id="input-1"
                   v-model="review.title"
@@ -287,10 +282,15 @@
           </div>
           <div class="clearfix"></div>
         </div>
+                </div>
+                <div class="alert alert-warning" v-else>
+                  Vui lòng <nuxt-link to="/login">đăng nhập</nuxt-link> để gửi bình luận
+                </div>
+                
                 <br><br>
-               <template slot="modal-footer" slot-scope="{ ok, cancel }">
+               <template  slot="modal-footer" slot-scope="{ ok, cancel }">
 
-                  <!-- Emulate built in modal footer ok and cancel button actions -->
+                  <div v-if="userDetail">
 
                   <b-spinner v-if="reviewLoading" label="Loading..."></b-spinner>
                   <b-button v-else size="sm" variant="success" @click="submitReview()">
@@ -299,7 +299,7 @@
                   <b-button size="sm" variant="danger" @click="cancel()">
                     Hủy
                   </b-button>
-
+                  </div>
                 </template>
                 </b-modal>
               </div>
@@ -735,6 +735,12 @@ $pink : #ffa800;
 .detail-content {
   iframe {
     width: 100%;
+  }
+  .galleries {
+    h5 {
+      padding-left: 20px;
+      text-decoration: underline;
+    }
   }
   .overview {
     .inner-overview {
