@@ -44,7 +44,7 @@
           </table>
           <ul>
             <li>{{detail.location}}</li>
-            <!-- <li><b class="text-pink">Đang xây dựng</b></li> -->
+            <li><b class="text-pink">{{detail.progressText ? detail.progressText : 'Đang cập nhật'}}</b></li> 
             <li><b class="text-pink">{{detail.price == 9 ? detail.priceOther : optionsPrice[detail.price]}}</b></li>
           </ul>
           <div v-if="detail.state == -1 && userDetail && userDetail.level == 2">
@@ -109,7 +109,7 @@
                   <div class="chat">
                     <ul class="list-unstyled">
 
-                      <li class="media" :class="comment.parent ? 'child' : ''" v-for="(comment, index) in detail.comments.result" :key="index" :id="'comment'+comment.id">
+                      <li class="media" :class="comment.parent ? 'child' : ''" v-for="(comment, index) in detail.comments.result" :ref="`comment_${comment.id}`" :key="index" :id="'comment'+comment.id">
                         <img :src="comment.avatar ? comment.avatar : '/images/no-avatar-25359d55aa3c93ab3466622fd2ce712d1.jpg'" class="mr-3 avatar-chat" alt="...">
                         <div class="media-body">
                           <div class="comment-text">
@@ -120,21 +120,37 @@
                           <GalleryComment :items="JSON.parse(comment.images)" v-if="comment.images && JSON.parse(comment.images).length > 0" />
 
                           </div>
-                          <div class="reply">
-                            <a href="#" :class="comment.like ? 'liked' : ''" @click.prevent="saveCM(comment, index)">Thích</a> <a href="#comment-box" @click="commentParent = comment.parent ? comment.parent : comment.id">Thảo luận</a>
+                          <div class="reply" :id="`reply_${comment.id}`">
+                            <a href="#" v-if="userDetail" :class="comment.like ? 'liked' : ''" @click.prevent="saveCM(comment, index)">Thích</a> 
+                            <a href="#" v-if="userDetail" @click.prevent="openComment(comment)">Thảo luận</a>
                             <a href="#" @click.prevent="removeComment(comment.id, index)" v-if="(userDetail && userDetail.id == comment.createdBy) || (userDetail && userDetail.level == 2)">Xóa</a>
+                            <div class="comment-box" :id="`comment-box-${comment.id}`">
+
+                            <form @submit.prevent="sendComment">
+                              <div class="input-group"  v-if="userDetail">
+                                <input type="text" ref="commentInputText" class="form-control" v-model="commentText" placeholder="Hãy cùng bình luận nhé" >
+                                <div class="input-group-append">
+                                  <div class="input-group-text"> 
+                                    <a href="#" @click.prevent="sendComment">
+                                      <i class="fa fa-reply-all" aria-hidden="true"></i>
+                                    </a>
+                                  </div>
+                                </div>
+                              </div>
+                            </form>
                             </div>
+                          </div>
                         </div>
                       </li>
                     </ul>
                   </div>
                 </div>
-                <div class="input-group" id="comment-box" v-if="userDetail && commentParent">
+                <!-- <div class="input-group" id="comment-box" v-if="userDetail && commentParent">
                   <input type="text" class="form-control" v-model="commentText" placeholder="Hãy cùng bình luận nhé" >
                   <div class="input-group-append">
                     <div class="input-group-text"> <a :href="'#comment'+commentParent" @click="sendComment"><i class="fa fa-reply-all" aria-hidden="true"></i></a></div>
                   </div>
-                </div>
+                </div> -->
             
 
             </div>
@@ -312,6 +328,7 @@
   </div>
 </template>
 <script>
+import $ from 'jquery'
 import Slider from '~/components/Slider.vue'
 import Gallery from '~/components/Gallery.vue';
 import GalleryComment from '~/components/GalleryComment.vue';
@@ -345,6 +362,9 @@ export default {
           3: 'Căn hộ - Nhà đất',
           4: 'Tổ hơp thương mại – căn hộ - nhà đất',
           5: 'Khu đô thị',
+          6: 'Căn hộ cao cấp'  ,
+          7: 'Căn hộ cao cấp và căn hộ dịch vụ',
+          8: 'Căn hộ - văn phòng - dịch vụ',
       },
       price: 0,
       comments: [],
@@ -392,6 +412,56 @@ export default {
     }
   },
   methods: {
+    openComment (comment) {
+      $('.comment-box').hide()
+      $('#comment-box-'+comment.id).show()
+      // this.$refs.commentInputText[0].focus()
+      this.commentParent = comment.parent ? comment.parent : comment.id
+      // <div class="input-group" id="comment-box" v-if="userDetail">
+      //   <input type="text" class="form-control" v-model="commentText" placeholder="Hãy cùng bình luận nhé" >
+      //   <div class="input-group-append">
+      //     <div class="input-group-text"> 
+          //   <a :href="'#comment'+commentParent" @click="sendComment">
+          //     <i class="fa fa-reply-all" aria-hidden="true"></i>
+          //   </a>
+          // </div>
+      //   </div>
+      // </div>
+      // $('.comment-box-input').remove();
+      // this.commentParent = comment.parent ? comment.parent : comment.id
+      // let com_el = this.$refs[`comment_${comment.id}`]
+
+      // let div = document.createElement('div')
+      // div.setAttribute("class", "input-group comment-box-input")
+
+      // let input = document.createElement('input')
+      // input.setAttribute('class', 'form-control')
+      // input.setAttribute('placeholder', 'Hãy cùng bình luận nhé')
+      // input.setAttribute('ref', 'commentText')
+      // div.appendChild(input)
+
+      // let inputGroupAppend = document.createElement('div')
+      // inputGroupAppend.setAttribute('class','input-group-append')
+
+      // let inputGroupText = document.createElement('div')
+      // inputGroupText.setAttribute('class','input-group-text')
+
+      // let inputAnchor = document.createElement('a')
+      // inputAnchor.setAttribute('href','#')
+      // inputAnchor.setAttribute('onClick', 'sendComment()')
+
+      // let icon = document.createElement('i')
+      // icon.setAttribute('class', 'fa fa-reply-all')
+
+      // inputAnchor.appendChild(icon)
+      // inputGroupText.appendChild(inputAnchor)
+      // inputGroupAppend.appendChild(inputGroupText)
+      // div.appendChild(inputGroupAppend)
+    
+      // document.getElementById('reply_'+comment.id).appendChild(div);
+
+    },
+    
     removeItem (id) {
       if (confirm('Bạn chắc chắn muốn xóa dự án này?')) {
         this.$axios.delete(`/api/property/${id}`)
@@ -512,6 +582,7 @@ export default {
         this.commentText = ''
         this.commentParent = 0
         this.$store.dispatch('property/getPropertyDetail', { slug: this.detail.id, userId })
+        $('.comment-box').hide()
       })
       .catch(err => console.log(err.response))
 
@@ -610,6 +681,7 @@ export default {
     // this.getDetail()
     // this.getComments()
     this.getReview()
+    
   },
   watch: {
     price: function(newValue) {
@@ -668,6 +740,9 @@ export default {
 
 <style lang="scss" scoped>
 $pink : #ffa800;
+.comment-box  {
+  display: none;
+}
 .detail {
   .top {
     .short-desc {

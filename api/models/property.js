@@ -10,6 +10,7 @@ module.exports = (sequelize, DataTypes) => {
     district: DataTypes.INTEGER,
     type: DataTypes.INTEGER,
     typeOther: DataTypes.STRING,
+    progressText: DataTypes.STRING,
     owner: DataTypes.STRING,
     price: DataTypes.INTEGER,
     priceOther: DataTypes.STRING,

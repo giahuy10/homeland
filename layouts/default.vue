@@ -7,7 +7,7 @@
         </div>
         <div class="navigation">
           <b-navbar toggleable="lg" type="light" variant="light">
-            <b-navbar-brand to="/"><img style="height: 50px;" src="/images/homenland-logo.png"></b-navbar-brand>
+            <b-navbar-brand to="/"><img src="/logo.jpg"></b-navbar-brand>
             <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
             <b-collapse id="nav-collapse" is-nav>
               <b-navbar-nav class="ml-auto">
@@ -160,6 +160,16 @@ $pink : #e7005a;
       margin: 5px 0 !important;
     }
   }
+}
+a.navbar-brand {
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 0;
+    width: 118px;
+    @media screen {
+      width: 87px;
+    }
 }
 .navigation {
   .menu-avatar {

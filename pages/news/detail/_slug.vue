@@ -314,6 +314,9 @@ export default {
           .catch(err => console.log(err))
       }
     },
+    strigTags (note) {
+      return note.replace(/(<([^>]+)>)/ig,"")
+    },
   },
   computed: {
     userDetail () {
@@ -327,7 +330,7 @@ export default {
     return {
       title: this.detail.title,
       meta: [
-        { hid: 'description', name: 'description', content: this.detail.description },
+        { hid: 'description', name: 'description', content: this.strigTags(this.detail.description) },
 
         {
           hid: 'og:title',
@@ -352,7 +355,7 @@ export default {
         {
           hid: 'og:description',
           property: 'og:description',
-          content: this.detail.description
+          content: this.strigTags(this.detail.description) 
         }
       ]
     }

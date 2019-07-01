@@ -23,7 +23,10 @@
             <i class="fa fa-camera-retro" aria-hidden="true"></i> {{item.totalImages + item.totalImages2 > 0 ? item.totalImages + item.totalImages2 : 0}}
           </div>
           <div class="float-right">
-            <i class="fa fa-share-alt" aria-hidden="true"></i>
+            <a :href="`https://www.facebook.com/sharer/sharer.php?kid_directed_site=0&sdk=joey&u=http://homenland.vn/property/detail/${item.id}&display=popup&ref=plugin&src=share_button`" target="_blank" >
+              <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+            
             <i class="fa fa-heart" :class="item.like ? 'saved' : ''" aria-hidden="true" @click="save(item)"></i>
           </div>
           <div class="clearfix"></div>

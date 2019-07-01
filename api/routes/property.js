@@ -68,41 +68,23 @@ router
       whereRaw += " and state = 1"
     }
 
-    cache.get(`list${cacheName}Property`, (err, data) => {
-      if (data.length > 0 && cacheable) {
-        res.json(JSON.parse(data[0].body))
-      } else {
-        model.findAndCountAll({
-          where: where
-        })
-          .then(data => {
-            var limit = req.query.perPage ? parseInt(req.query.perPage) : 18
-            var currentPage = req.query.currentPage ? parseInt(req.query.currentPage) : 1
-            var totalPages = Math.ceil(data.count / limit)
-            var offset = limit * (currentPage - 1)
-    
-            sequelize.query("SELECT p.*, s.id as `like` FROM `Properties` as p LEFT JOIN `Saveds` as s ON p.id = s.itemId and s.type = 3 and s.createdBy = "+userId+" "+whereRaw+ " GROUP by p.id ORDER BY "+oderBy+" DESC LIMIT "+offset+", "+limit, { type: sequelize.QueryTypes.SELECT})
-              .then((news) => {
-                let response = {'result': news, 'count': data.count, 'pages': totalPages, 'currentPage': currentPage}
-                if (cacheable) {
-                  cache.add(`list${cacheName}Property`, JSON.stringify(response), { expire: 60 * 60 , type: 'json' },
-                  function (error, added) {
-                    console.log('added')
-                    console.log(added),
-                    console.log(error)
-                  })
-                }
-                
-                res.status(200).json(response);
-              })
-              .catch(err => res.json(err))
+    model.findAndCountAll({
+      where: where
+    })
+      .then(data => {
+        var limit = req.query.perPage ? parseInt(req.query.perPage) : 18
+        var currentPage = req.query.currentPage ? parseInt(req.query.currentPage) : 1
+        var totalPages = Math.ceil(data.count / limit)
+        var offset = limit * (currentPage - 1)
+
+        sequelize.query("SELECT p.*, s.id as `like` FROM `Properties` as p LEFT JOIN `Saveds` as s ON p.id = s.itemId and s.type = 3 and s.createdBy = "+userId+" "+whereRaw+ " GROUP by p.id ORDER BY "+oderBy+" DESC LIMIT "+offset+", "+limit, { type: sequelize.QueryTypes.SELECT})
+          .then((news) => {
+            let response = {'result': news, 'count': data.count, 'pages': totalPages, 'currentPage': currentPage}
+            res.status(200).json(response);
           })
           .catch(err => res.json(err))
-      }
-      
-    })
-
-
+      })
+      .catch(err => res.json(err))
     
   })
 
@@ -309,16 +291,7 @@ router
               .then(response => console.log(response))
               .catch(err => console.log.json(err))
           }
-          cache.del('listOtherProperty', (err, number) => {
-            console.log('delete')
-            console.log(err)
-            console.log(number)
-          })
-          cache.del('listFeaturedProperty', (err, number) => {
-            console.log('delete')
-            console.log(err)
-            console.log(number)
-          })
+    
         res.json(data)
       })
       .catch(err => res.status(500).json(err))
@@ -330,16 +303,7 @@ router
         req.body,
         { where: {id: req.params.id} }
       ).then(() => {
-        cache.del('listOtherProperty', (err, number) => {
-          console.log('delete')
-          console.log(err)
-          console.log(number)
-        })
-        cache.del('listFeaturedProperty', (err, number) => {
-          console.log('delete')
-          console.log(err)
-          console.log(number)
-        })
+        
 
         res.status(200).send("updated successfully with id = " + req.params.id);
       }).catch(err => res.json(err))
@@ -350,16 +314,7 @@ router
     model.destroy({
       where: { id: req.params.id }
     }).then(() => {
-      cache.del('listOtherProperty', (err, number) => {
-        console.log('delete')
-        console.log(err)
-        console.log(number)
-      })
-      cache.del('listFeaturedProperty', (err, number) => {
-        console.log('delete')
-        console.log(err)
-        console.log(number)
-      })
+     
       res.status(200).send('deleted successfully with id = ' + id);
     }).catch(err => res.json(err))
   })

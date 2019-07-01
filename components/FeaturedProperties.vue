@@ -79,11 +79,14 @@ export default {
 
       optionsType: [
         { value: '', text: '-- Loại --'},
-        { value: 1, text: 'Căn hộ/ chung cư'},
+        { value: 1, text: 'Căn hộ chung cư'},
+        { value: 6, text: 'Căn hộ cao cấp'},
+        { value: 7, text: 'Căn hộ cao cấp và căn hộ dịch vụ'},
+        { value: 8, text: 'Căn hộ - văn phòng - dịch vụ'},
         { value: 2, text: 'Biệt thự/ liền kề'},
         { value: 3, text: 'Shophouse'},
         { value: 4, text: 'Nghỉ dưỡng'},
-        //{ value: 5, text: 'Khu đô thị'},
+        { value: 5, text: 'Khu đô thị'}
       ],
       optionsPrice: [
         { value: '', text: '-- Giá --'},

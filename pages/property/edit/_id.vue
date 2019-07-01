@@ -5,7 +5,7 @@
       <p>Những dự án tốt mà bạn biết chưa có trên homenland.vn, chia sẻ với cộng đồng ngay!</p>
       <b-form @submit.prevent="onSubmit">
         <div class="row">
-          <div class="col-12 col-md-6">
+          <div class="col-12 col-md-4">
             <b-form-group id="input-group-1" label="" label-for="input-1">
               <b-form-input
                 id="input-1"
@@ -16,7 +16,7 @@
               ></b-form-input>
             </b-form-group>
           </div>
-          <div class="col-12 col-md-6">
+          <div class="col-12 col-md-4">
             <b-form-group id="input-group-1" label="" label-for="input-1">
               <b-form-input
                 id="input-1"
@@ -24,6 +24,17 @@
                 type="text"
                 required
                 placeholder="Chủ đầu tư:"
+              ></b-form-input>
+            </b-form-group>
+          </div>
+          <div class="col-12 col-md-4">
+            <b-form-group id="input-group-1" label="" label-for="input-1">
+              <b-form-input
+                id="input-1"
+                v-model="item.progressText"
+                type="text"
+                required
+                placeholder="Hiện trạng:"
               ></b-form-input>
             </b-form-group>
           </div>
@@ -246,6 +257,7 @@ export default {
         facilities: '',
         map: '',
         state: 0,
+        progressText: '',
         thumbnail: '',
         images: [],
         images2: [],
