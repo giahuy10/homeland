@@ -357,7 +357,7 @@ export default {
       },
       types: {
 
-          1: 'Căn hộ',
+          1: 'Căn hộ chung cư',
           2: 'Biệt thự/ liền kề/ shophouse (nhà đất)',
           3: 'Căn hộ - Nhà đất',
           4: 'Tổ hơp thương mại – căn hộ - nhà đất',
@@ -626,11 +626,12 @@ export default {
         })
       },
     removeComment (id, index) {
+      let userId = this.$store.state.user ? this.$store.state.user.id : 0
       this.$axios.delete(`/api/comments/${id}`)
       .then(res=> {
         this.components.splice(index, 1)
         this.toast('Thông báo', 'Xóa bình luận thành công', 'success')
-        this.getComments()
+        this.$store.dispatch('property/getPropertyDetail', { slug: this.detail.id, userId })
       })
       .catch(err=> console.log(err.response))
     },

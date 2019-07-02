@@ -20,7 +20,8 @@
               </b-form-select>
             </b-form-group>
 
-            <b-form-group id="input-group-2" label="Nội dung" label-for="input-2">
+        <b-form-group id="input-group-2" :label="item.category == 'camera' ? 'Youtube embed' : 'Nội dung'" label-for="input-2">
+          <b-form-textarea v-if="item.category == 'camera'" v-model="item.description" rows="3"></b-form-textarea>
           <editor v-model="item.description" :toolbar="toolbar" api-key="lxzv6h8kur0syil9hllrjlm94wtumcz3fy6ea2jc0inlsmnb" :init="init"></editor>
         </b-form-group>
 
