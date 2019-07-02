@@ -629,7 +629,6 @@ export default {
       let userId = this.$store.state.user ? this.$store.state.user.id : 0
       this.$axios.delete(`/api/comments/${id}`)
       .then(res=> {
-        this.components.splice(index, 1)
         this.toast('Thông báo', 'Xóa bình luận thành công', 'success')
         this.$store.dispatch('property/getPropertyDetail', { slug: this.detail.id, userId })
       })
