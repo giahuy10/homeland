@@ -169,7 +169,7 @@ nav.navbar {
 }
 a.navbar-brand {
     position: absolute;
-    top: 0; 
+    top: -10px; 
     left: 0;
     padding: 0;
     width: 118px;
