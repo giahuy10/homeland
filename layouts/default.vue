@@ -7,7 +7,7 @@
         </div>
         <div class="navigation">
           <b-navbar toggleable="lg" type="light" variant="light">
-            <b-navbar-brand to="/"><img src="/logo.jpg"></b-navbar-brand>
+            <b-navbar-brand to="/"><img src="/logo-new.jpg"></b-navbar-brand>
             <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
             <b-collapse id="nav-collapse" is-nav>
               <b-navbar-nav class="ml-auto">
@@ -161,14 +161,24 @@ $pink : #e7005a;
     }
   }
 }
+nav.navbar {
+  @media screen and (max-width: 767px) {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+}
 a.navbar-brand {
     position: absolute;
     top: 0; 
     left: 0;
     padding: 0;
     width: 118px;
+    z-index: 9999;
+    border: 1px solid #f7a600;
+    box-shadow: 0 0 1px 0px #fee8c4;
     @media screen and (max-width: 767px) {
       width: 87px;
+      position: initial;
     }
 }
 .navigation {
