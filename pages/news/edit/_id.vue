@@ -21,7 +21,7 @@
             </b-form-group>
 
         <b-form-group id="input-group-2" :label="item.category == 'tv' ? 'Nhúng mã Youtube': 'Nội dung'" label-for="input-2">
-         <b-form-textarea v-if="item.category == 'tv'" v-model="item.description" rows="3" placeholder="Vd: Diện tích đất dự án, diện tích xây dựng, mật độ xây dựng, vi trị đẹp ngay khu vực trung tậm thành phố,...."></b-form-textarea>
+         <b-form-textarea v-if="item.category == 'tv'" v-model="item.description" rows="3" placeholder=""></b-form-textarea>
 
           <editor v-model="item.description" :toolbar="toolbar" api-key="lxzv6h8kur0syil9hllrjlm94wtumcz3fy6ea2jc0inlsmnb" :init="init"></editor>
         </b-form-group>

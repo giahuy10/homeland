@@ -10,7 +10,7 @@
 
               <li><a href="#" :class="filter.sortBy == 'id' ? 'active' : ''" @click.prevent="filter.sortBy = 'id' , getItems()">Mua nhà ở đâu</a></li>
               <li><a href="#" :class="filter.sortBy == 'hits' ? 'active' : ''" @click.prevent="filter.sortBy = 'hits', getItems()">Dự án nào</a></li>
-              <nuxt-link to="/news/tv">Nhà đất TV</nuxt-link>
+              <li><nuxt-link to="/news/tv">Nhà đất TV</nuxt-link></li>
 
               <li><a href="#" @click.prevent="$router.push({path: '/property/edit/0'})">Gửi thông tin</a></li>
             </ul>
