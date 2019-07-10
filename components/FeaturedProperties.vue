@@ -13,7 +13,8 @@
             <ul class="d-none d-md-block">
               <li><a href="#" :class="filter.sortBy == 'id' ? 'active' : ''" @click.prevent="filter.sortBy = 'id' , getItems()">Mua nhà ở đâu</a></li>
               <li><a href="#" :class="filter.sortBy == 'hits' ? 'active' : ''" @click.prevent="filter.sortBy = 'hits', getItems()">Dự án nào</a></li>
-              <li><nuxt-link to="/news/tv">Nhà đất TV</nuxt-link></li>
+              <li><a href="#" :class="filter.sortBy == 'tv' ? 'active' : ''" @click.prevent="filter.sortBy = 'tv', getItems()">Nhà đất TV</a></li>
+
             </ul>
           </div>
           </div>
@@ -44,7 +45,8 @@
 
              <div class="row">
               <div v-for="(item, index) in items" :key="index" class="property col-6 col-sm-4 col-md-3">
-                <Property :item="item" />
+                <Property v-if="filter.sortBy !='tv'" :item="item" />
+                <Post v-else :item="item" />
               </div>
               <div class="clear"></div>
             </div>
@@ -59,10 +61,11 @@
 
 <script>
 import Property from '~/components/Property.vue'
+import Post from '~/components/Post.vue'
 import location from '~/static/local.json'
 
 export default {
-  components: {Property},
+  components: {Property, Post},
   data () {
     return {
       navClass: '',
@@ -120,21 +123,31 @@ export default {
       
     },
     getItems () {
-      var str = "";
-      for (var key in this.filter) {
-          if (str != "") {
-              str += "&";
-          }
-          str += key + "=" + encodeURIComponent(this.filter[key]);
-      }
-      console.log(str)
       let userId = this.userDetail ? this.userDetail.id : 0
-      this.$axios.get(`/api/property?${str}&userId=${userId}`)
-        .then(res => {
-          console.log('items', res)
-          this.items = res.data.result
-        })
-        .catch(err => console.log(err.response))
+      if (this.filter.sortBy != 'tv') {
+        var str = "";
+        for (var key in this.filter) {
+            if (str != "") {
+                str += "&";
+            }
+            str += key + "=" + encodeURIComponent(this.filter[key]);
+        }
+      
+        this.$axios.get(`/api/property?${str}&userId=${userId}`)
+          .then(res => {
+            console.log('items', res)
+            this.items = res.data.result
+          })
+          .catch(err => console.log(err.response))
+      } else {
+        this.$axios.get(`/api/news?category=tv&currentPage=1&perPage=20&userId=${userId}`)
+          .then(res => {
+              console.log(res)
+              this.items = res.data.result
+            
+          })
+          .catch(err => console.log(err))
+      }
     }
   },
   mounted () {
