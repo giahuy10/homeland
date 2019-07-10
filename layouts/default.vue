@@ -164,7 +164,6 @@ $pink : #e7005a;
 nav.navbar {
   @media screen and (max-width: 767px) {
     padding: 0;
-   
   }
 }
 a.navbar-brand {
@@ -173,7 +172,7 @@ a.navbar-brand {
     left: 0;
     padding: 0;
     width: 80px;
-    z-index: 9999
+    z-index: 9999;
     @media screen and (max-width: 767px) {
       width: 87px;
       position: initial;
