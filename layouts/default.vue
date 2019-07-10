@@ -163,19 +163,17 @@ $pink : #e7005a;
 }
 nav.navbar {
   @media screen and (max-width: 767px) {
-    padding-top: 0;
-    padding-bottom: 0;
+    padding: 0;
+   
   }
 }
 a.navbar-brand {
     position: absolute;
-    top: -10px; 
+    top: 0;
     left: 0;
     padding: 0;
-    width: 118px;
-    z-index: 9999;
-    border: 1px solid #f7a600;
-    box-shadow: 0 0 1px 0px #fee8c4;
+    width: 80px;
+    z-index: 9999
     @media screen and (max-width: 767px) {
       width: 87px;
       position: initial;
