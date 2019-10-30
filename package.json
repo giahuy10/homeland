@@ -36,7 +36,7 @@
     "nuxt": "^2.4.0",
     "password-hash": "^1.2.2",
     "sass-loader": "^7.1.0",
-    "sequelize": "^5.8.9",
+    "sequelize": "^5.15.1",
     "sequelize-cli": "^5.5.0",
     "slug": "^1.1.0",
     "tar": "^4.4.8",
